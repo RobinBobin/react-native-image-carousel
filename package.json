@@ -1,0 +1,42 @@
+{
+  "author": "Ruben Shalimov",
+  "bugs": {
+    "url": "https://github.com/RobinBobin/react-native-image-carousel/issues"
+  },
+  "dependencies": {
+    "mobx-react-lite": "^4.1.0",
+    "mobx-state-tree": "^7.0.1",
+    "radashi": "^12.3.3",
+    "react-native-gesture-handler": "^2.22.0",
+    "react-native-reanimated": "^3.16.6",
+    "react-use": "^17.6.0",
+    "simple-common-utils": "^3.3.0"
+  },
+  "description": "An image carousel component for React Native",
+  "devDependencies": {
+    "@robinbobin/ts-eslint-prettier": "^2.2.0",
+    "@types/react": "^19.0.4",
+    "eslint": "^9.18.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "prettier": "^3.4.2",
+    "react": "^19.0.0",
+    "react-native": "^0.76.6",
+    "type-fest": "^4.32.0",
+    "typescript": "^5.7.3"
+  },
+  "homepage": "https://github.com/RobinBobin/react-native-image-carousel#readme",
+  "keywords": [
+    "React Native",
+    "Image carousel"
+  ],
+  "license": "ISC",
+  "main": "src/index.ts",
+  "name": "react-native-image-carousel",
+  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
+  "repository": "github.com/RobinBobin/react-native-image-carousel.git",
+  "scripts": {
+    "check": "tsc && eslint --fix && prettier . --write",
+    "prepack": "./prepack.sh"
+  },
+  "version": "0.0.1"
+}
