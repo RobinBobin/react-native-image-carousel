@@ -1,7 +1,5 @@
 import type { IImageCarouselModelInstance } from '../mst'
 
-interface IImageCarouselProps {
+export interface IImageCarouselProps {
   carouselModel: IImageCarouselModelInstance
 }
-
-export type { IImageCarouselProps }

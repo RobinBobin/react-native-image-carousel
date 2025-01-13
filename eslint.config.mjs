@@ -1,5 +1,6 @@
 import config from '@robinbobin/ts-eslint-prettier/eslint.config.mjs'
 import configPluginReactHooks from '@robinbobin/ts-eslint-prettier/eslint.config.plugin.react.hooks.mjs'
+import { ts } from '@robinbobin/ts-eslint-prettier/eslintRuleOptions/index.mjs'
 
 export default [
   ...config,
@@ -11,6 +12,13 @@ export default [
         { allowAsThisParameter: true }
       ],
       '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
+      '@typescript-eslint/no-shadow': [
+        'error',
+        {
+          ...ts.noShadow,
+          allow: ['StyleSheet']
+        }
+      ],
       '@typescript-eslint/prefer-readonly-parameter-types': [
         'error',
         { ignoreInferredTypes: true }
@@ -26,4 +34,10 @@ export default [
       'require-atomic-updates': ['error', { allowProperties: true }]
     }
   }
+  // {
+  //   files: ['src/switchAnimations/**/*.ts'],
+  //   rules: {
+  //     'react-hooks/rules-of-hooks': 'off'
+  //   }
+  // }
 ]

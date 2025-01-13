@@ -1,14 +1,16 @@
-import type { ImageStyle, StyleProp, ViewStyle } from 'react-native'
+import type { StyleProp, ViewStyle } from 'react-native'
+import type { ReadonlyDeep } from 'type-fest'
+import type { TCarouselDimensions } from '../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 
-const getImageContainerStyle = (aspectRatio: number): StyleProp<ViewStyle> => ({
-  aspectRatio,
-  overflow: 'hidden'
-})
+import { shake } from 'radashi'
 
-const getImageStyle = (aspectRatio: number): StyleProp<ImageStyle> => ({
-  aspectRatio,
-  position: 'absolute',
-  width: '100%'
-})
-
-export { getImageContainerStyle, getImageStyle }
+export const getContainerStyle = (
+  aspectRatio: number,
+  carouselDimensions?: ReadonlyDeep<TCarouselDimensions>
+): StyleProp<ViewStyle> => [
+  {
+    aspectRatio,
+    overflow: 'hidden'
+  },
+  shake(carouselDimensions ?? {})
+]

@@ -1,54 +1,47 @@
-import type { TElementPosition } from '../mst/types'
 import type { IImageCarouselProps } from './types'
 
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { Image, View } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import Animated from 'react-native-reanimated'
+import { View } from 'react-native'
 
+import { NoAnimation } from '../switchAnimations/NoAnimation'
 import { onContainerLayout } from './helpers/onContainerLayout'
-import { useAutoscrollAnimation } from './hooks/useAutoscrollAnimation'
-import { getImageContainerStyle, getImageStyle } from './styles'
+import { Slide } from './Slide'
+import { getContainerStyle } from './styles'
 
 export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
-    const animatedImageStyle = useAutoscrollAnimation(carouselModel)
+    const {
+      isLoading,
+      setSwitchAnimation,
+      switchAnimation: switchAnimation_
+    } = carouselModel
 
-    const { isLoading } = carouselModel
+    let switchAnimation = switchAnimation_
+
+    if (!switchAnimation) {
+      switchAnimation = new NoAnimation(carouselModel)
+
+      setSwitchAnimation(switchAnimation)
+    }
+
+    switchAnimation.useStyles()
 
     if (isLoading) {
       return null
     }
 
-    const { aspectRatio, getImageData, getImageIndex, setCarouselWidth } =
+    const { aspectRatio, carouselDimensions, setCarouselDimensions } =
       carouselModel
-
-    const onImagePress = (position: TElementPosition): (() => void) => {
-      return () => {
-        const { onPress } = getImageData(position)
-
-        onPress?.(getImageIndex(position))
-      }
-    }
 
     return (
       <View
-        onLayout={onContainerLayout(setCarouselWidth)}
-        style={getImageContainerStyle(aspectRatio)}
+        onLayout={onContainerLayout(setCarouselDimensions)}
+        style={getContainerStyle(aspectRatio, carouselDimensions)}
       >
-        <TouchableWithoutFeedback onPress={onImagePress('current')}>
-          <Image
-            source={getImageData('current').source}
-            style={getImageStyle(aspectRatio)}
-          />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={onImagePress('next')}>
-          <Animated.Image
-            source={getImageData('next').source}
-            style={[getImageStyle(aspectRatio), animatedImageStyle]}
-          />
-        </TouchableWithoutFeedback>
+        <Slide carouselModel={carouselModel} position='previous' />
+        <Slide carouselModel={carouselModel} position='current' />
+        <Slide carouselModel={carouselModel} position='next' />
       </View>
     )
   }

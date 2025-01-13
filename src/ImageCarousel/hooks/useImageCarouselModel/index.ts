@@ -1,6 +1,6 @@
 import type { ReadonlyDeep } from 'type-fest'
 import type { IImageCarouselModelInstance } from '../../../mst'
-import type { TImageRawData } from '../../../mst/types'
+import type { TImageRawData } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 
 import { useMemo } from 'react'
 import useAsync from 'react-use/lib/useAsync'
@@ -13,9 +13,7 @@ export const useImageCarouselModel = (
   const carouselModel = useMemo(() => ImageCarouselModel.create(), [])
 
   useAsync(async (): Promise<void> => {
-    if (imageData.length) {
-      await carouselModel.setImageData(imageData)
-    }
+    await carouselModel.setImageData(imageData)
   }, [carouselModel, imageData])
 
   return carouselModel
