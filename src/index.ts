@@ -1,9 +1,13 @@
-export { setHandleError } from './handleError'
+export * from './constants'
+export * from './handleError'
 export * from './ImageCarousel'
 export * from './ImageCarousel/hooks/useImageCarouselModel'
 export * from './ImageCarousel/hooks/useImageCarouselModel/types'
+export * from './ImageCarousel/types'
 export * from './mst'
+export * from './mst/SwitchAnimationAccessibleImageCarouselModel'
 export type {
+  IAutoSwitchAnimationParams,
   ICarouselNumberDimensions,
   TCarouselDimensions,
   TImageData,
@@ -11,8 +15,7 @@ export type {
   TImageRawData,
   TImageRawDatum,
   TOnPress,
-  TOnPressData,
-  TSlidePosition,
-  TSwitchDirection
+  TOnPressData
 } from './mst/SwitchAnimationAccessibleImageCarouselModel/types'
 export * from './switchAnimations'
+export * from './types'

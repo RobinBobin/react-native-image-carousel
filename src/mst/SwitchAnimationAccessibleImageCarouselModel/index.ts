@@ -1,22 +1,28 @@
 import type { Instance } from 'mobx-state-tree'
+import type { TSlidePosition, TSwitchDirection } from '../../types'
 import type {
   ICarouselNumberDimensions,
-  ISwitchAnimationAccessibleImageCarouselModelVolatile,
-  TSlidePosition,
-  TSwitchDirection
+  ISwitchAnimationAccessibleImageCarouselModelVolatile
 } from './types'
 
 import { getType, types } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
 import { verify } from 'simple-common-utils'
 
+import { INITIAL_SLIDE_POSITIONS } from '../../constants'
+
 // eslint-disable-next-line id-length
 export const SwitchAnimationAccessibleImageCarouselModel = types
   .model('SwitchAnimationAccessibleImageCarouselModel')
   .volatile<ISwitchAnimationAccessibleImageCarouselModelVolatile>(() => ({
+    autoSwitchAnimationParams: {
+      duration: 1000,
+      preSwitchDelay: 1000
+    },
     currentImageIndex: 0,
     imageData: [],
-    isSwitchingStarted: false
+    isSwitchingStarted: false,
+    slidePositions: [...INITIAL_SLIDE_POSITIONS]
   }))
   .views(self => ({
     get carouselNumberDimensions(): ICarouselNumberDimensions | undefined {
@@ -59,6 +65,16 @@ export const SwitchAnimationAccessibleImageCarouselModel = types
   .actions(self => ({
     finalizeSwitch(this: void): void {
       self.currentImageIndex = self.getImageIndex(self.switchDirectionSafe)
+
+      if (self.switchDirectionSafe === 'next') {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        self.slidePositions.unshift(self.slidePositions.pop()!)
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        self.slidePositions.push(self.slidePositions.shift()!)
+      }
+
+      self.slidePositions = [...self.slidePositions]
 
       if (!self.isSwitchingStarted) {
         self.switchDirection = undefined

@@ -1,32 +1,25 @@
+import type { StyleProp } from 'react-native'
+import type { AnimatedStyle } from 'react-native-reanimated'
 import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../mst/SwitchAnimationAccessibleImageCarouselModel'
 import type { ISwitchAnimation } from './types'
 
-import { BaseAnimation } from './BaseAnimation'
-
-export class NoAnimation extends BaseAnimation implements ISwitchAnimation {
+export class NoAnimation implements ISwitchAnimation {
   constructor(
-    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
-  ) {
-    super('x', carouselModel)
+    private readonly carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
+  ) {}
+
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
+  getStyle(): StyleProp<AnimatedStyle> {
+    return {}
   }
 
   switch(): void {
-    const { carouselNumberDimensions, finalizeSwitch, switchDirectionSafe } =
-      this.carouselModel
+    this.carouselModel.finalizeSwitch()
+  }
 
-    if (!carouselNumberDimensions) {
-      return
-    }
-
-    this.slidePositions
-      .getSwitchValues(carouselNumberDimensions, switchDirectionSafe)
-      .forEach(([slidePosition, value]) => {
-        this.slidePositions.getTranslate(slidePosition).value = value
-      })
-
-    this.slidePositions.switchSlidePositions(switchDirectionSafe)
-
-    finalizeSwitch()
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
+  useStyles(): void {
+    //
   }
 }

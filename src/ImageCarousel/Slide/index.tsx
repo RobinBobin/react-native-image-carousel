@@ -1,6 +1,6 @@
 import type React from 'react'
 import type { IImageCarouselModelInstance } from '../../mst'
-import type { TSlidePosition } from '../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { TSlidePosition } from '../../types'
 
 import { Image } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'

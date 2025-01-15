@@ -1,52 +1,33 @@
 import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../mst/SwitchAnimationAccessibleImageCarouselModel'
-import type { TSwitchValues } from './helpers/SlidePositions/types'
+import type { TAxis } from './helpers/SlidePositions/types'
 import type { ISwitchAnimation } from './types'
 
 import { runOnJS, withTiming } from 'react-native-reanimated'
 
-import { BaseAnimation } from './BaseAnimation'
+import { SlidePositions } from './helpers/SlidePositions'
 
 export class SlideOverAnimation
-  extends BaseAnimation
+  extends SlidePositions
   implements ISwitchAnimation
 {
   constructor(
-    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
+    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>,
+    axis: TAxis = 'x'
   ) {
-    super('x', carouselModel)
+    super(axis, carouselModel)
   }
 
   switch(): void {
-    const { carouselNumberDimensions, finalizeSwitch, switchDirectionSafe } =
-      this.carouselModel
+    const { finalizeSwitch, switchDirectionSafe } = this.carouselModel
 
-    if (!carouselNumberDimensions) {
-      return
-    }
+    this.setTranslateToCarouselDimension()
 
-    const finalize = (values: TSwitchValues): void => {
-      for (const [slidePosition, value] of values) {
-        if (slidePosition !== switchDirectionSafe) {
-          this.slidePositions.getTranslate(slidePosition).value = value
-        }
-      }
-
-      this.slidePositions.switchSlidePositions(switchDirectionSafe)
-
-      finalizeSwitch()
-    }
-
-    const switchValues = this.slidePositions.getSwitchValues(
-      carouselNumberDimensions,
-      switchDirectionSafe
-    )
-
-    this.slidePositions.getTranslate(switchDirectionSafe).value = withTiming(
+    this.getTranslate(switchDirectionSafe).value = withTiming(
       0,
       { duration: 1000 },
       () => {
-        runOnJS(finalize)(switchValues)
+        runOnJS(finalizeSwitch)()
       }
     )
   }

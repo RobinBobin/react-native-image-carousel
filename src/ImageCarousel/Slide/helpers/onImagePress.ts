@@ -1,5 +1,5 @@
 import type { IImageCarouselModelInstance } from '../../../mst'
-import type { TSlidePosition } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { TSlidePosition } from '../../../types'
 
 export const onImagePress = (
   getImageData: IImageCarouselModelInstance['getImageData'],

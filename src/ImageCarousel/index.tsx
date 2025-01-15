@@ -4,44 +4,38 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { View } from 'react-native'
 
-import { SlideOverAnimation } from '../switchAnimations'
 import { onContainerLayout } from './helpers/onContainerLayout'
+import { useSwitchAnimation } from './hooks/useSwitchAnimation'
 import { Slide } from './Slide'
 import { getContainerStyle } from './styles'
 
 export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
-    const {
-      isLoading,
-      setSwitchAnimation,
-      switchAnimation: switchAnimation_
-    } = carouselModel
+    useSwitchAnimation(carouselModel)
 
-    let switchAnimation = switchAnimation_
-
-    if (!switchAnimation) {
-      switchAnimation = new SlideOverAnimation(carouselModel)
-
-      setSwitchAnimation(switchAnimation)
-    }
-
-    switchAnimation.useStyles()
-
-    if (isLoading) {
+    if (carouselModel.isLoading) {
       return null
     }
 
-    const { aspectRatio, carouselDimensions, setCarouselDimensions } =
-      carouselModel
+    const {
+      aspectRatio,
+      carouselDimensions,
+      setCarouselDimensions,
+      slidePositions
+    } = carouselModel
 
     return (
       <View
         onLayout={onContainerLayout(setCarouselDimensions)}
         style={getContainerStyle(aspectRatio, carouselDimensions)}
       >
-        <Slide carouselModel={carouselModel} position='previous' />
-        <Slide carouselModel={carouselModel} position='current' />
-        <Slide carouselModel={carouselModel} position='next' />
+        {slidePositions.map(position => (
+          <Slide
+            carouselModel={carouselModel}
+            key={position}
+            position={position}
+          />
+        ))}
       </View>
     )
   }

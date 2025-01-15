@@ -1,6 +1,7 @@
 import type { StyleProp } from 'react-native'
 import type { AnimatedStyle, SharedValue } from 'react-native-reanimated'
-import type { TSlidePosition } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { Entry } from 'type-fest'
+import type { TSlidePosition } from '../../../types'
 
 type TAxis = 'x' | 'y'
 
@@ -10,17 +11,14 @@ type TSlideDatum = Partial<{
 }>
 
 type TSlideData = Record<TSlidePosition, TSlideDatum>
+type TSlideDataEntry = Entry<TSlideData>
 
 type TSlideDataRecord = Partial<Record<TAxis, TSlideData>>
-
-type TSwitchValue = Readonly<[TSlidePosition, number]>
-type TSwitchValues = readonly [TSwitchValue, TSwitchValue, TSwitchValue]
 
 export type {
   TAxis,
   TSlideData,
+  TSlideDataEntry,
   TSlideDataRecord,
-  TSlideDatum,
-  TSwitchValue,
-  TSwitchValues
+  TSlideDatum
 }

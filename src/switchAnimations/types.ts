@@ -1,7 +1,7 @@
 import type { StyleProp } from 'react-native'
 import type { AnimatedStyle } from 'react-native-reanimated'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../mst/SwitchAnimationAccessibleImageCarouselModel'
-import type { TSlidePosition } from '../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { TSlidePosition } from '../types'
 
 interface ISwitchAnimation {
   getStyle: (slidePosition: TSlidePosition) => StyleProp<AnimatedStyle>

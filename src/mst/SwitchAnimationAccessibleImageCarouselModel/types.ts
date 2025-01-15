@@ -1,5 +1,15 @@
 import type { FlexStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
+import type {
+  TSlidePosition,
+  TSlidePositions,
+  TSwitchDirection
+} from '../../types'
+
+interface IAutoSwitchAnimationParams {
+  duration: number
+  preSwitchDelay: number
+}
 
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
 
@@ -7,9 +17,6 @@ interface ICarouselNumberDimensions {
   height: number
   width: number
 }
-
-type TSwitchDirection = 'next' | 'previous'
-type TSlidePosition = 'current' | TSwitchDirection
 
 type TOnPressData = Readonly<{
   index: number
@@ -36,14 +43,17 @@ type TImageData = TImageDatum[]
 type TImageRawData = TImageRawDatum[]
 
 interface ISwitchAnimationAccessibleImageCarouselModelVolatile {
+  autoSwitchAnimationParams: Readonly<IAutoSwitchAnimationParams>
   carouselDimensions?: ReadonlyDeep<TCarouselDimensions>
   currentImageIndex: number
   imageData: ReadonlyDeep<TImageData>
   isSwitchingStarted: boolean
+  slidePositions: TSlidePositions
   switchDirection?: TSwitchDirection | undefined
 }
 
 export type {
+  IAutoSwitchAnimationParams,
   ICarouselNumberDimensions,
   ICommonImageData,
   ISwitchAnimationAccessibleImageCarouselModelVolatile,
@@ -53,7 +63,5 @@ export type {
   TImageRawData,
   TImageRawDatum,
   TOnPress,
-  TOnPressData,
-  TSlidePosition,
-  TSwitchDirection
+  TOnPressData
 }

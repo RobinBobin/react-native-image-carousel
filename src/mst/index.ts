@@ -4,32 +4,26 @@ import type {
   ISwitchAnimation,
   TSwitchAnimationFactory
 } from '../switchAnimations/types'
+import type { TSlidePosition, TSwitchDirection } from '../types'
 import type {
+  IAutoSwitchAnimationParams,
   TCarouselDimensions,
   TImageDatum,
-  TImageRawData,
-  TSlidePosition,
-  TSwitchDirection
+  TImageRawData
 } from './SwitchAnimationAccessibleImageCarouselModel/types'
 import type { IImageCarouselModelVolatile, TSourceData } from './types'
 
-import { flow, getType, toGenerator, types } from 'mobx-state-tree'
+import { flow, getType, toGenerator } from 'mobx-state-tree'
 import { isFunction, isNumber } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
+import { INITIAL_SLIDE_POSITIONS } from '../constants'
 import { handleError } from '../handleError'
-import { AutoSwitchAnimationParamsModel } from './AutoSwitchAnimationParamsModel'
 import { SwitchAnimationAccessibleImageCarouselModel } from './SwitchAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =
   SwitchAnimationAccessibleImageCarouselModel.named('ImageCarouselModel')
-    .props({
-      autoSwitchAnimationParams: types.optional(
-        AutoSwitchAnimationParamsModel,
-        {}
-      )
-    })
     .volatile<IImageCarouselModelVolatile>(() => ({
       aspectRatio: 0,
       isAutoSwitchEnabled: true
@@ -64,6 +58,23 @@ export const ImageCarouselModel =
     .actions(self => ({
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
+      },
+      setAutoSwitchAnimationParams(
+        autoSwitchAnimationParams: Readonly<Partial<IAutoSwitchAnimationParams>>
+      ): void {
+        const newParams = { ...autoSwitchAnimationParams }
+
+        const keys = Object.keys(
+          self.autoSwitchAnimationParams
+        ) as (keyof IAutoSwitchAnimationParams)[]
+
+        keys.forEach(key => {
+          if (!(key in newParams)) {
+            newParams[key] = self.autoSwitchAnimationParams[key]
+          }
+        })
+
+        self.autoSwitchAnimationParams = newParams as IAutoSwitchAnimationParams
       },
       setCarouselDimensions(
         this: void,
@@ -145,9 +156,11 @@ export const ImageCarouselModel =
         self.isSwitchingStarted = false
       },
       switch(this: void, switchDirection: TSwitchDirection = 'next'): void {
-        if (!self.switchAnimation) {
+        if (!(self.carouselNumberDimensions && self.switchAnimation)) {
           return
         }
+
+        self.slidePositions = [...INITIAL_SLIDE_POSITIONS]
 
         self.switchDirection = switchDirection
 
