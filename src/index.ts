@@ -15,6 +15,4 @@ export type {
   TSlidePosition,
   TSwitchDirection
 } from './mst/SwitchAnimationAccessibleImageCarouselModel/types'
-export * from './switchAnimations/helpers/SlidePositions'
-export * from './switchAnimations/helpers/SlidePositions/types'
-export * from './switchAnimations/types'
+export * from './switchAnimations'

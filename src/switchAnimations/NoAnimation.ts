@@ -1,47 +1,32 @@
-import type { StyleProp } from 'react-native'
-import type { AnimatedStyle } from 'react-native-reanimated'
 import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../mst/SwitchAnimationAccessibleImageCarouselModel'
-import type { TSlidePosition } from '../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 import type { ISwitchAnimation } from './types'
 
-import { SlidePositions } from './helpers/SlidePositions'
+import { BaseAnimation } from './BaseAnimation'
 
-export class NoAnimation implements ISwitchAnimation {
-  private readonly slidePositions = new SlidePositions('x')
-
+export class NoAnimation extends BaseAnimation implements ISwitchAnimation {
   constructor(
-    private readonly carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
-  ) {}
-
-  getStyle(slidePosition: TSlidePosition): StyleProp<AnimatedStyle> {
-    return this.slidePositions.getStyle(slidePosition)
+    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
+  ) {
+    super('x', carouselModel)
   }
 
   switch(): void {
-    const { carouselNumberDimensions, finalizeSwitch, getSwitchDirection } =
+    const { carouselNumberDimensions, finalizeSwitch, switchDirectionSafe } =
       this.carouselModel
 
     if (!carouselNumberDimensions) {
       return
     }
 
-    Object.entries(
-      this.slidePositions.getSwitchValues(
-        carouselNumberDimensions,
-        getSwitchDirection()
-      )
-    ).forEach(([slidePosition, value]) => {
-      this.slidePositions.getTranslate(slidePosition as TSlidePosition).value =
-        value
-    })
+    this.slidePositions
+      .getSwitchValues(carouselNumberDimensions, switchDirectionSafe)
+      .forEach(([slidePosition, value]) => {
+        this.slidePositions.getTranslate(slidePosition).value = value
+      })
 
-    this.slidePositions.switchSlidePositions(getSwitchDirection())
+    this.slidePositions.switchSlidePositions(switchDirectionSafe)
 
     finalizeSwitch()
-  }
-
-  useStyles(): void {
-    this.slidePositions.useStyles(this.carouselModel.carouselNumberDimensions)
   }
 }

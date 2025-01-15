@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { View } from 'react-native'
 
-import { NoAnimation } from '../switchAnimations/NoAnimation'
+import { SlideOverAnimation } from '../switchAnimations'
 import { onContainerLayout } from './helpers/onContainerLayout'
 import { Slide } from './Slide'
 import { getContainerStyle } from './styles'
@@ -20,7 +20,7 @@ export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
     let switchAnimation = switchAnimation_
 
     if (!switchAnimation) {
-      switchAnimation = new NoAnimation(carouselModel)
+      switchAnimation = new SlideOverAnimation(carouselModel)
 
       setSwitchAnimation(switchAnimation)
     }

@@ -13,4 +13,14 @@ type TSlideData = Record<TSlidePosition, TSlideDatum>
 
 type TSlideDataRecord = Partial<Record<TAxis, TSlideData>>
 
-export type { TAxis, TSlideData, TSlideDataRecord, TSlideDatum }
+type TSwitchValue = Readonly<[TSlidePosition, number]>
+type TSwitchValues = readonly [TSwitchValue, TSwitchValue, TSwitchValue]
+
+export type {
+  TAxis,
+  TSlideData,
+  TSlideDataRecord,
+  TSlideDatum,
+  TSwitchValue,
+  TSwitchValues
+}

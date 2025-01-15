@@ -47,10 +47,10 @@ export const SwitchAnimationAccessibleImageCarouselModel = types
           self.currentImageIndex - 1
         : self.imageData.length - 1
     },
-    getSwitchDirection(): TSwitchDirection {
+    get switchDirectionSafe(): TSwitchDirection {
       verify(
         self.switchDirection,
-        `${getType(self).name}.getSwitchDirection() can be invoked only when switching`
+        `'${getType(self).name}.switchDirectionSafe' can be accessed only when 'self.switchDirection' is not undefined`
       )
 
       return self.switchDirection
@@ -58,7 +58,7 @@ export const SwitchAnimationAccessibleImageCarouselModel = types
   }))
   .actions(self => ({
     finalizeSwitch(this: void): void {
-      self.currentImageIndex = self.getImageIndex(self.getSwitchDirection())
+      self.currentImageIndex = self.getImageIndex(self.switchDirectionSafe)
 
       if (!self.isSwitchingStarted) {
         self.switchDirection = undefined

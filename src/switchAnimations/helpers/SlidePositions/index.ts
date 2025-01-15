@@ -6,7 +6,13 @@ import type {
   TSwitchDirection
 } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 import type { ISwitchAnimation } from '../../types'
-import type { TAxis, TSlideData, TSlideDataRecord, TSlideDatum } from './types'
+import type {
+  TAxis,
+  TSlideData,
+  TSlideDataRecord,
+  TSlideDatum,
+  TSwitchValues
+} from './types'
 
 import { castArray, objectify } from 'radashi'
 import {
@@ -53,25 +59,25 @@ export class SlidePositions implements Pick<ISwitchAnimation, 'getStyle'> {
     carouselNumberDimensions: Readonly<ICarouselNumberDimensions>,
     switchDirection: TSwitchDirection,
     axis?: TAxis
-  ): Record<TSlidePosition, number> {
+  ): TSwitchValues {
     const value = SlidePositions.getCarouselWidthOrHeight(
       axis ?? SlidePositions.getTheKey(this.slideDataRecord),
       carouselNumberDimensions
     )
 
     if (switchDirection === 'next') {
-      return {
-        current: -value,
-        next: 0,
-        previous: value
-      }
+      return [
+        ['previous', value],
+        ['current', -value],
+        ['next', 0]
+      ]
     }
 
-    return {
-      current: value,
-      next: -value,
-      previous: 0
-    }
+    return [
+      ['previous', 0],
+      ['current', value],
+      ['next', -value]
+    ]
   }
 
   getTranslate(
