@@ -14,6 +14,9 @@ import { verify } from 'simple-common-utils'
 import { INITIAL_SLIDE_POSITIONS } from '../../../constants'
 
 export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  static readonly VERY_BIG_NUMBER = 1_000_000
+
   private readonly slideDataRecord: TSlideDataRecord
 
   protected constructor(
@@ -39,14 +42,12 @@ export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
   }
 
   useStyles(): void {
-    const veryBigNumber = 1_000_000
-
     Object.entries(this.slideDataRecord).forEach(([axis, slideData]) => {
       Object.entries(slideData).forEach(entry => {
         const [slidePosition, slideDatum] = entry as TSlideDataEntry
 
         const translate = useSharedValue(
-          slidePosition === 'current' ? 0 : veryBigNumber
+          slidePosition === 'current' ? 0 : SlidePositions.VERY_BIG_NUMBER
         )
 
         const animatedStyle = useAnimatedStyle(() => {
