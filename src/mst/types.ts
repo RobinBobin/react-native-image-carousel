@@ -1,11 +1,10 @@
 import type { ImageResolvedAssetSource } from 'react-native'
-import type { ISwitchAnimation } from '../switchAnimations/types'
+import type { BaseAnimation } from '../switchAnimations'
 import type { ICommonImageData } from './SwitchAnimationAccessibleImageCarouselModel/types'
 
 interface IImageCarouselModelVolatile {
   aspectRatio: number
-  isAutoSwitchEnabled: boolean
-  switchAnimation?: ISwitchAnimation
+  switchAnimation?: BaseAnimation
 }
 
 type TSourceData = ICommonImageData &

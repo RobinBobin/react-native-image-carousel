@@ -7,7 +7,6 @@ export * from './ImageCarousel/types'
 export * from './mst'
 export * from './mst/SwitchAnimationAccessibleImageCarouselModel'
 export type {
-  IAutoSwitchAnimationParams,
   ICarouselNumberDimensions,
   TCarouselDimensions,
   TImageData,

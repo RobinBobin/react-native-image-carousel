@@ -3,27 +3,47 @@ import type { AnimatedStyle, SharedValue } from 'react-native-reanimated'
 import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel'
 import type { ICarouselNumberDimensions } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
-import type { TSlidePosition } from '../../../types'
-import type { ISwitchAnimation } from '../../types'
-import type { TAxis, TSlideDataEntry, TSlideDataRecord } from './types'
+import type { TSlidePosition, TSwitchDirection } from '../../../types'
+import type {
+  TAxis,
+  TSlideData,
+  TSlideDataEntry,
+  TSlideDataRecord
+} from './types'
 
 import { castArray, objectify } from 'radashi'
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 import { verify } from 'simple-common-utils'
 
 import { INITIAL_SLIDE_POSITIONS } from '../../../constants'
+import { BaseAnimation } from '../../BaseAnimation'
 
-export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
+export abstract class BaseAnimationWithDuration extends BaseAnimation {
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   static readonly VERY_BIG_NUMBER = 1_000_000
+
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  protected _duration = 1000
 
   private readonly slideDataRecord: TSlideDataRecord
 
   protected constructor(
     axes: TAxis | readonly TAxis[],
-    protected readonly carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
+    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
   ) {
-    this.slideDataRecord = SlidePositions.createSlideDataRecord(castArray(axes))
+    super(carouselModel)
+
+    this.slideDataRecord = BaseAnimationWithDuration.createSlideDataRecord(
+      castArray(axes)
+    )
+  }
+
+  get duration(): number {
+    return this.duration
+  }
+
+  set duration(duration: number) {
+    this._duration = duration
   }
 
   getStyle(
@@ -35,21 +55,28 @@ export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
 
     verify(
       slideData,
-      `SlidePositions.getStyle(): 'slideData' is undefined for '${axisKey}'`
+      `BaseAnimationWithDuration.getStyle(): 'slideData' is undefined for '${axisKey}'`
     )
 
     return slideData[slidePosition].animatedStyle
   }
 
   useStyles(): void {
-    Object.entries(this.slideDataRecord).forEach(([axis, slideData]) => {
-      Object.entries(slideData).forEach(entry => {
-        const [slidePosition, slideDatum] = entry as TSlideDataEntry
-
+    for (const [axis, slideData] of Object.entries(this.slideDataRecord) as [
+      TAxis,
+      TSlideData
+    ][]) {
+      for (const [slidePosition, slideDatum] of Object.entries(
+        slideData
+      ) as TSlideDataEntry[]) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const translate = useSharedValue(
-          slidePosition === 'current' ? 0 : SlidePositions.VERY_BIG_NUMBER
+          slidePosition === 'current' ? 0 : (
+            BaseAnimationWithDuration.VERY_BIG_NUMBER
+          )
         )
 
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const animatedStyle = useAnimatedStyle(() => {
           const key = `translate${axis.toUpperCase()}`
 
@@ -64,15 +91,15 @@ export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
           slideDatum.translate = translate
           slideDatum.animatedStyle = animatedStyle
         }
-      })
-    })
+      }
+    }
   }
 
   protected getTranslate(
     slidePosition: TSlidePosition,
     axis?: TAxis
   ): SharedValue<number> {
-    const tag = 'SlidePositions.getTranslate():'
+    const tag = 'BaseAnimationWithDuration.getTranslate():'
 
     const axisKey = this.getAxis(axis)
     const slideData = this.slideDataRecord[axisKey]
@@ -90,17 +117,19 @@ export class SlidePositions implements Omit<ISwitchAnimation, 'switch'> {
   }
 
   // eslint-disable-next-line id-length
-  protected setTranslateToCarouselDimension(axis?: TAxis): void {
-    const { carouselNumberDimensions, switchDirectionSafe } = this.carouselModel
+  protected setTranslateToCarouselDimension(
+    carouselNumberDimensions: Readonly<ICarouselNumberDimensions>,
+    switchDirectionSafe: TSwitchDirection
+  ): void {
+    for (const axis of Object.keys(this.slideDataRecord) as TAxis[]) {
+      const key: keyof ICarouselNumberDimensions =
+        axis === 'x' ? 'width' : 'height'
 
-    const key: keyof ICarouselNumberDimensions =
-      this.getAxis(axis) === 'x' ? 'width' : 'height'
+      const value = carouselNumberDimensions[key]
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const value = carouselNumberDimensions![key]
-
-    this.getTranslate(switchDirectionSafe, axis).value =
-      switchDirectionSafe === 'next' ? value : -value
+      this.getTranslate(switchDirectionSafe, axis).value =
+        switchDirectionSafe === 'next' ? value : -value
+    }
   }
 
   private getAxis(axis?: TAxis): TAxis {

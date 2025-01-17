@@ -6,11 +6,6 @@ import type {
   TSwitchDirection
 } from '../../types'
 
-interface IAutoSwitchAnimationParams {
-  duration: number
-  preSwitchDelay: number
-}
-
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
 
 interface ICarouselNumberDimensions {
@@ -43,7 +38,6 @@ type TImageData = TImageDatum[]
 type TImageRawData = TImageRawDatum[]
 
 interface ISwitchAnimationAccessibleImageCarouselModelVolatile {
-  autoSwitchAnimationParams: Readonly<IAutoSwitchAnimationParams>
   carouselDimensions?: ReadonlyDeep<TCarouselDimensions>
   currentImageIndex: number
   imageData: ReadonlyDeep<TImageData>
@@ -53,7 +47,6 @@ interface ISwitchAnimationAccessibleImageCarouselModelVolatile {
 }
 
 export type {
-  IAutoSwitchAnimationParams,
   ICarouselNumberDimensions,
   ICommonImageData,
   ISwitchAnimationAccessibleImageCarouselModelVolatile,

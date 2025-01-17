@@ -6,35 +6,28 @@ import type {
 } from './types'
 
 import { getType, types } from 'mobx-state-tree'
-import { isNumber } from 'radashi'
 import { verify } from 'simple-common-utils'
 
 import { INITIAL_SLIDE_POSITIONS } from '../../constants'
+import { areCarouselNumberDimensionsReady } from './helpers/areCarouselNumberDimensionsReady'
 
 // eslint-disable-next-line id-length
 export const SwitchAnimationAccessibleImageCarouselModel = types
   .model('SwitchAnimationAccessibleImageCarouselModel')
   .volatile<ISwitchAnimationAccessibleImageCarouselModelVolatile>(() => ({
-    autoSwitchAnimationParams: {
-      duration: 1000,
-      preSwitchDelay: 1000
-    },
     currentImageIndex: 0,
     imageData: [],
     isSwitchingStarted: false,
     slidePositions: INITIAL_SLIDE_POSITIONS
   }))
   .views(self => ({
-    get carouselNumberDimensions(): ICarouselNumberDimensions | undefined {
-      const isPositiveNumber = (dimension: unknown): boolean => {
-        return isNumber(dimension) && dimension > 0
-      }
+    get carouselNumberDimensions(): ICarouselNumberDimensions {
+      verify(
+        areCarouselNumberDimensionsReady(self.carouselDimensions),
+        `'${getType(self).name}.carouselNumberDimensions' can be accessed only when 'self.carouselDimensions' number values are ready`
+      )
 
-      const values = Object.values(self.carouselDimensions ?? {})
-
-      return values.length && values.every(isPositiveNumber) ?
-          (self.carouselDimensions as ICarouselNumberDimensions)
-        : undefined
+      return self.carouselDimensions
     },
     getImageIndex(this: void, slidePosition: TSlidePosition): number {
       if (slidePosition === 'current') {

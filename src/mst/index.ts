@@ -1,12 +1,8 @@
 import type { Instance } from 'mobx-state-tree'
 import type { ReadonlyDeep } from 'type-fest'
-import type {
-  ISwitchAnimation,
-  TSwitchAnimationFactory
-} from '../switchAnimations/types'
+import type { BaseAnimation } from '../switchAnimations'
 import type { TSlidePosition, TSwitchDirection } from '../types'
 import type {
-  IAutoSwitchAnimationParams,
   TCarouselDimensions,
   TImageDatum,
   TImageRawData
@@ -14,20 +10,26 @@ import type {
 import type { IImageCarouselModelVolatile, TSourceData } from './types'
 
 import { flow, getType, toGenerator } from 'mobx-state-tree'
-import { isFunction, isNumber } from 'radashi'
+import { isNumber } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
 import { handleError } from '../handleError'
 import { SwitchAnimationAccessibleImageCarouselModel } from './SwitchAnimationAccessibleImageCarouselModel'
+import { areCarouselNumberDimensionsReady } from './SwitchAnimationAccessibleImageCarouselModel/helpers/areCarouselNumberDimensionsReady'
 
 export const ImageCarouselModel =
   SwitchAnimationAccessibleImageCarouselModel.named('ImageCarouselModel')
     .volatile<IImageCarouselModelVolatile>(() => ({
-      aspectRatio: 0,
-      isAutoSwitchEnabled: true
+      aspectRatio: 0
     }))
     .views(self => ({
+      get canSwitch(): boolean {
+        return (
+          areCarouselNumberDimensionsReady(self.carouselDimensions) &&
+          Boolean(self.switchAnimation)
+        )
+      },
       get isLoading(): boolean {
         const isLoaded = Boolean(self.aspectRatio && self.imageData.length)
 
@@ -57,23 +59,6 @@ export const ImageCarouselModel =
     .actions(self => ({
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
-      },
-      setAutoSwitchAnimationParams(
-        autoSwitchAnimationParams: Readonly<Partial<IAutoSwitchAnimationParams>>
-      ): void {
-        const newParams = { ...autoSwitchAnimationParams }
-
-        const keys = Object.keys(
-          self.autoSwitchAnimationParams
-        ) as (keyof IAutoSwitchAnimationParams)[]
-
-        keys.forEach(key => {
-          if (!(key in newParams)) {
-            newParams[key] = self.autoSwitchAnimationParams[key]
-          }
-        })
-
-        self.autoSwitchAnimationParams = newParams as IAutoSwitchAnimationParams
       },
       setCarouselDimensions(
         this: void,
@@ -139,23 +124,15 @@ export const ImageCarouselModel =
           handleError(error)
         }
       }),
-      setIsAutoSwitchEnabled(this: void, isAutoSwitchEnabled: boolean): void {
-        self.isAutoSwitchEnabled = isAutoSwitchEnabled
-      },
-      setSwitchAnimation(
-        this: void,
-        FactoryOrInstance: TSwitchAnimationFactory | Readonly<ISwitchAnimation>
-      ): void {
-        self.switchAnimation =
-          isFunction(FactoryOrInstance) ?
-            new FactoryOrInstance(self)
-          : FactoryOrInstance
+      // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+      setSwitchAnimation(this: void, switchAnimaiton: BaseAnimation): void {
+        self.switchAnimation = switchAnimaiton
       },
       stopSwitching(this: void): void {
         self.isSwitchingStarted = false
       },
       switch(this: void, switchDirection: TSwitchDirection): void {
-        if (!(self.carouselNumberDimensions && self.switchAnimation)) {
+        if (!self.canSwitch) {
           return
         }
 
@@ -167,14 +144,12 @@ export const ImageCarouselModel =
 
         self.switchDirection = switchDirection
 
-        self.switchAnimation.switch()
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        self.switchAnimation!.switch()
       }
     }))
     .actions(self => ({
-      startSwitching(
-        this: void,
-        switchDirection: TSwitchDirection = 'next'
-      ): void {
+      startSwitching(this: void, switchDirection: TSwitchDirection): void {
         if (self.isSwitchingStarted) {
           return
         }

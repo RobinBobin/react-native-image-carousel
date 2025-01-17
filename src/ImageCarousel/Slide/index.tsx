@@ -18,7 +18,10 @@ interface ISlideProps {
 export const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
   const { getImageData, getImageIndex, switchAnimation } = carouselModel
 
-  verify(switchAnimation, `Slide: no 'switchAnimation' for '${position}'`)
+  verify(
+    switchAnimation,
+    "No 'switchAnimation' set. Use 'NoAnimation' if you don't need any animation"
+  )
 
   const animatedStyle = switchAnimation.getStyle(position)
 
