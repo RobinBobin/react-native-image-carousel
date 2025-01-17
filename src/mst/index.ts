@@ -18,7 +18,6 @@ import { isFunction, isNumber } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
-import { INITIAL_SLIDE_POSITIONS } from '../constants'
 import { handleError } from '../handleError'
 import { SwitchAnimationAccessibleImageCarouselModel } from './SwitchAnimationAccessibleImageCarouselModel'
 
@@ -155,12 +154,16 @@ export const ImageCarouselModel =
       stopSwitching(this: void): void {
         self.isSwitchingStarted = false
       },
-      switch(this: void, switchDirection: TSwitchDirection = 'next'): void {
+      switch(this: void, switchDirection: TSwitchDirection): void {
         if (!(self.carouselNumberDimensions && self.switchAnimation)) {
           return
         }
 
-        self.slidePositions = [...INITIAL_SLIDE_POSITIONS]
+        self.slidePositions = [
+          switchDirection === 'next' ? 'previous' : 'next',
+          'current',
+          switchDirection
+        ]
 
         self.switchDirection = switchDirection
 

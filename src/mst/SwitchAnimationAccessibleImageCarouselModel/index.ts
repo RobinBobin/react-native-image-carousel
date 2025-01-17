@@ -22,7 +22,7 @@ export const SwitchAnimationAccessibleImageCarouselModel = types
     currentImageIndex: 0,
     imageData: [],
     isSwitchingStarted: false,
-    slidePositions: [...INITIAL_SLIDE_POSITIONS]
+    slidePositions: INITIAL_SLIDE_POSITIONS
   }))
   .views(self => ({
     get carouselNumberDimensions(): ICarouselNumberDimensions | undefined {
@@ -66,15 +66,9 @@ export const SwitchAnimationAccessibleImageCarouselModel = types
     finalizeSwitch(this: void): void {
       self.currentImageIndex = self.getImageIndex(self.switchDirectionSafe)
 
-      if (self.switchDirectionSafe === 'next') {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        self.slidePositions.unshift(self.slidePositions.pop()!)
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        self.slidePositions.push(self.slidePositions.shift()!)
-      }
+      const [previousOrNext, current, nextOrPrevious] = self.slidePositions
 
-      self.slidePositions = [...self.slidePositions]
+      self.slidePositions = [previousOrNext, nextOrPrevious, current]
 
       if (!self.isSwitchingStarted) {
         self.switchDirection = undefined

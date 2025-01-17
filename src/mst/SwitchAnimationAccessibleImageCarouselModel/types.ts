@@ -48,7 +48,7 @@ interface ISwitchAnimationAccessibleImageCarouselModelVolatile {
   currentImageIndex: number
   imageData: ReadonlyDeep<TImageData>
   isSwitchingStarted: boolean
-  slidePositions: TSlidePositions
+  slidePositions: Readonly<TSlidePositions>
   switchDirection?: TSwitchDirection | undefined
 }
 
