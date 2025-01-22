@@ -25,7 +25,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
 
     this.getTranslate(switchDirectionSafe).value = withTiming(
       0,
-      { duration: 1000 },
+      { duration: this.duration },
       finished => {
         if (finished ?? true) {
           runOnJS(finalizeSwitch)()

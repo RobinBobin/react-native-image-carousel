@@ -23,7 +23,7 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
   static readonly VERY_BIG_NUMBER = 1_000_000
 
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-  protected _duration = 1000
+  private _duration = 1000
 
   private readonly slideDataRecord: TSlideDataRecord
 
@@ -39,7 +39,7 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
   }
 
   get duration(): number {
-    return this.duration
+    return this._duration
   }
 
   set duration(duration: number) {
