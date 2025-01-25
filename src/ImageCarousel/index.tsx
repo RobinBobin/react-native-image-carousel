@@ -13,16 +13,28 @@ export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
     useSwitchAnimation(carouselModel)
 
-    if (carouselModel.isLoading) {
-      return null
-    }
-
     const {
       aspectRatio,
       carouselDimensions,
+      isLoading,
+      placeholder,
+      placeholderContainerStyle,
       setCarouselDimensions,
       slidePositions
     } = carouselModel
+
+    if (isLoading) {
+      return (
+        <View
+          style={[
+            placeholderContainerStyle,
+            { ...carouselDimensions, aspectRatio }
+          ]}
+        >
+          {placeholder}
+        </View>
+      )
+    }
 
     return (
       <View

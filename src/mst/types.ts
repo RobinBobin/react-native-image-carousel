@@ -1,9 +1,15 @@
-import type { ImageResolvedAssetSource } from 'react-native'
+import type {
+  ImageResolvedAssetSource,
+  StyleProp,
+  ViewStyle
+} from 'react-native'
 import type { BaseAnimation } from '../switchAnimations'
 import type { ICommonImageData } from './SwitchAnimationAccessibleImageCarouselModel/types'
 
 interface IImageCarouselModelVolatile {
   aspectRatio: number
+  placeholder?: React.ReactNode
+  placeholderContainerStyle?: StyleProp<ViewStyle>
   switchAnimation?: BaseAnimation
 }
 

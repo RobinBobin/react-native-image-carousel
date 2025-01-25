@@ -1,4 +1,5 @@
 import type { Instance } from 'mobx-state-tree'
+import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type { BaseAnimation } from '../switchAnimations'
 import type { TSlidePosition, TSwitchDirection } from '../types'
@@ -124,6 +125,16 @@ export const ImageCarouselModel =
           handleError(error)
         }
       }),
+      // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+      setPlaceholder(placeholder: React.ReactNode): void {
+        self.placeholder = placeholder
+      },
+      setPlaceholderContainerStyle(
+        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        placeholderContainerStyle: StyleProp<ViewStyle>
+      ): void {
+        self.placeholderContainerStyle = placeholderContainerStyle
+      },
       // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
       setSwitchAnimation(this: void, switchAnimaiton: BaseAnimation): void {
         self.switchAnimation = switchAnimaiton
