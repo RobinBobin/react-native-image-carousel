@@ -1,4 +1,4 @@
-import type { FlexStyle } from 'react-native'
+import type { FlexStyle, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type {
   TSlidePosition,
@@ -20,7 +20,7 @@ type TOnPressData = Readonly<{
 
 type TOnPress = (data: TOnPressData) => void
 
-interface ICommonImageData {
+interface ICommonImageData extends Pick<ViewStyle, 'backgroundColor'> {
   onPress?: TOnPress
 }
 

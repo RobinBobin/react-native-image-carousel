@@ -1,6 +1,5 @@
 import type { StyleProp, TransformsStyle } from 'react-native'
 import type { AnimatedStyle, SharedValue } from 'react-native-reanimated'
-import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel'
 import type { ICarouselNumberDimensions } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 import type { TSlidePosition, TSwitchDirection } from '../../../types'
@@ -29,7 +28,8 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
 
   protected constructor(
     axes: TAxis | readonly TAxis[],
-    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>
+    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+    carouselModel: ISwitchAnimationAccessibleImageCarouselModelInstance
   ) {
     super(carouselModel)
 

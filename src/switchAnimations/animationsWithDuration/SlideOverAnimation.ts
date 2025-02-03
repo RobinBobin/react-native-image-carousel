@@ -1,4 +1,3 @@
-import type { ReadonlyDeep } from 'type-fest'
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../../mst/SwitchAnimationAccessibleImageCarouselModel'
 import type { TAxis } from './BaseAnimationWithDuration/types'
 
@@ -8,7 +7,8 @@ import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
 export class SlideOverAnimation extends BaseAnimationWithDuration {
   constructor(
-    carouselModel: ReadonlyDeep<ISwitchAnimationAccessibleImageCarouselModelInstance>,
+    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+    carouselModel: ISwitchAnimationAccessibleImageCarouselModelInstance,
     axis: TAxis = 'x'
   ) {
     super(axis, carouselModel)

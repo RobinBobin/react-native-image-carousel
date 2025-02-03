@@ -7,8 +7,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 import { verify } from 'simple-common-utils'
 
-import { onImagePress } from './helpers/onImagePress'
-import styles from './styles'
+import { getContainerStyle, getImageStyle } from './styles'
 
 interface ISlideProps {
   carouselModel: IImageCarouselModelInstance
@@ -24,16 +23,22 @@ export const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
   )
 
   const animatedStyle = switchAnimation.getStyle(position)
+  const imageIndex = getImageIndex(position)
+
+  const { aspectRatio, backgroundColor, onPress, source } =
+    getImageData(imageIndex)
+
+  const onImagePress = (): void => {
+    onPress?.({
+      index: imageIndex,
+      slidePosition: position
+    })
+  }
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <TouchableWithoutFeedback
-        onPress={onImagePress(getImageData, getImageIndex, position)}
-      >
-        <Image
-          source={carouselModel.getImageData(position).source}
-          style={styles.image}
-        />
+    <Animated.View style={[getContainerStyle(backgroundColor), animatedStyle]}>
+      <TouchableWithoutFeedback onPress={onImagePress}>
+        <Image source={source} style={getImageStyle(aspectRatio)} />
       </TouchableWithoutFeedback>
     </Animated.View>
   )

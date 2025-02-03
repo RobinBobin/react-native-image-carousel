@@ -1,4 +1,3 @@
-import type { ReadonlyDeep } from 'type-fest'
 import type { IImageCarouselModelInstance } from '../../../mst'
 import type { TImageRawData } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
 
@@ -8,7 +7,8 @@ import useAsync from 'react-use/lib/useAsync'
 import { ImageCarouselModel } from '../../../mst'
 
 export const useImageCarouselModel = (
-  imageData: ReadonlyDeep<TImageRawData>
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  imageData: TImageRawData
 ): IImageCarouselModelInstance => {
   const carouselModel = useMemo(() => ImageCarouselModel.create(), [])
 

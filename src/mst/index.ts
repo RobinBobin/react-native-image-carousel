@@ -40,7 +40,7 @@ export const ImageCarouselModel =
       getImageData(
         this: void,
         indexOrSlidePosition: number | TSlidePosition
-      ): Readonly<TImageDatum> {
+      ): ReadonlyDeep<TImageDatum> {
         const index =
           isNumber(indexOrSlidePosition) ? indexOrSlidePosition : (
             self.getImageIndex(indexOrSlidePosition)
@@ -68,7 +68,8 @@ export const ImageCarouselModel =
         self.carouselDimensions = carouselDimensions
       },
       setImageData: flow(function* (
-        imageData: ReadonlyDeep<TImageRawData>
+        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        imageData: TImageRawData
       ): Generator<Promise<TSourceData[]>, void> {
         try {
           verify(
