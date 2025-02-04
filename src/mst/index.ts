@@ -28,7 +28,8 @@ export const ImageCarouselModel =
       get canSwitch(): boolean {
         return (
           areCarouselNumberDimensionsReady(self.carouselDimensions) &&
-          Boolean(self.switchAnimation)
+          Boolean(self.switchAnimation) &&
+          self.imageData.length > 1
         )
       },
       get isLoading(): boolean {
