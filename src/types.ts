@@ -1,8 +1,8 @@
 type TAxis = 'x' | 'y'
 
-type TSwitchDirection = 'next' | 'previous'
-type TSlidePosition = 'current' | TSwitchDirection
+type TMovementDirection = 'next' | 'previous'
+type TSlidePosition = 'current' | TMovementDirection
 
-type TSwitchPhase = 'initiation' | 'finalization'
+type TMovementPhase = 'initiation' | 'finalization'
 
-export type { TAxis, TSlidePosition, TSwitchDirection, TSwitchPhase }
+export type { TAxis, TMovementDirection, TMovementPhase,TSlidePosition }

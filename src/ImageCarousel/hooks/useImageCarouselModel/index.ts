@@ -1,5 +1,5 @@
 import type { IImageCarouselModelInstance } from '../../../mst'
-import type { TImageRawData } from '../../../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { TImageRawData } from '../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
 import { useMemo } from 'react'
 import useAsync from 'react-use/lib/useAsync'

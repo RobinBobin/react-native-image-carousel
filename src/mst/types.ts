@@ -3,14 +3,14 @@ import type {
   StyleProp,
   ViewStyle
 } from 'react-native'
-import type { BaseAnimation } from '../switchAnimations'
-import type { ICommonImageData } from './SwitchAnimationAccessibleImageCarouselModel/types'
+import type { BaseAnimation } from '../slideTransitionAnimations'
+import type { ICommonImageData } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
 interface IImageCarouselModelVolatile {
   aspectRatio: number
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
-  switchAnimation?: BaseAnimation
+  slideTransitionAnimation?: BaseAnimation
 }
 
 type TSourceData = ICommonImageData &

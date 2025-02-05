@@ -15,8 +15,8 @@ export class NoAnimation extends BaseAnimation {
     }
   }
 
-  switch(): void {
-    this.carouselModel.finalizeSwitch()
+  move(): void {
+    this.carouselModel.finalizeTransition()
   }
 
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this

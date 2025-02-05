@@ -4,7 +4,7 @@ export * from './ImageCarousel/hooks/useImageCarouselModel'
 export * from './ImageCarousel/hooks/useImageCarouselModel/types'
 export * from './ImageCarousel/types'
 export * from './mst'
-export * from './mst/SwitchAnimationAccessibleImageCarouselModel'
+export * from './mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 export type {
   TCarouselDimensions,
   TImageData,
@@ -13,6 +13,6 @@ export type {
   TImageRawDatum,
   TOnPress,
   TOnPressData
-} from './mst/SwitchAnimationAccessibleImageCarouselModel/types'
-export * from './switchAnimations'
+} from './mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+export * from './slideTransitionAnimations'
 export * from './types'

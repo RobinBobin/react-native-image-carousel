@@ -1,13 +1,13 @@
 import type { Instance } from 'mobx-state-tree'
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
-import type { BaseAnimation } from '../switchAnimations'
-import type { TSwitchDirection } from '../types'
+import type { BaseAnimation } from '../slideTransitionAnimations'
+import type { TMovementDirection } from '../types'
 import type {
   TCarouselDimensions,
   TImageDatum,
   TImageRawData
-} from './SwitchAnimationAccessibleImageCarouselModel/types'
+} from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type { IImageCarouselModelVolatile, TSourceData } from './types'
 
 import { flow, getType, toGenerator } from 'mobx-state-tree'
@@ -16,19 +16,21 @@ import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
 import { handleError } from '../handleError'
-import { SwitchAnimationAccessibleImageCarouselModel } from './SwitchAnimationAccessibleImageCarouselModel'
+import { SlideTransitionAnimationAccessibleImageCarouselModel } from './SlideTransitionAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =
-  SwitchAnimationAccessibleImageCarouselModel.named('ImageCarouselModel')
+  SlideTransitionAnimationAccessibleImageCarouselModel.named(
+    'ImageCarouselModel'
+  )
     .volatile<IImageCarouselModelVolatile>(() => ({
       aspectRatio: 0
     }))
     .views(self => ({
-      get canSwitch(): boolean {
+      get canTransition(): boolean {
         return (
-          Boolean(self.switchAnimation) &&
-          !self.switchDirection &&
-          !self.switchPhase &&
+          Boolean(self.slideTransitionAnimation) &&
+          !self.movementDirection &&
+          !self.movementPhase &&
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           self.imageData.length > 1
         )
@@ -53,6 +55,24 @@ export const ImageCarouselModel =
     }))
     // eslint-disable-next-line max-lines-per-function
     .actions(self => ({
+      move(this: void, movementDirection: TMovementDirection): void {
+        if (!self.canTransition) {
+          return
+        }
+
+        self.movementDirection = movementDirection
+
+        const { current } = self.imageDataIndices
+        const delta = 1
+
+        self.imageDataIndices = {
+          current,
+          next: current + delta,
+          previous: current - delta
+        }
+
+        self.movementPhase = 'initiation'
+      },
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
       },
@@ -132,41 +152,29 @@ export const ImageCarouselModel =
       ): void {
         self.placeholderContainerStyle = placeholderContainerStyle
       },
-      // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-      setSwitchAnimation(this: void, switchAnimaiton: BaseAnimation): void {
-        self.switchAnimation = switchAnimaiton
+      setSlideTransitionAnimation(
+        this: void,
+        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        slideTransitionAnimation: BaseAnimation
+      ): void {
+        self.slideTransitionAnimation = slideTransitionAnimation
       },
-      stopSwitching(this: void): void {
-        self.isSwitchingStarted = false
-      },
-      switch(this: void, switchDirection: TSwitchDirection): void {
-        if (!self.canSwitch) {
-          return
-        }
-
-        self.switchDirection = switchDirection
-
-        const { current } = self.imageDataIndices
-        const delta = 1
-
-        self.imageDataIndices = {
-          current,
-          next: current + delta,
-          previous: current - delta
-        }
-
-        self.switchPhase = 'initiation'
+      stopAutoTransition(this: void): void {
+        self.isAutoTransitionStarted = false
       }
     }))
     .actions(self => ({
-      startSwitching(this: void, switchDirection: TSwitchDirection): void {
-        if (self.isSwitchingStarted) {
+      startAutoTransition(
+        this: void,
+        movementDirection: TMovementDirection
+      ): void {
+        if (self.isAutoTransitionStarted) {
           return
         }
 
-        self.isSwitchingStarted = true
+        self.isAutoTransitionStarted = true
 
-        self.switch(switchDirection)
+        self.move(movementDirection)
       }
     }))
 

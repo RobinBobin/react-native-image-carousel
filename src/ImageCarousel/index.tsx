@@ -5,13 +5,13 @@ import React, { useEffect } from 'react'
 import { View } from 'react-native'
 
 import { onContainerLayout } from './helpers/onContainerLayout'
-import { useSwitchAnimation } from './hooks/useSwitchAnimation'
+import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation'
 import { Slide } from './Slide'
 import { getContainerStyle } from './styles'
 
 export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
-    const switchAnimation = useSwitchAnimation(carouselModel)
+    const slideTransitionAnimation = useSlideTransitionAnimation(carouselModel)
 
     const {
       aspectRatio,
@@ -20,14 +20,14 @@ export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
       placeholder,
       placeholderContainerStyle,
       setCarouselDimensions,
-      switchPhase
+      movementPhase
     } = carouselModel
 
     useEffect(() => {
-      if (switchPhase) {
-        switchAnimation.switch()
+      if (movementPhase) {
+        slideTransitionAnimation.move()
       }
-    }, [switchAnimation, switchPhase])
+    }, [slideTransitionAnimation, movementPhase])
 
     if (isLoading) {
       return (

@@ -1,6 +1,6 @@
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
-import type { TCarouselDimensions } from '../mst/SwitchAnimationAccessibleImageCarouselModel/types'
+import type { TCarouselDimensions } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
 import { shake } from 'radashi'
 

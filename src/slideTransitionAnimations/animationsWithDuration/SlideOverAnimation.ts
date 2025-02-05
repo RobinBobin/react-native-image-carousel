@@ -1,4 +1,4 @@
-import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../../mst/SwitchAnimationAccessibleImageCarouselModel'
+import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 import type { TAxis } from '../../types'
 
 import { runOnJS, withTiming } from 'react-native-reanimated'
@@ -8,31 +8,34 @@ import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 export class SlideOverAnimation extends BaseAnimationWithDuration {
   constructor(
     // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-    carouselModel: ISwitchAnimationAccessibleImageCarouselModelInstance,
+    carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance,
     axis: TAxis = 'x'
   ) {
     super(axis, carouselModel)
   }
 
-  switch(): void {
+  move(): void {
     this.resetTranslate()
 
-    const { finalizeSwitch, switchDirectionVerified, switchPhaseVerified } =
-      this.carouselModel
+    const {
+      finalizeTransition,
+      movementDirectionVerified,
+      movementPhaseVerified
+    } = this.carouselModel
 
-    if (switchPhaseVerified === 'finalization') {
-      finalizeSwitch()
+    if (movementPhaseVerified === 'finalization') {
+      finalizeTransition()
 
       return
     }
 
-    this.getTranslate(switchDirectionVerified).value = withTiming(
+    this.getTranslate(movementDirectionVerified).value = withTiming(
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       0,
       { duration: this.duration },
       finished => {
         if (finished ?? true) {
-          runOnJS(finalizeSwitch)()
+          runOnJS(finalizeTransition)()
         }
       }
     )
