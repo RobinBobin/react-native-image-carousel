@@ -1,4 +1,3 @@
-export * from './constants'
 export * from './handleError'
 export * from './ImageCarousel'
 export * from './ImageCarousel/hooks/useImageCarouselModel'
@@ -7,7 +6,6 @@ export * from './ImageCarousel/types'
 export * from './mst'
 export * from './mst/SwitchAnimationAccessibleImageCarouselModel'
 export type {
-  ICarouselNumberDimensions,
   TCarouselDimensions,
   TImageData,
   TImageDatum,

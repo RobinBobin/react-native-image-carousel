@@ -11,7 +11,6 @@ export default [
         'error',
         { allowAsThisParameter: true }
       ],
-      '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
       '@typescript-eslint/no-shadow': [
         'error',
         {
@@ -34,10 +33,4 @@ export default [
       'require-atomic-updates': ['error', { allowProperties: true }]
     }
   }
-  // {
-  //   files: ['src/switchAnimations/**/*.ts'],
-  //   rules: {
-  //     'react-hooks/rules-of-hooks': 'off'
-  //   }
-  // }
 ]

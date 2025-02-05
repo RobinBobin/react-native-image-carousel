@@ -1,4 +1,5 @@
 import type { IImageCarouselModelInstance } from '../../mst'
+import type { BaseAnimation } from '../../switchAnimations'
 
 import { useEffect } from 'react'
 
@@ -7,7 +8,7 @@ import { SlideOverAnimation } from '../../switchAnimations'
 export const useSwitchAnimation = (
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   carouselModel: IImageCarouselModelInstance
-): void => {
+): BaseAnimation => {
   const { canSwitch, setSwitchAnimation, startSwitching } = carouselModel
 
   let switchAnimation = carouselModel.switchAnimation
@@ -26,4 +27,6 @@ export const useSwitchAnimation = (
   }, [canSwitch, carouselModel.switchAnimation, startSwitching])
 
   switchAnimation.useStyles()
+
+  return switchAnimation
 }

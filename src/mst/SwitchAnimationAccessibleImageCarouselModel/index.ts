@@ -1,70 +1,89 @@
 import type { Instance } from 'mobx-state-tree'
-import type { TSlidePosition, TSwitchDirection } from '../../types'
 import type {
-  ICarouselNumberDimensions,
-  ISwitchAnimationAccessibleImageCarouselModelVolatile
+  TAxis,
+  TSlidePosition,
+  TSwitchDirection,
+  TSwitchPhase
+} from '../../types'
+import type {
+  ISwitchAnimationAccessibleImageCarouselModelVolatile,
+  TCarouselDimensions
 } from './types'
 
 import { getType, types } from 'mobx-state-tree'
+import { isNumber } from 'radashi'
 import { verify } from 'simple-common-utils'
-
-import { INITIAL_SLIDE_POSITIONS } from '../../constants'
-import { areCarouselNumberDimensionsReady } from './helpers/areCarouselNumberDimensionsReady'
 
 // eslint-disable-next-line id-length
 export const SwitchAnimationAccessibleImageCarouselModel = types
   .model('SwitchAnimationAccessibleImageCarouselModel')
   .volatile<ISwitchAnimationAccessibleImageCarouselModelVolatile>(() => ({
-    currentImageIndex: 0,
     imageData: [],
-    isSwitchingStarted: false,
-    slidePositions: INITIAL_SLIDE_POSITIONS
+    imageDataIndices: {
+      current: 0,
+      next: 0,
+      previous: 0
+    },
+    isSwitchingStarted: false
   }))
   .views(self => ({
-    get carouselNumberDimensions(): ICarouselNumberDimensions {
-      verify(
-        areCarouselNumberDimensionsReady(self.carouselDimensions),
-        `'${getType(self).name}.carouselNumberDimensions' can be accessed only when 'self.carouselDimensions' number values are ready`
-      )
-
-      return self.carouselDimensions
-    },
-    getImageIndex(this: void, slidePosition: TSlidePosition): number {
+    getSlideOffset(axis: TAxis, slidePosition: TSlidePosition): number {
       if (slidePosition === 'current') {
-        return self.currentImageIndex
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        return 0
       }
 
-      if (slidePosition === 'next') {
-        const canIncrement = self.currentImageIndex < self.imageData.length - 1
+      const dimensionKey: keyof TCarouselDimensions =
+        axis === 'x' ? 'width' : 'height'
 
-        return canIncrement ? self.currentImageIndex + 1 : 0
-      }
+      const dimension = self.carouselDimensions?.[dimensionKey]
+      const veryBigNumber = 1_000_000
+      const value = isNumber(dimension) ? dimension : veryBigNumber
 
-      const canDecrement = Boolean(self.currentImageIndex)
-
-      return canDecrement ?
-          self.currentImageIndex - 1
-        : self.imageData.length - 1
+      return slidePosition === 'next' ? value : -value
     },
-    get switchDirectionSafe(): TSwitchDirection {
+    get switchDirectionVerified(): TSwitchDirection {
       verify(
         self.switchDirection,
-        `'${getType(self).name}.switchDirectionSafe' can be accessed only when 'self.switchDirection' is not undefined`
+        `'${getType(self).name}.switchDirectionVerified' can be accessed only when 'self.switchDirection' is not undefined`
       )
 
       return self.switchDirection
+    },
+    get switchPhaseVerified(): TSwitchPhase {
+      verify(
+        self.switchPhase,
+        `'${getType(self).name}.switchPhaseVerified' can be accessed only when 'self.switchPhase' is not undefined`
+      )
+
+      return self.switchPhase
     }
   }))
   .actions(self => ({
     finalizeSwitch(this: void): void {
-      self.currentImageIndex = self.getImageIndex(self.switchDirectionSafe)
+      switch (self.switchPhaseVerified) {
+        case 'finalization':
+          if (!self.isSwitchingStarted) {
+            self.switchDirection = undefined
+          }
 
-      const [previousOrNext, current, nextOrPrevious] = self.slidePositions
+          self.switchPhase = undefined
 
-      self.slidePositions = [previousOrNext, nextOrPrevious, current]
+          break
 
-      if (!self.isSwitchingStarted) {
-        self.switchDirection = undefined
+        case 'initiation': {
+          const { next, previous } = self.imageDataIndices
+
+          self.imageDataIndices = {
+            current: self.switchDirectionVerified === 'next' ? next : previous,
+            next,
+            previous
+          }
+
+          self.switchPhase = 'finalization'
+
+          break
+        }
       }
     }
   }))

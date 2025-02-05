@@ -2,7 +2,7 @@ import type { Instance } from 'mobx-state-tree'
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type { BaseAnimation } from '../switchAnimations'
-import type { TSlidePosition, TSwitchDirection } from '../types'
+import type { TSwitchDirection } from '../types'
 import type {
   TCarouselDimensions,
   TImageDatum,
@@ -17,7 +17,6 @@ import { verify } from 'simple-common-utils'
 
 import { handleError } from '../handleError'
 import { SwitchAnimationAccessibleImageCarouselModel } from './SwitchAnimationAccessibleImageCarouselModel'
-import { areCarouselNumberDimensionsReady } from './SwitchAnimationAccessibleImageCarouselModel/helpers/areCarouselNumberDimensionsReady'
 
 export const ImageCarouselModel =
   SwitchAnimationAccessibleImageCarouselModel.named('ImageCarouselModel')
@@ -27,8 +26,10 @@ export const ImageCarouselModel =
     .views(self => ({
       get canSwitch(): boolean {
         return (
-          areCarouselNumberDimensionsReady(self.carouselDimensions) &&
           Boolean(self.switchAnimation) &&
+          !self.switchDirection &&
+          !self.switchPhase &&
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           self.imageData.length > 1
         )
       },
@@ -38,20 +39,13 @@ export const ImageCarouselModel =
         return !isLoaded
       },
 
-      getImageData(
-        this: void,
-        indexOrSlidePosition: number | TSlidePosition
-      ): ReadonlyDeep<TImageDatum> {
-        const index =
-          isNumber(indexOrSlidePosition) ? indexOrSlidePosition : (
-            self.getImageIndex(indexOrSlidePosition)
-          )
-
-        const imageData = self.imageData[index]
+      getImageData(this: void, index: number): ReadonlyDeep<TImageDatum> {
+        const normalizedIndex = index % self.imageData.length
+        const imageData = self.imageData.at(normalizedIndex)
 
         verify(
           imageData,
-          `${getType(self).name}.getImageData(${index}): valid indices: [0, ${self.imageData.length}]`
+          `'${getType(self).name}.getImageData(${normalizedIndex})': 'imageData' is nullish, 'self.imageData.length' is ${self.imageData.length}`
         )
 
         return imageData
@@ -75,7 +69,7 @@ export const ImageCarouselModel =
         try {
           verify(
             imageData.length,
-            `${getType(self).name}.setImageData(): 'imageData' can't be empty`
+            `'${getType(self).name}.setImageData()': 'imageData' can't be empty`
           )
 
           const promises = imageData.map(({ source, ...rest }) =>
@@ -110,7 +104,7 @@ export const ImageCarouselModel =
 
             verify(
               hasHeightAndWidth,
-              `${getType(self).name}.setImageData(): no width or height for '${uri}'`
+              `'${getType(self).name}.setImageData()': no width or height for '${uri}'`
             )
 
             return {
@@ -121,6 +115,7 @@ export const ImageCarouselModel =
           })
 
           if (!self.aspectRatio) {
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             self.aspectRatio = self.getImageData(0).aspectRatio
           }
         } catch (error) {
@@ -149,16 +144,18 @@ export const ImageCarouselModel =
           return
         }
 
-        self.slidePositions = [
-          switchDirection === 'next' ? 'previous' : 'next',
-          'current',
-          switchDirection
-        ]
-
         self.switchDirection = switchDirection
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        self.switchAnimation!.switch()
+        const { current } = self.imageDataIndices
+        const delta = 1
+
+        self.imageDataIndices = {
+          current,
+          next: current + delta,
+          previous: current - delta
+        }
+
+        self.switchPhase = 'initiation'
       }
     }))
     .actions(self => ({

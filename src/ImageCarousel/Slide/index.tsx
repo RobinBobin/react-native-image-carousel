@@ -15,22 +15,19 @@ interface ISlideProps {
 }
 
 export const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
-  const { getImageData, getImageIndex, switchAnimation } = carouselModel
+  const { imageDataIndices, getImageData, switchAnimation } = carouselModel
 
-  verify(
-    switchAnimation,
-    "No 'switchAnimation' set. Use 'NoAnimation' if you don't need any animation"
-  )
+  verify(switchAnimation, "No 'switchAnimation' set")
 
   const animatedStyle = switchAnimation.getStyle(position)
-  const imageIndex = getImageIndex(position)
+  const imageDataIndex = imageDataIndices[position]
 
   const { aspectRatio, backgroundColor, onPress, source } =
-    getImageData(imageIndex)
+    getImageData(imageDataIndex)
 
   const onImagePress = (): void => {
     onPress?.({
-      index: imageIndex,
+      imageDataIndex,
       slidePosition: position
     })
   }

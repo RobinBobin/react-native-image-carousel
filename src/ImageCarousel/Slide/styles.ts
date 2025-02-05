@@ -15,6 +15,7 @@ const getContainerStyle = (
 }
 
 const getImageStyle = (aspectRatio: number): StyleProp<ImageStyle> => {
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   const dimensionName: keyof ImageStyle = aspectRatio > 1 ? 'width' : 'height'
 
   return {

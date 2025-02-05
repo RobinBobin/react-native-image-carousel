@@ -1,5 +1,5 @@
 import type { ISwitchAnimationAccessibleImageCarouselModelInstance } from '../../mst/SwitchAnimationAccessibleImageCarouselModel'
-import type { TAxis } from './BaseAnimationWithDuration/types'
+import type { TAxis } from '../../types'
 
 import { runOnJS, withTiming } from 'react-native-reanimated'
 
@@ -15,15 +15,19 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
   }
 
   switch(): void {
-    const { carouselNumberDimensions, finalizeSwitch, switchDirectionSafe } =
+    this.resetTranslate()
+
+    const { finalizeSwitch, switchDirectionVerified, switchPhaseVerified } =
       this.carouselModel
 
-    this.setTranslateToCarouselDimension(
-      carouselNumberDimensions,
-      switchDirectionSafe
-    )
+    if (switchPhaseVerified === 'finalization') {
+      finalizeSwitch()
 
-    this.getTranslate(switchDirectionSafe).value = withTiming(
+      return
+    }
+
+    this.getTranslate(switchDirectionVerified).value = withTiming(
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       0,
       { duration: this.duration },
       finished => {

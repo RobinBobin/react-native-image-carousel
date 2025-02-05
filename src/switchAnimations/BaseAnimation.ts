@@ -5,7 +5,6 @@ import type { TSlidePosition } from '../types'
 
 export abstract class BaseAnimation {
   private _isAutoSwitchEnabled = false
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   private _preSwitchDelay = 1000
 
   constructor(
