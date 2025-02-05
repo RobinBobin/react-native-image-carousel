@@ -20,7 +20,22 @@ export default [
       ],
       '@typescript-eslint/prefer-readonly-parameter-types': [
         'error',
-        { ignoreInferredTypes: true }
+        {
+          allow: [
+            {
+              from: 'file',
+              name: [
+                'BaseAnimation',
+                'IImageCarouselModelInstance',
+                'ISlideTransitionAnimationAccessibleImageCarouselModelInstance',
+                'ReactNode',
+                'StyleProp',
+                'TImageRawData'
+              ]
+            }
+          ],
+          ignoreInferredTypes: true
+        }
       ],
       'react-hooks/exhaustive-deps': 'error'
     }

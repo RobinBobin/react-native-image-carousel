@@ -7,7 +7,6 @@ import useAsync from 'react-use/lib/useAsync'
 import { ImageCarouselModel } from '../../../mst'
 
 export const useImageCarouselModel = (
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   imageData: TImageRawData
 ): IImageCarouselModelInstance => {
   const carouselModel = useMemo(() => ImageCarouselModel.create(), [])

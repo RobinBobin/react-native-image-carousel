@@ -7,7 +7,6 @@ import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
 export class SlideOverAnimation extends BaseAnimationWithDuration {
   constructor(
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance,
     axis: TAxis = 'x'
   ) {

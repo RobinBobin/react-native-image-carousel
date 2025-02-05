@@ -85,7 +85,6 @@ export const ImageCarouselModel =
         self.carouselDimensions = carouselDimensions
       },
       setImageData: flow(function* (
-        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
         imageData: TImageRawData
       ): Generator<Promise<TSourceData[]>, void> {
         try {
@@ -144,19 +143,16 @@ export const ImageCarouselModel =
           handleError(error)
         }
       }),
-      // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
       setPlaceholder(placeholder: React.ReactNode): void {
         self.placeholder = placeholder
       },
       setPlaceholderContainerStyle(
-        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
         placeholderContainerStyle: StyleProp<ViewStyle>
       ): void {
         self.placeholderContainerStyle = placeholderContainerStyle
       },
       setSlideTransitionAnimation(
         this: void,
-        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
         slideTransitionAnimation: BaseAnimation
       ): void {
         self.slideTransitionAnimation = slideTransitionAnimation

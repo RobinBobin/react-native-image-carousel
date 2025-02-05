@@ -8,7 +8,6 @@ export abstract class BaseAnimation {
   private _preTransitionDelay = 1000
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     protected readonly carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {}
 

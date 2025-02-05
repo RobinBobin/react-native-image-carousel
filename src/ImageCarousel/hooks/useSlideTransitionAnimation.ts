@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 import { SlideOverAnimation } from '../../slideTransitionAnimations'
 
 export const useSlideTransitionAnimation = (
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   carouselModel: IImageCarouselModelInstance
 ): BaseAnimation => {
   const { setSlideTransitionAnimation, startAutoTransition } = carouselModel

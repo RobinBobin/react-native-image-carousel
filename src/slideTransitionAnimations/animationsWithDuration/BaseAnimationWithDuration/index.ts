@@ -17,7 +17,6 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
 
   protected constructor(
     axes: TAxis | readonly TAxis[],
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {
     super(carouselModel)
