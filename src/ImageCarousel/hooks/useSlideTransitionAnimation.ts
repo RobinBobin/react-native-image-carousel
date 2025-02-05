@@ -9,8 +9,7 @@ export const useSlideTransitionAnimation = (
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   carouselModel: IImageCarouselModelInstance
 ): BaseAnimation => {
-  const { canTransition, setSlideTransitionAnimation, startAutoTransition } =
-    carouselModel
+  const { setSlideTransitionAnimation, startAutoTransition } = carouselModel
 
   let slideTransitionAnimation = carouselModel.slideTransitionAnimation
 
@@ -21,18 +20,10 @@ export const useSlideTransitionAnimation = (
   }
 
   useEffect(() => {
-    if (
-      canTransition &&
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      carouselModel.slideTransitionAnimation!.isAutoTransitionEnabled
-    ) {
+    if (slideTransitionAnimation.isAutoTransitionEnabled) {
       startAutoTransition('next')
     }
-  }, [
-    canTransition,
-    carouselModel.slideTransitionAnimation,
-    startAutoTransition
-  ])
+  }, [slideTransitionAnimation, startAutoTransition])
 
   slideTransitionAnimation.useStyles()
 

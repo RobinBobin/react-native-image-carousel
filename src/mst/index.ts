@@ -55,9 +55,9 @@ export const ImageCarouselModel =
     }))
     // eslint-disable-next-line max-lines-per-function
     .actions(self => ({
-      move(this: void, movementDirection: TMovementDirection): void {
+      move(this: void, movementDirection: TMovementDirection): boolean {
         if (!self.canTransition) {
-          return
+          return false
         }
 
         self.movementDirection = movementDirection
@@ -72,6 +72,8 @@ export const ImageCarouselModel =
         }
 
         self.movementPhase = 'initiation'
+
+        return true
       },
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
@@ -168,13 +170,9 @@ export const ImageCarouselModel =
         this: void,
         movementDirection: TMovementDirection
       ): void {
-        if (self.isAutoTransitionStarted) {
-          return
+        if (!self.isAutoTransitionStarted && self.move(movementDirection)) {
+          self.isAutoTransitionStarted = true
         }
-
-        self.isAutoTransitionStarted = true
-
-        self.move(movementDirection)
       }
     }))
 
