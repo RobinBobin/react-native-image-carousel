@@ -1,7 +1,7 @@
 import type { IImageCarouselProps } from './types'
 
 import { observer } from 'mobx-react-lite'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 
 import { onContainerLayout } from './helpers/onContainerLayout'
@@ -11,7 +11,7 @@ import { getContainerStyle } from './styles'
 
 const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
-    const slideTransitionAnimation = useSlideTransitionAnimation(carouselModel)
+    useSlideTransitionAnimation(carouselModel)
 
     const {
       aspectRatio,
@@ -19,15 +19,8 @@ const ImageCarousel: React.FC<IImageCarouselProps> = observer(
       isLoading,
       placeholder,
       placeholderContainerStyle,
-      setCarouselDimensions,
-      movementPhase
+      setCarouselDimensions
     } = carouselModel
-
-    useEffect(() => {
-      if (movementPhase) {
-        slideTransitionAnimation.move()
-      }
-    }, [slideTransitionAnimation, movementPhase])
 
     if (isLoading) {
       return (

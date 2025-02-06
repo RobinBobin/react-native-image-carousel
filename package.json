@@ -4,6 +4,7 @@
     "url": "https://github.com/RobinBobin/react-native-image-carousel/issues"
   },
   "dependencies": {
+    "expo-image": "^2.0.4",
     "mobx-react-lite": "^4.1.0",
     "mobx-state-tree": "^7.0.1",
     "radashi": "^12.3.3",
