@@ -9,7 +9,7 @@ import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation
 import { Slide } from './Slide'
 import { getContainerStyle } from './styles'
 
-export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
+const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
     const slideTransitionAnimation = useSlideTransitionAnimation(carouselModel)
 
@@ -54,3 +54,7 @@ export const ImageCarousel: React.FC<IImageCarouselProps> = observer(
     )
   }
 )
+
+ImageCarousel.displayName = 'ImageCarousel'
+
+export { ImageCarousel }

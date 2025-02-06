@@ -14,7 +14,7 @@ interface ISlideProps {
   position: TSlidePosition
 }
 
-export const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
+const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
   const { imageDataIndices, getImageData, slideTransitionAnimation } =
     carouselModel
 
@@ -41,3 +41,7 @@ export const Slide: React.FC<ISlideProps> = ({ carouselModel, position }) => {
     </Animated.View>
   )
 }
+
+Slide.displayName = 'ImageCarousel/Slide'
+
+export { Slide }
