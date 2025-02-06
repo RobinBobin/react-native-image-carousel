@@ -74,13 +74,9 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
           break
 
         case 'initiation': {
-          const { next, previous } = self.imageDataIndices
-
           self.imageDataIndices = {
-            current:
-              self.movementDirectionVerified === 'next' ? next : previous,
-            next,
-            previous
+            ...self.imageDataIndices,
+            current: self.imageDataIndices[self.movementDirectionVerified]
           }
 
           self.movementPhase = 'finalization'

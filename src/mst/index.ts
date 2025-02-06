@@ -42,12 +42,11 @@ export const ImageCarouselModel =
       },
 
       getImageData(this: void, index: number): ReadonlyDeep<TImageDatum> {
-        const normalizedIndex = index % self.imageData.length
-        const imageData = self.imageData.at(normalizedIndex)
+        const imageData = self.imageData.at(index)
 
         verify(
           imageData,
-          `'${getType(self).name}.getImageData(${normalizedIndex})': 'imageData' is nullish, 'self.imageData.length' is ${self.imageData.length}`
+          `'${getType(self).name}.getImageData(${index})': 'imageData' is nullish, 'self.imageData.length' is ${self.imageData.length}`
         )
 
         return imageData
@@ -67,8 +66,8 @@ export const ImageCarouselModel =
 
         self.imageDataIndices = {
           current,
-          next: current + delta,
-          previous: current - delta
+          next: (current + delta) % self.imageData.length,
+          previous: (current - delta) % self.imageData.length
         }
 
         self.movementPhase = 'initiation'
