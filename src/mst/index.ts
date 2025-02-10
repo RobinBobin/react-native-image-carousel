@@ -62,14 +62,16 @@ export const ImageCarouselModel =
         self.movementDirection = movementDirection
 
         const { current } = self.imageDataIndices
-        const delta = 1
+        const offset = 1
 
-        self.imageDataIndices = {
-          current,
-          next: (current + delta) % self.imageData.length,
-          previous: (current - delta) % self.imageData.length
-        }
+        const [next, previous] = [offset, -offset].map(delta => {
+          const result = (current + delta) % self.imageData.length
 
+          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+          return result < 0 ? self.imageData.length + result : result
+        }) as [number, number]
+
+        self.imageDataIndices = { current, next, previous }
         self.movementPhase = 'initiation'
 
         return true
