@@ -7,10 +7,18 @@ import { shake } from 'radashi'
 export const getContainerStyle = (
   aspectRatio: number,
   carouselDimensions?: ReadonlyDeep<TCarouselDimensions>
-): StyleProp<ViewStyle> => [
-  {
-    aspectRatio,
-    overflow: 'hidden'
-  },
-  shake(carouselDimensions ?? {})
-]
+): StyleProp<ViewStyle> => {
+  const shakenCarouselDimensions = shake(carouselDimensions ?? {})
+
+  const isDimensionMissing = !(
+    'height' in shakenCarouselDimensions && 'width' in shakenCarouselDimensions
+  )
+
+  return [
+    {
+      overflow: 'hidden'
+    },
+    isDimensionMissing && { aspectRatio },
+    shakenCarouselDimensions
+  ]
+}
