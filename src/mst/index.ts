@@ -15,7 +15,7 @@ import { isNumber } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
-import { handleError } from '../handleError'
+import { handleError } from '../helpers/handleError'
 import { SlideTransitionAnimationAccessibleImageCarouselModel } from './SlideTransitionAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =

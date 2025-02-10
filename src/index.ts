@@ -1,4 +1,4 @@
-export * from './handleError'
+export * from './helpers/handleError'
 export * from './ImageCarousel'
 export * from './ImageCarousel/hooks/useImageCarouselModel'
 export * from './ImageCarousel/hooks/useImageCarouselModel/types'
