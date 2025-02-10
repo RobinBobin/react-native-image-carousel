@@ -5,14 +5,12 @@ import { StyleSheet } from 'react-native'
 const getContainerStyle = (
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   backgroundColor: ViewStyle['backgroundColor']
-): StyleProp<ViewStyle> => {
-  return {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    backgroundColor: backgroundColor ?? 'white',
-    justifyContent: 'center'
-  }
-}
+): StyleProp<ViewStyle> => ({
+  ...StyleSheet.absoluteFillObject,
+  alignItems: 'center',
+  backgroundColor: backgroundColor ?? 'white',
+  justifyContent: 'center'
+})
 
 const getImageStyle = (aspectRatio: number): StyleProp<ImageStyle> => {
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
