@@ -7,7 +7,7 @@ import type {
 } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
-  TCarouselDimensions
+  TCarouselDimensionsKeys
 } from './types'
 
 import { getType, types } from 'mobx-state-tree'
@@ -35,7 +35,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         return 0
       }
 
-      const dimensionKey: keyof TCarouselDimensions =
+      const dimensionKey: TCarouselDimensionsKeys =
         axis === 'x' ? 'width' : 'height'
 
       const dimension = self.carouselDimensions?.[dimensionKey]

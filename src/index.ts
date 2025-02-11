@@ -1,4 +1,4 @@
-export * from './helpers/handleError'
+export { setHandleError } from './helpers/handleError'
 export { isNumericHeightAndWidth } from './helpers/mst/isNumericHeightAndWidth'
 export * from './ImageCarousel'
 export * from './ImageCarousel/hooks/useImageCarouselModel'

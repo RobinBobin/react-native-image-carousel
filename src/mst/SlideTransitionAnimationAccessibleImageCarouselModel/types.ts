@@ -7,6 +7,7 @@ import type {
 } from '../../types'
 
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
+type TCarouselDimensionsKeys = keyof TCarouselDimensions
 
 type TOnPressData = Readonly<{
   imageDataIndex: number
@@ -45,6 +46,7 @@ export type {
   ICommonImageData,
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
   TCarouselDimensions,
+  TCarouselDimensionsKeys,
   TImageData,
   TImageDatum,
   TImageRawData,
