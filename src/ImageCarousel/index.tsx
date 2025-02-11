@@ -7,7 +7,7 @@ import { View } from 'react-native'
 import { onContainerLayout } from './helpers/onContainerLayout'
 import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation'
 import { Slide } from './Slide'
-import { getContainerStyle } from './styles'
+import styles, { getContainerStyle } from './styles'
 
 const ImageCarousel: React.FC<IImageCarouselProps> = observer(
   ({ carouselModel }) => {
@@ -26,6 +26,7 @@ const ImageCarousel: React.FC<IImageCarouselProps> = observer(
       return (
         <View
           style={[
+            styles.defaultPlaceholderContainer,
             placeholderContainerStyle,
             { ...carouselDimensions, aspectRatio }
           ]}

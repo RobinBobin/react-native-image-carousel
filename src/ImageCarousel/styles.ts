@@ -3,6 +3,7 @@ import type { ReadonlyDeep } from 'type-fest'
 import type { TCarouselDimensions } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
 import { shake } from 'radashi'
+import { StyleSheet } from 'react-native'
 
 export const getContainerStyle = (
   aspectRatio: number,
@@ -22,3 +23,10 @@ export const getContainerStyle = (
     shakenCarouselDimensions
   ]
 }
+
+export default StyleSheet.create({
+  defaultPlaceholderContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
