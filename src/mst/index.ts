@@ -8,7 +8,11 @@ import type {
   TImageDatum,
   TImageRawData
 } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { IImageCarouselModelVolatile, TSourceData } from './types'
+import type {
+  IImageCarouselModelVolatile,
+  TAspectRatioMode,
+  TSourceData
+} from './types'
 
 import { flow, getType, toGenerator } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
@@ -24,7 +28,9 @@ export const ImageCarouselModel =
     'ImageCarouselModel'
   )
     .volatile<IImageCarouselModelVolatile>(() => ({
-      aspectRatio: 0
+      aspectRatio: 0,
+      aspectRatioMode: 'square'
+      // isHorizontal: true
     }))
     .views(self => ({
       get canTransition(): boolean {
@@ -42,7 +48,7 @@ export const ImageCarouselModel =
         return !isLoaded
       },
 
-      getImageData(this: void, index: number): ReadonlyDeep<TImageDatum> {
+      getImageDatum(this: void, index: number): ReadonlyDeep<TImageDatum> {
         const imageData = self.imageData.at(index)
 
         verify(
@@ -82,6 +88,9 @@ export const ImageCarouselModel =
       },
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
+      },
+      setAspectRatioMode(this: void, aspectRatioMode: TAspectRatioMode): void {
+        self.aspectRatioMode = aspectRatioMode
       },
       setCarouselDimensions(
         this: void,
@@ -142,16 +151,20 @@ export const ImageCarouselModel =
 
           if (!self.aspectRatio) {
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            self.aspectRatio = self.getImageData(0).aspectRatio
+            self.aspectRatio = self.getImageDatum(0).aspectRatio
           }
         } catch (error) {
           handleError(error)
         }
       }),
-      setPlaceholder(placeholder: React.ReactNode): void {
+      // setIsHorizontal(this: void, isHorizontal: boolean): void {
+      //   self.isHorizontal = isHorizontal
+      // },
+      setPlaceholder(this: void, placeholder: React.ReactNode): void {
         self.placeholder = placeholder
       },
       setPlaceholderContainerStyle(
+        this: void,
         placeholderContainerStyle: StyleProp<ViewStyle>
       ): void {
         self.placeholderContainerStyle = placeholderContainerStyle

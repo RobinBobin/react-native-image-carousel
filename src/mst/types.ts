@@ -6,8 +6,12 @@ import type {
 import type { BaseAnimation } from '../slideTransitionAnimations'
 import type { ICommonImageData } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
+type TAspectRatioMode = 'carouselHeight' | 'carouselWidth' | 'square'
+
 interface IImageCarouselModelVolatile {
   aspectRatio: number
+  aspectRatioMode: TAspectRatioMode
+  // isHorizontal: boolean
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideTransitionAnimation?: BaseAnimation
@@ -16,4 +20,4 @@ interface IImageCarouselModelVolatile {
 type TSourceData = ICommonImageData &
   Pick<ImageResolvedAssetSource, 'height' | 'uri' | 'width'>
 
-export type { IImageCarouselModelVolatile, TSourceData }
+export type { IImageCarouselModelVolatile, TAspectRatioMode, TSourceData }

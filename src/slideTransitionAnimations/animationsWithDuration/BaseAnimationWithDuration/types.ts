@@ -1,9 +1,8 @@
-import type { StyleProp } from 'react-native'
-import type { AnimatedStyle, SharedValue } from 'react-native-reanimated'
-import type { TAxis, TSlidePosition } from '../../../types'
+import type { SharedValue } from 'react-native-reanimated'
+import type { TAnimatedViewStyle, TAxis, TSlidePosition } from '../../../types'
 
 interface IAxisAnimationData {
-  animatedStyle: StyleProp<AnimatedStyle>
+  animatedStyle: TAnimatedViewStyle
   translate: SharedValue<number>
 }
 

@@ -1,8 +1,8 @@
-import type { IImageCarouselModelInstance } from '../../mst'
+import type { IImageCarouselModelInstance } from '../../../mst'
 
 import { useEffect, useRef } from 'react'
 
-import { SlideOverAnimation } from '../../slideTransitionAnimations'
+import { SlideOverAnimation } from '../../../slideTransitionAnimations'
 
 export const useSlideTransitionAnimation = (
   carouselModel: IImageCarouselModelInstance

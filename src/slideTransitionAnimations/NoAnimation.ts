@@ -1,11 +1,9 @@
-import type { StyleProp } from 'react-native'
-import type { AnimatedStyle } from 'react-native-reanimated'
-import type { TSlidePosition } from '../types'
+import type { TAnimatedViewStyle, TSlidePosition } from '../types'
 
 import { BaseAnimation } from './BaseAnimation'
 
 export class NoAnimation extends BaseAnimation {
-  getStyle(slidePosition: TSlidePosition): StyleProp<AnimatedStyle> {
+  getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle {
     return {
       transform: [
         {

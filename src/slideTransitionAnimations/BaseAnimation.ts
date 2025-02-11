@@ -1,7 +1,5 @@
-import type { StyleProp } from 'react-native'
-import type { AnimatedStyle } from 'react-native-reanimated'
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
-import type { TSlidePosition } from '../types'
+import type { TAnimatedViewStyle, TSlidePosition } from '../types'
 
 export abstract class BaseAnimation {
   private _isAutoTransitionEnabled = false
@@ -11,7 +9,7 @@ export abstract class BaseAnimation {
     protected readonly carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {}
 
-  abstract getStyle(slidePosition: TSlidePosition): StyleProp<AnimatedStyle>
+  abstract getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle
   abstract move(): void
   abstract useStyles(): void
 

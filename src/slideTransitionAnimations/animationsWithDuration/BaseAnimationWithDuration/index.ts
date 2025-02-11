@@ -1,7 +1,6 @@
-import type { StyleProp, TransformsStyle } from 'react-native'
-import type { AnimatedStyle, SharedValue } from 'react-native-reanimated'
+import type { SharedValue } from 'react-native-reanimated'
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
-import type { TAxis, TSlidePosition } from '../../../types'
+import type { TAnimatedViewStyle, TAxis, TSlidePosition } from '../../../types'
 import type { TAxisAnimationData } from './types'
 
 import { castArray, isUndefined, objectify } from 'radashi'
@@ -34,10 +33,7 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
     this._duration = duration
   }
 
-  getStyle(
-    slidePosition: TSlidePosition,
-    axis?: TAxis
-  ): StyleProp<AnimatedStyle> {
+  getStyle(slidePosition: TSlidePosition, axis?: TAxis): TAnimatedViewStyle {
     const axisKey = this.getAxis(slidePosition, axis)
 
     const { animatedStyle } =
@@ -66,12 +62,11 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
         )
 
         const animatedStyle = useAnimatedStyle(() => {
-          const key = `translate${axis.toUpperCase()}`
+          type TDummy = 'translateX'
+          const key = `translate${tAxis.toUpperCase()}` as TDummy
 
           return {
-            transform: [
-              { [key]: translate.value }
-            ] as unknown as TransformsStyle['transform']
+            transform: [{ [key]: translate.value }]
           }
         })
 

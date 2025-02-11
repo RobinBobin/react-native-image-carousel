@@ -11,7 +11,7 @@ type TCarouselDimensionsKeys = keyof TCarouselDimensions
 
 type TOnPressData = Readonly<{
   imageDataIndex: number
-  slidePosition: TSlidePosition
+  slidePosition: TSlidePosition | undefined
 }>
 
 type TOnPress = (data: TOnPressData) => void
