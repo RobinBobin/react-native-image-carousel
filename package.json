@@ -44,8 +44,8 @@
   },
   "repository": "github.com/RobinBobin/react-native-image-carousel.git",
   "scripts": {
-    "check": "tsc && eslint --fix && prettier . --write",
-    "prepack": "./prepack.sh"
+    "prepack": "tsc && eslint && prettier . --check",
+    "prettify": "tsc && eslint --fix && prettier . --write"
   },
   "version": "0.2.4"
 }
