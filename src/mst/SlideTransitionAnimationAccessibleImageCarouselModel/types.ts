@@ -33,7 +33,7 @@ type TImageData = TImageDatum[]
 type TImageRawData = TImageRawDatum[]
 
 interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
-  carouselDimensions?: ReadonlyDeep<TCarouselDimensions>
+  carouselDimensions?: ReadonlyDeep<TCarouselDimensions> | undefined
   imageData: ReadonlyDeep<TImageData>
   imageDataIndices: Readonly<Record<TSlidePosition, number>>
   isAutoTransitionStarted: boolean

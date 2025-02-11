@@ -16,6 +16,7 @@ import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
 import { handleError } from '../helpers/handleError'
+import { isNumericHeightAndWidth } from '../helpers/mst/isNumericHeightAndWidth'
 import { SlideTransitionAnimationAccessibleImageCarouselModel } from './SlideTransitionAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =
@@ -76,6 +77,9 @@ export const ImageCarouselModel =
 
         return true
       },
+      resetCarouselDimensions(this: void): void {
+        self.carouselDimensions = undefined
+      },
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
       },
@@ -83,7 +87,9 @@ export const ImageCarouselModel =
         this: void,
         carouselDimensions: ReadonlyDeep<TCarouselDimensions>
       ): void {
-        self.carouselDimensions = carouselDimensions
+        if (!isNumericHeightAndWidth(self.carouselDimensions)) {
+          self.carouselDimensions = carouselDimensions
+        }
       },
       setImageData: flow(function* (
         imageData: TImageRawData
@@ -122,10 +128,8 @@ export const ImageCarouselModel =
           }
 
           self.imageData = sourceData.map(({ height, uri, width, ...rest }) => {
-            const hasHeightAndWidth = isNumber(height) && isNumber(width)
-
             verify(
-              hasHeightAndWidth,
+              isNumericHeightAndWidth(height, width),
               `'${getType(self).name}.setImageData()': no width or height for '${uri}'`
             )
 
