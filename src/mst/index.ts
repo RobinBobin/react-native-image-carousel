@@ -10,7 +10,7 @@ import type {
 } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type {
   IImageCarouselModelVolatile,
-  TAspectRatioMode,
+  TSlideSize,
   TSourceData
 } from './types'
 
@@ -29,8 +29,11 @@ export const ImageCarouselModel =
   )
     .volatile<IImageCarouselModelVolatile>(() => ({
       aspectRatio: 0,
-      aspectRatioMode: 'square'
-      // isHorizontal: true
+      imageGap: 0,
+      isHorizontal: true,
+      isSlideCentered: true,
+      isSnapEnabled: false,
+      slideSize: 'wholeCarousel'
     }))
     .views(self => ({
       get canTransition(): boolean {
@@ -88,9 +91,6 @@ export const ImageCarouselModel =
       },
       setAspectRatio(this: void, aspectRatio: number): void {
         self.aspectRatio = aspectRatio
-      },
-      setAspectRatioMode(this: void, aspectRatioMode: TAspectRatioMode): void {
-        self.aspectRatioMode = aspectRatioMode
       },
       setCarouselDimensions(
         this: void,
@@ -157,9 +157,18 @@ export const ImageCarouselModel =
           handleError(error)
         }
       }),
-      // setIsHorizontal(this: void, isHorizontal: boolean): void {
-      //   self.isHorizontal = isHorizontal
-      // },
+      setImageGap(this: void, imageGap: number): void {
+        self.imageGap = imageGap
+      },
+      setIsHorizontal(this: void, isHorizontal: boolean): void {
+        self.isHorizontal = isHorizontal
+      },
+      setIsSlideCentered(this: void, isSlideCentered: boolean): void {
+        self.isSlideCentered = isSlideCentered
+      },
+      setIsSnapEnabled(this: void, isSnapEnabled: boolean): void {
+        self.isSnapEnabled = isSnapEnabled
+      },
       setPlaceholder(this: void, placeholder: React.ReactNode): void {
         self.placeholder = placeholder
       },
@@ -168,6 +177,9 @@ export const ImageCarouselModel =
         placeholderContainerStyle: StyleProp<ViewStyle>
       ): void {
         self.placeholderContainerStyle = placeholderContainerStyle
+      },
+      setSlideSize(this: void, slideSize: TSlideSize): void {
+        self.slideSize = slideSize
       },
       setSlideTransitionAnimation(
         this: void,

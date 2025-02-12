@@ -8,8 +8,8 @@ import { Pressable } from 'react-native-gesture-handler'
 import { getContainerStyle, getImageStyle } from './styles'
 
 const SlideImage: React.FC<ISlideImageProps> = observer(
-  ({ carouselModel, containerStyle, imageDataIndex, onLoadEnd, position }) => {
-    const { aspectRatioMode, getImageDatum } = carouselModel
+  ({ carouselModel, imageDataIndex, onLoadEnd, position }) => {
+    const { getImageDatum } = carouselModel
 
     const { aspectRatio, backgroundColor, onPress, source } =
       getImageDatum(imageDataIndex)
@@ -30,10 +30,7 @@ const SlideImage: React.FC<ISlideImageProps> = observer(
     return (
       <Pressable
         onPress={onImagePress}
-        style={[
-          containerStyle,
-          getContainerStyle(aspectRatioMode, backgroundColor)
-        ]}
+        style={getContainerStyle(backgroundColor, carouselModel)}
       >
         <Image {...imageProps} />
       </Pressable>

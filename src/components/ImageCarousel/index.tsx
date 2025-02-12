@@ -3,12 +3,12 @@ import type { IComponentWithCarouselModelProps } from '../common/types'
 
 import { observer } from 'mobx-react-lite'
 import { pick } from 'radashi'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View } from 'react-native'
 
 import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation'
+import { Slides, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
-import { Slide } from './Slide'
 import { getContainerStyle } from './styles'
 
 const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
@@ -19,8 +19,13 @@ const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
       aspectRatio,
       carouselDimensions,
       isLoading,
+      isSnapEnabled,
       setCarouselDimensions
     } = carouselModel
+
+    const Implementation = useMemo(() => {
+      return isSnapEnabled ? SnappingFlatList : Slides
+    }, [isSnapEnabled])
 
     const onLayout: ViewProps['onLayout'] = ({ nativeEvent: { layout } }) =>
       setCarouselDimensions(pick(layout, ['width', 'height']))
@@ -31,9 +36,7 @@ const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
           onLayout={onLayout}
           style={getContainerStyle(aspectRatio, carouselDimensions)}
         >
-          <Slide carouselModel={carouselModel} position='current' />
-          <Slide carouselModel={carouselModel} position='previous' />
-          <Slide carouselModel={carouselModel} position='next' />
+          <Implementation carouselModel={carouselModel} />
         </View>
   }
 )

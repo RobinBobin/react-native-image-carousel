@@ -7,7 +7,7 @@ import { StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { verify } from 'simple-common-utils'
 
-import { SlideImage } from '../../common/SlideImage'
+import { SlideImage } from '../../../../common/SlideImage'
 
 const Slide: React.FC<ISlideProps> = observer(({ carouselModel, position }) => {
   const { imageDataIndices, movementPhase, slideTransitionAnimation } =

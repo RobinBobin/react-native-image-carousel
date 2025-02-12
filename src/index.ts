@@ -8,6 +8,7 @@ export * from './mst'
 export * from './mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 export type {
   TCarouselDimensions,
+  TCarouselDimensionsKeys,
   TImageData,
   TImageDatum,
   TImageRawData,
@@ -15,5 +16,6 @@ export type {
   TOnPress,
   TOnPressData
 } from './mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+export type { TSlideSize } from './mst/types'
 export * from './slideTransitionAnimations'
 export * from './types'

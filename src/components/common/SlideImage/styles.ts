@@ -1,38 +1,61 @@
 import type { ImageStyle } from 'expo-image'
 import type { StyleProp, ViewStyle } from 'react-native'
-import type { TAspectRatioMode } from '../../../mst/types'
+import type { IImageCarouselModelInstance } from '../../../mst'
 
 import { verify } from 'simple-common-utils'
 
+import { getNumericSlideSize } from '../../../helpers/mst/getNumericSlideSize'
+
 const getContainerStyle = (
-  aspectRatioMode: TAspectRatioMode,
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  backgroundColor: ViewStyle['backgroundColor']
+  backgroundColor: ViewStyle['backgroundColor'],
+  carouselModel: IImageCarouselModelInstance
 ): StyleProp<ViewStyle> => {
-  const containerStyle: StyleProp<ViewStyle> = {
-    backgroundColor: backgroundColor ?? 'white'
-  }
+  const { isSlideCentered, slideSize } = carouselModel
 
-  switch (aspectRatioMode) {
-    case 'carouselHeight':
-    case 'carouselWidth':
-      verify(false, `${aspectRatioMode} is not implemented yet`)
+  const containerStyle: StyleProp<ViewStyle> = [
+    {
+      backgroundColor: backgroundColor ?? 'white'
+    },
+    isSlideCentered && {
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  ]
 
-    // eslint-disable-next-line no-fallthrough
-    case 'square':
-      containerStyle.alignItems = 'center'
-      containerStyle.flex = 1
-      containerStyle.justifyContent = 'center'
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+  switch (slideSize) {
+    case 'carouselHeightSquare':
+    case 'carouselWidthSquare': {
+      const imageDimension = getNumericSlideSize(carouselModel)
+
+      containerStyle.push({
+        height: imageDimension,
+        width: imageDimension
+      })
 
       break
+    }
+
+    case 'wholeCarousel':
+      containerStyle.push({ flex: 1 })
+      break
+
+    default:
+      verify(
+        false,
+        `Support for 'slideSize' = '${slideSize}' is not implemented yet`
+      )
   }
 
   return containerStyle
 }
 
 const getImageStyle = (aspectRatio: number): StyleProp<ImageStyle> => {
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-  const dimensionName: keyof ImageStyle = aspectRatio > 1 ? 'width' : 'height'
+  const threshold = 1
+
+  const dimensionName: keyof ImageStyle =
+    aspectRatio > threshold ? 'width' : 'height'
 
   return {
     aspectRatio,
