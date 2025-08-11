@@ -2,7 +2,8 @@ import config from '@robinbobin/ts-eslint-prettier/eslint.config.mjs'
 import configPluginReactHooks from '@robinbobin/ts-eslint-prettier/eslint.config.plugin.react.hooks.mjs'
 import { ts } from '@robinbobin/ts-eslint-prettier/eslintRuleOptions/index.mjs'
 
-export default [
+/** @type unknown[] */
+const array = [
   ...config,
   ...configPluginReactHooks,
   {
@@ -49,3 +50,5 @@ export default [
     }
   }
 ]
+
+export default array
