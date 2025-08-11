@@ -3,7 +3,7 @@ import type { IComponentWithCarouselModelProps } from '../common/types'
 
 import { observer } from 'mobx-react-lite'
 import { pick } from 'radashi'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 
 import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation'
@@ -23,21 +23,23 @@ const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
       setCarouselDimensions
     } = carouselModel
 
-    const Implementation = useMemo(() => {
-      return isSnapEnabled ? SnappingFlatList : Slides
-    }, [isSnapEnabled])
+    if (isLoading) {
+      return <Placeholder carouselModel={carouselModel} />
+    }
 
     const onLayout: ViewProps['onLayout'] = ({ nativeEvent: { layout } }) =>
       setCarouselDimensions(pick(layout, ['width', 'height']))
 
-    return isLoading ?
-        <Placeholder carouselModel={carouselModel} />
-      : <View
-          onLayout={onLayout}
-          style={getContainerStyle(aspectRatio, carouselDimensions)}
-        >
-          <Implementation carouselModel={carouselModel} />
-        </View>
+    const Implementation = isSnapEnabled ? SnappingFlatList : Slides
+
+    return (
+      <View
+        onLayout={onLayout}
+        style={getContainerStyle(aspectRatio, carouselDimensions)}
+      >
+        <Implementation carouselModel={carouselModel} />
+      </View>
+    )
   }
 )
 

@@ -12,7 +12,9 @@ export const useImageCarouselModel = (
   const carouselModel = useMemo(() => ImageCarouselModel.create(), [])
 
   useAsync(async (): Promise<void> => {
-    await carouselModel.setImageData(imageData)
+    if (imageData.length) {
+      await carouselModel.setImageData(imageData)
+    }
   }, [carouselModel, imageData])
 
   return carouselModel
