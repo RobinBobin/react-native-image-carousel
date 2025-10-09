@@ -126,14 +126,13 @@ export const ImageCarouselModel =
               }))
           )
 
-          const sourceData = yield* toGenerator(Promise.all(promises))
+          let sourceData = yield* toGenerator(Promise.all(promises))
 
           // We can deal with either one image or more than 2.
           const lengthToFix = 2
 
           if (sourceData.length === lengthToFix) {
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers, @typescript-eslint/no-non-null-assertion
-            sourceData.unshift(sourceData.at(-1)!)
+            sourceData = [...sourceData, ...sourceData]
           }
 
           self.imageData = sourceData.map(({ height, uri, width, ...rest }) => {
