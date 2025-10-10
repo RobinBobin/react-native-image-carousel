@@ -19,6 +19,6 @@ export class NoAnimation extends BaseAnimation {
 
   // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   useStyles(): void {
-    //
+    // Nothing to do.
   }
 }

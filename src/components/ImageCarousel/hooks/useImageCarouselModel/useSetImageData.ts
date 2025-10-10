@@ -15,5 +15,5 @@ export const useSetImageData = (
 
       postSetImageDataSetupCallback?.(carouselModel)
     }
-  }, [carouselModel, imageData])
+  }, [carouselModel, imageData, postSetImageDataSetupCallback])
 }
