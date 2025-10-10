@@ -47,5 +47,5 @@
     "prepack": "tsc && eslint && prettier . --check",
     "prettify": "tsc && eslint --fix && prettier . --write"
   },
-  "version": "0.4.1"
+  "version": "0.5.0"
 }
