@@ -186,6 +186,9 @@ export const ImageCarouselModel =
       ): void {
         self.slideTransitionAnimation = slideTransitionAnimation
       },
+      setStyle(style: StyleProp<ViewStyle>): void {
+        self.style = style
+      },
       stopAutoTransition(this: void): void {
         self.isAutoTransitionStarted = false
       }

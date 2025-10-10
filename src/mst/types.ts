@@ -16,12 +16,13 @@ interface IImageCarouselModelVolatile {
   aspectRatio: number
   imageGap: number
   isHorizontal: boolean
-  isSnapEnabled: boolean
   isSlideCentered: boolean
+  isSnapEnabled: boolean
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideSize: TSlideSize
   slideTransitionAnimation?: BaseAnimation
+  style?: StyleProp<ViewStyle>
 }
 
 type TSourceData = ICommonImageData &

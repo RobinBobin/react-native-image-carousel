@@ -20,7 +20,8 @@ const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
       carouselDimensions,
       isLoading,
       isSnapEnabled,
-      setCarouselDimensions
+      setCarouselDimensions,
+      style
     } = carouselModel
 
     if (isLoading) {
@@ -35,7 +36,7 @@ const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
     return (
       <View
         onLayout={onLayout}
-        style={getContainerStyle(aspectRatio, carouselDimensions)}
+        style={getContainerStyle(aspectRatio, carouselDimensions, style)}
       >
         <Implementation carouselModel={carouselModel} />
       </View>
