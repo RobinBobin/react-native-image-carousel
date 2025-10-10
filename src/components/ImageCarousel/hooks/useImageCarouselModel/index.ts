@@ -1,6 +1,6 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
 import type { TImageRawData } from '../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { TImageCarouselSetupCallback } from '../../../../types'
+import type { TImageCarouselSetupCallback } from './types'
 
 import { useCarouselModel } from './useCarouselModel'
 import { useSetImageData } from './useSetImageData'

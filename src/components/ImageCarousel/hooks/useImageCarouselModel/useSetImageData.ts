@@ -1,6 +1,6 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
 import type { TImageRawData } from '../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { TImageCarouselSetupCallback } from '../../../../types'
+import type { TImageCarouselSetupCallback } from './types'
 
 import useAsync from 'react-use/lib/useAsync'
 

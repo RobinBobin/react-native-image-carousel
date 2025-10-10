@@ -1,5 +1,5 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
-import type { TImageCarouselSetupCallback } from '../../../../types'
+import type { TImageCarouselSetupCallback } from './types'
 
 import { useMemo } from 'react'
 
