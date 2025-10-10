@@ -24,7 +24,7 @@ export const useSlideTransitionAnimation = (
     if (slideTransitionAnimation.current.isAutoTransitionEnabled) {
       startAutoTransition('next')
     }
-  }, [startAutoTransition])
+  }, [carouselModel.imageData.length, startAutoTransition])
 
   slideTransitionAnimation.current.useStyles()
 }
