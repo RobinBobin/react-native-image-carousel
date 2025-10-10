@@ -1,21 +1,18 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
 import type { TImageRawData } from '../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { TImageCarouselSetupCallback } from '../../../../types'
 
-import { useMemo } from 'react'
-import useAsync from 'react-use/lib/useAsync'
-
-import { ImageCarouselModel } from '../../../../mst'
+import { useCarouselModel } from './useCarouselModel'
+import { useSetImageData } from './useSetImageData'
 
 export const useImageCarouselModel = (
-  imageData: TImageRawData
+  imageData: TImageRawData,
+  postSetImageDataSetupCallback?: TImageCarouselSetupCallback,
+  preSetImageDataSetupCallback?: TImageCarouselSetupCallback
 ): IImageCarouselModelInstance => {
-  const carouselModel = useMemo(() => ImageCarouselModel.create(), [])
+  const carouselModel = useCarouselModel(preSetImageDataSetupCallback)
 
-  useAsync(async (): Promise<void> => {
-    if (imageData.length) {
-      await carouselModel.setImageData(imageData)
-    }
-  }, [carouselModel, imageData])
+  useSetImageData(carouselModel, imageData, postSetImageDataSetupCallback)
 
   return carouselModel
 }
