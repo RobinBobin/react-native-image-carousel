@@ -15,6 +15,7 @@ type TSlideSize =
 interface IImageCarouselModelVolatile {
   aspectRatio: number
   imageGap: number
+  isAutoTransitionStarted: boolean
   isHorizontal: boolean
   isSlideCentered: boolean
   isSnapEnabled: boolean

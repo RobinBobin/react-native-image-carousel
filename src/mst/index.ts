@@ -30,6 +30,7 @@ export const ImageCarouselModel =
     .volatile<IImageCarouselModelVolatile>(() => ({
       aspectRatio: 0,
       imageGap: 0,
+      isAutoTransitionStarted: false,
       isHorizontal: true,
       isSlideCentered: true,
       isSnapEnabled: false,
@@ -39,7 +40,6 @@ export const ImageCarouselModel =
       get canTransition(): boolean {
         return (
           Boolean(self.slideTransitionAnimation) &&
-          !self.movementDirection &&
           !self.movementPhase &&
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           self.imageData.length > 1
@@ -60,6 +60,11 @@ export const ImageCarouselModel =
         )
 
         return imageData
+      }
+    }))
+    .views(self => ({
+      get canStartAutoTransition(): boolean {
+        return !self.isAutoTransitionStarted && self.canTransition
       }
     }))
     // eslint-disable-next-line max-lines-per-function
@@ -191,18 +196,37 @@ export const ImageCarouselModel =
       },
       stopAutoTransition(this: void): void {
         self.isAutoTransitionStarted = false
+        self.shouldUsePreTransitionDelay = true
       }
     }))
-    .actions(self => ({
-      startAutoTransition(
-        this: void,
-        movementDirection: TMovementDirection
-      ): void {
-        if (!self.isAutoTransitionStarted && self.move(movementDirection)) {
+    .actions(self => {
+      const baseFinalizeTransition = self.finalizeTransition
+
+      return {
+        finalizeTransition(this: void): void {
+          baseFinalizeTransition()
+
+          if (self.isAutoTransitionStarted && !self.movementPhase) {
+            self.shouldUsePreTransitionDelay = true
+
+            self.move(self.movementDirectionVerified)
+          }
+        },
+        startAutoTransition(
+          this: void,
+          movementDirection: TMovementDirection
+        ): boolean {
+          if (!self.canStartAutoTransition || !self.move(movementDirection)) {
+            return false
+          }
+
           self.isAutoTransitionStarted = true
+          self.shouldUsePreTransitionDelay = false
+
+          return true
         }
       }
-    }))
+    })
 
 export interface IImageCarouselModelInstance
   extends Instance<typeof ImageCarouselModel> {}

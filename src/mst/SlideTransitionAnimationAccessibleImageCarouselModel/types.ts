@@ -37,9 +37,9 @@ interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
   carouselDimensions?: ReadonlyDeep<TCarouselDimensions> | undefined
   imageData: ReadonlyDeep<TImageData>
   imageDataIndices: Readonly<Record<TSlidePosition, number>>
-  isAutoTransitionStarted: boolean
   movementDirection?: TMovementDirection | undefined
   movementPhase?: TMovementPhase | undefined
+  shouldUsePreTransitionDelay: boolean
 }
 
 export type {

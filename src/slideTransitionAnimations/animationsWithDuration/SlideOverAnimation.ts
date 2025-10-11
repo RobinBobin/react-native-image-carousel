@@ -1,7 +1,7 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 import type { TAxis } from '../../types'
 
-import { runOnJS, withTiming } from 'react-native-reanimated'
+import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
 
 import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
@@ -28,15 +28,18 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
       return
     }
 
-    this.getTranslate(movementDirectionVerified).value = withTiming(
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      0,
-      { duration: this.duration },
-      finished => {
-        if (finished ?? true) {
-          runOnJS(finalizeTransition)()
+    this.getTranslate(movementDirectionVerified).value = withDelay(
+      this.preTransitionDelayToUse,
+      withTiming(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        0,
+        { duration: this.duration },
+        finished => {
+          if (finished ?? true) {
+            runOnJS(finalizeTransition)()
+          }
         }
-      }
+      )
     )
   }
 }

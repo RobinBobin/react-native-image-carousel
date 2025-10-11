@@ -1,30 +1,23 @@
 import type { IImageCarouselModelInstance } from '../../../mst'
 
-import { useEffect, useRef } from 'react'
+import { useMemo } from 'react'
 
 import { SlideOverAnimation } from '../../../slideTransitionAnimations'
 
 export const useSlideTransitionAnimation = (
   carouselModel: IImageCarouselModelInstance
 ): void => {
-  const slideTransitionAnimation = useRef(
-    carouselModel.slideTransitionAnimation ??
-      new SlideOverAnimation(carouselModel)
-  )
+  const slideTransitionAnimation = useMemo(() => {
+    let animation = carouselModel.slideTransitionAnimation
 
-  const { setSlideTransitionAnimation, startAutoTransition } = carouselModel
+    if (!animation) {
+      animation = new SlideOverAnimation(carouselModel)
 
-  useEffect(() => {
-    if (!carouselModel.slideTransitionAnimation) {
-      setSlideTransitionAnimation(slideTransitionAnimation.current)
+      carouselModel.setSlideTransitionAnimation(animation)
     }
-  }, [carouselModel.slideTransitionAnimation, setSlideTransitionAnimation])
 
-  useEffect(() => {
-    if (slideTransitionAnimation.current.isAutoTransitionEnabled) {
-      startAutoTransition('next')
-    }
-  }, [carouselModel.imageData.length, startAutoTransition])
+    return animation
+  }, [carouselModel])
 
-  slideTransitionAnimation.current.useStyles()
+  slideTransitionAnimation.useStyles()
 }

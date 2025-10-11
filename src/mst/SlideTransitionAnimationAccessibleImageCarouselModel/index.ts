@@ -25,7 +25,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         next: 0,
         previous: 0
       },
-      isAutoTransitionStarted: false
+      shouldUsePreTransitionDelay: true
     })
   )
   .views(self => ({
@@ -65,12 +65,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     finalizeTransition(this: void): void {
       switch (self.movementPhaseVerified) {
         case 'finalization':
-          if (!self.isAutoTransitionStarted) {
-            self.movementDirection = undefined
-          }
-
           self.movementPhase = undefined
-
           break
 
         case 'initiation': {
