@@ -5,15 +5,15 @@ type TAnimatedViewStyle = AnimatedProps<ViewProps>['style']
 
 type TAxis = 'x' | 'y'
 
-type TMovementDirection = 'next' | 'previous'
-type TSlidePosition = 'current' | TMovementDirection
+type TTransitionDirection = 'next' | 'previous'
+type TSlidePosition = 'current' | TTransitionDirection
 
-type TMovementPhase = 'initiation' | 'finalization'
+type TTransitionPhase = 'initiation' | 'finalization'
 
 export type {
   TAnimatedViewStyle,
   TAxis,
-  TMovementDirection,
-  TMovementPhase,
-  TSlidePosition
+  TSlidePosition,
+  TTransitionDirection,
+  TTransitionPhase
 }

@@ -10,22 +10,22 @@ import { verify } from 'simple-common-utils'
 import { SlideImage } from '../../../../common/SlideImage'
 
 const Slide: React.FC<ISlideProps> = observer(({ carouselModel, position }) => {
-  const { imageDataIndices, movementPhase, slideTransitionAnimation } =
+  const { imageDataIndices, slideTransitionAnimation, transitionPhase } =
     carouselModel
 
   verify(slideTransitionAnimation, "No 'slideTransitionAnimation' set")
 
   const onLoadEnd = (): void => {
-    if (movementPhase === 'finalization' && position === 'current') {
+    if (transitionPhase === 'finalization' && position === 'current') {
       slideTransitionAnimation.move()
     }
   }
 
   useEffect(() => {
-    if (movementPhase === 'initiation' && position === 'current') {
+    if (transitionPhase === 'initiation' && position === 'current') {
       slideTransitionAnimation.move()
     }
-  }, [movementPhase, position, slideTransitionAnimation])
+  }, [transitionPhase, position, slideTransitionAnimation])
 
   return (
     <Animated.View

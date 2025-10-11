@@ -1,9 +1,9 @@
 import type { FlexStyle, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type {
-  TMovementDirection,
-  TMovementPhase,
-  TSlidePosition
+  TSlidePosition,
+  TTransitionDirection,
+  TTransitionPhase
 } from '../../types'
 
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
@@ -37,9 +37,9 @@ interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
   carouselDimensions?: ReadonlyDeep<TCarouselDimensions> | undefined
   imageData: ReadonlyDeep<TImageData>
   imageDataIndices: Readonly<Record<TSlidePosition, number>>
-  movementDirection?: TMovementDirection | undefined
-  movementPhase?: TMovementPhase | undefined
   shouldUsePreTransitionDelay: boolean
+  transitionDirection?: TTransitionDirection | undefined
+  transitionPhase?: TTransitionPhase | undefined
 }
 
 export type {

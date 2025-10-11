@@ -1,9 +1,9 @@
 import type { Instance } from 'mobx-state-tree'
 import type {
   TAxis,
-  TMovementDirection,
-  TMovementPhase,
-  TSlidePosition
+  TSlidePosition,
+  TTransitionDirection,
+  TTransitionPhase
 } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
@@ -44,37 +44,37 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
 
       return slidePosition === 'next' ? value : -value
     },
-    get movementDirectionVerified(): TMovementDirection {
+    get transitionDirectionVerified(): TTransitionDirection {
       verify(
-        self.movementDirection,
-        `'${getType(self).name}.movementDirectionVerified' can be accessed only when 'self.movementDirection' is not undefined`
+        self.transitionDirection,
+        `'${getType(self).name}.transitionDirectionVerified' can be accessed only when 'self.transitionDirection' is not undefined`
       )
 
-      return self.movementDirection
+      return self.transitionDirection
     },
-    get movementPhaseVerified(): TMovementPhase {
+    get transitionPhaseVerified(): TTransitionPhase {
       verify(
-        self.movementPhase,
-        `'${getType(self).name}.movementPhaseVerified' can be accessed only when 'self.movementPhase' is not undefined`
+        self.transitionPhase,
+        `'${getType(self).name}.transitionPhaseVerified' can be accessed only when 'self.transitionPhase' is not undefined`
       )
 
-      return self.movementPhase
+      return self.transitionPhase
     }
   }))
   .actions(self => ({
     finalizeTransition(this: void): void {
-      switch (self.movementPhaseVerified) {
+      switch (self.transitionPhaseVerified) {
         case 'finalization':
-          self.movementPhase = undefined
+          self.transitionPhase = undefined
           break
 
         case 'initiation': {
           self.imageDataIndices = {
             ...self.imageDataIndices,
-            current: self.imageDataIndices[self.movementDirectionVerified]
+            current: self.imageDataIndices[self.transitionDirectionVerified]
           }
 
-          self.movementPhase = 'finalization'
+          self.transitionPhase = 'finalization'
 
           break
         }

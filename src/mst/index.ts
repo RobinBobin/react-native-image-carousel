@@ -2,7 +2,7 @@ import type { Instance } from 'mobx-state-tree'
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type { BaseAnimation } from '../slideTransitionAnimations'
-import type { TMovementDirection } from '../types'
+import type { TTransitionDirection } from '../types'
 import type {
   TCarouselDimensions,
   TImageDatum,
@@ -39,10 +39,10 @@ export const ImageCarouselModel =
     .views(self => ({
       get canTransition(): boolean {
         return (
-          Boolean(self.slideTransitionAnimation) &&
-          !self.movementPhase &&
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          self.imageData.length > 1
+          self.imageData.length > 1 &&
+          Boolean(self.slideTransitionAnimation) &&
+          !self.transitionPhase
         )
       },
       get isLoading(): boolean {
@@ -69,12 +69,12 @@ export const ImageCarouselModel =
     }))
     // eslint-disable-next-line max-lines-per-function
     .actions(self => ({
-      move(this: void, movementDirection: TMovementDirection): boolean {
+      move(this: void, transitionDirection: TTransitionDirection): boolean {
         if (!self.canTransition) {
           return false
         }
 
-        self.movementDirection = movementDirection
+        self.transitionDirection = transitionDirection
 
         const { current } = self.imageDataIndices
         const offset = 1
@@ -87,7 +87,7 @@ export const ImageCarouselModel =
         }) as [number, number]
 
         self.imageDataIndices = { current, next, previous }
-        self.movementPhase = 'initiation'
+        self.transitionPhase = 'initiation'
 
         return true
       },
@@ -206,17 +206,17 @@ export const ImageCarouselModel =
         finalizeTransition(this: void): void {
           baseFinalizeTransition()
 
-          if (self.isAutoTransitionStarted && !self.movementPhase) {
+          if (self.isAutoTransitionStarted && !self.transitionPhase) {
             self.shouldUsePreTransitionDelay = true
 
-            self.move(self.movementDirectionVerified)
+            self.move(self.transitionDirectionVerified)
           }
         },
         startAutoTransition(
           this: void,
-          movementDirection: TMovementDirection
+          transitionDirection: TTransitionDirection
         ): boolean {
-          if (!self.canStartAutoTransition || !self.move(movementDirection)) {
+          if (!self.canStartAutoTransition || !self.move(transitionDirection)) {
             return false
           }
 
