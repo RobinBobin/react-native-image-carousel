@@ -15,7 +15,7 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
   private readonly axisAnimationData: TAxisAnimationData
 
   protected constructor(
-    axes: TAxis | readonly TAxis[],
+    protected readonly axes: TAxis | readonly TAxis[],
     carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {
     super(carouselModel)

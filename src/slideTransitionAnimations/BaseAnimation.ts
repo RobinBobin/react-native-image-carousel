@@ -8,6 +8,7 @@ export abstract class BaseAnimation {
     protected readonly carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {}
 
+  abstract cancelTransition(): void
   abstract getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle
   abstract move(): void
   abstract useStyles(): void

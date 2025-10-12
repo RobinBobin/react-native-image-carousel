@@ -1,7 +1,12 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 import type { TAxis } from '../../types'
 
-import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
+import {
+  cancelAnimation,
+  runOnJS,
+  withDelay,
+  withTiming
+} from 'react-native-reanimated'
 
 import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
@@ -13,14 +18,33 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
     super(axis, carouselModel)
   }
 
+  override cancelTransition(): void {
+    const { finishTransitionPhase, transitionDirection } = this.carouselModel
+
+    cancelAnimation(this.getTranslate(transitionDirection))
+
+    this.getTranslate(transitionDirection).value = withTiming(
+      this.carouselModel.getSlideOffset(
+        this.axes[0] as TAxis,
+        transitionDirection
+      ),
+      { duration: this.duration },
+      finished => {
+        if (finished ?? true) {
+          runOnJS(finishTransitionPhase)(false)
+        }
+      }
+    )
+  }
+
   override move(): void {
     this.resetTranslate()
 
-    const { finalizeTransition, transitionDirection, transitionPhase } =
+    const { finishTransitionPhase, transitionDirection, transitionPhase } =
       this.carouselModel
 
     if (transitionPhase === 'finalization') {
-      finalizeTransition()
+      finishTransitionPhase()
 
       return
     }
@@ -33,7 +57,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
         { duration: this.duration },
         finished => {
           if (finished ?? true) {
-            runOnJS(finalizeTransition)()
+            runOnJS(finishTransitionPhase)(true)
           }
         }
       )

@@ -202,11 +202,11 @@ export const ImageCarouselModel =
       }
     }))
     .actions(self => {
-      const baseFinalizeTransition = self.finalizeTransition
+      const baseFinishTransitionPhase = self.finishTransitionPhase
 
       return {
-        finalizeTransition(this: void): void {
-          baseFinalizeTransition()
+        finishTransitionPhase(this: void, options?: unknown): void {
+          baseFinishTransitionPhase(options)
 
           if (
             self.isAutoTransitionStarted &&

@@ -42,19 +42,24 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     }
   }))
   .actions(self => ({
-    finalizeTransition(this: void): void {
+    finishTransitionPhase(this: void, options?: unknown): void {
       switch (self.transitionPhase) {
         case 'finalization':
           self.transitionPhase = 'neutral'
           break
 
         case 'initiation': {
-          self.imageDataIndices = {
-            ...self.imageDataIndices,
-            current: self.imageDataIndices[self.transitionDirection]
+          const shouldSetImageDataIndices = options as boolean
+
+          if (shouldSetImageDataIndices) {
+            self.imageDataIndices = {
+              ...self.imageDataIndices,
+              current: self.imageDataIndices[self.transitionDirection]
+            }
           }
 
-          self.transitionPhase = 'finalization'
+          self.transitionPhase =
+            shouldSetImageDataIndices ? 'finalization' : 'neutral'
 
           break
         }
@@ -62,7 +67,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         case 'neutral':
         default:
           throw new Error(
-            `'${getType(self).name}.finalizeTransition()': 'self.transitionPhase' can't be '${self.transitionPhase}'`
+            `'${getType(self).name}.finishTransitionPhase()': 'self.transitionPhase' can't be '${self.transitionPhase}'`
           )
       }
     }
