@@ -13,7 +13,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
     super(axis, carouselModel)
   }
 
-  move(): void {
+  override move(): void {
     this.resetTranslate()
 
     const {

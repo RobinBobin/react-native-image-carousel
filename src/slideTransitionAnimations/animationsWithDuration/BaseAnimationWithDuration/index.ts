@@ -33,7 +33,10 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
     this._duration = duration
   }
 
-  getStyle(slidePosition: TSlidePosition, axis?: TAxis): TAnimatedViewStyle {
+  override getStyle(
+    slidePosition: TSlidePosition,
+    axis?: TAxis
+  ): TAnimatedViewStyle {
     const axisKey = this.getAxis(slidePosition, axis)
 
     const { animatedStyle } =
@@ -47,7 +50,7 @@ export abstract class BaseAnimationWithDuration extends BaseAnimation {
     return animatedStyle
   }
 
-  useStyles(): void {
+  override useStyles(): void {
     for (const [slidePosition, axisAnimationDatum] of Object.entries(
       this.axisAnimationData
     )) {
