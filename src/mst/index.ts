@@ -44,7 +44,7 @@ export const ImageCarouselModel =
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
           self.imageData.length > 1 &&
           Boolean(self.slideTransitionAnimation) &&
-          !self.transitionPhase
+          self.transitionPhase === 'neutral'
         )
       },
       get isLoading(): boolean {
@@ -208,7 +208,10 @@ export const ImageCarouselModel =
         finalizeTransition(this: void): void {
           baseFinalizeTransition()
 
-          if (self.isAutoTransitionStarted && !self.transitionPhase) {
+          if (
+            self.isAutoTransitionStarted &&
+            self.transitionPhase === 'neutral'
+          ) {
             self.shouldUsePreTransitionDelay = true
 
             self.move(self.transitionDirection)

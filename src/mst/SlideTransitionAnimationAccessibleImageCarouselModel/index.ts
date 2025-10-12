@@ -1,5 +1,5 @@
 import type { Instance } from 'mobx-state-tree'
-import type { TAxis, TSlidePosition, TTransitionPhase } from '../../types'
+import type { TAxis, TSlidePosition } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
   TCarouselDimensionsKeys
@@ -7,7 +7,6 @@ import type {
 
 import { getType, types } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
-import { verify } from 'simple-common-utils'
 
 // eslint-disable-next-line id-length
 export const SlideTransitionAnimationAccessibleImageCarouselModel = types
@@ -21,7 +20,8 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         previous: 0
       },
       shouldUsePreTransitionDelay: true,
-      transitionDirection: 'next'
+      transitionDirection: 'next',
+      transitionPhase: 'neutral'
     })
   )
   .views(self => ({
@@ -39,21 +39,13 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
       const value = isNumber(dimension) ? dimension : veryBigNumber
 
       return slidePosition === 'next' ? value : -value
-    },
-    get transitionPhaseVerified(): TTransitionPhase {
-      verify(
-        self.transitionPhase,
-        `'${getType(self).name}.transitionPhaseVerified' can be accessed only when 'self.transitionPhase' is not undefined`
-      )
-
-      return self.transitionPhase
     }
   }))
   .actions(self => ({
     finalizeTransition(this: void): void {
-      switch (self.transitionPhaseVerified) {
+      switch (self.transitionPhase) {
         case 'finalization':
-          self.transitionPhase = undefined
+          self.transitionPhase = 'neutral'
           break
 
         case 'initiation': {
@@ -66,6 +58,12 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
 
           break
         }
+
+        case 'neutral':
+        default:
+          throw new Error(
+            `'${getType(self).name}.finalizeTransition()': 'self.transitionPhase' can't be '${self.transitionPhase}'`
+          )
       }
     }
   }))

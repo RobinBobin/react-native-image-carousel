@@ -39,7 +39,7 @@ interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
   imageDataIndices: Readonly<Record<TSlidePosition, number>>
   shouldUsePreTransitionDelay: boolean
   transitionDirection: TTransitionDirection
-  transitionPhase?: TTransitionPhase | undefined
+  transitionPhase: TTransitionPhase
 }
 
 export type {

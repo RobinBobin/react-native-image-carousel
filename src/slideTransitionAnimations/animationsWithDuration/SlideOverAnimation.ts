@@ -16,10 +16,10 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
   override move(): void {
     this.resetTranslate()
 
-    const { finalizeTransition, transitionDirection, transitionPhaseVerified } =
+    const { finalizeTransition, transitionDirection, transitionPhase } =
       this.carouselModel
 
-    if (transitionPhaseVerified === 'finalization') {
+    if (transitionPhase === 'finalization') {
       finalizeTransition()
 
       return
