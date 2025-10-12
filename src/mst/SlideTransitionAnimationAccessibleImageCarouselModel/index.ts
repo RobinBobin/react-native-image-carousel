@@ -1,10 +1,5 @@
 import type { Instance } from 'mobx-state-tree'
-import type {
-  TAxis,
-  TSlidePosition,
-  TTransitionDirection,
-  TTransitionPhase
-} from '../../types'
+import type { TAxis, TSlidePosition, TTransitionPhase } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
   TCarouselDimensionsKeys
@@ -25,7 +20,8 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         next: 0,
         previous: 0
       },
-      shouldUsePreTransitionDelay: true
+      shouldUsePreTransitionDelay: true,
+      transitionDirection: 'next'
     })
   )
   .views(self => ({
@@ -43,14 +39,6 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
       const value = isNumber(dimension) ? dimension : veryBigNumber
 
       return slidePosition === 'next' ? value : -value
-    },
-    get transitionDirectionVerified(): TTransitionDirection {
-      verify(
-        self.transitionDirection,
-        `'${getType(self).name}.transitionDirectionVerified' can be accessed only when 'self.transitionDirection' is not undefined`
-      )
-
-      return self.transitionDirection
     },
     get transitionPhaseVerified(): TTransitionPhase {
       verify(
@@ -71,7 +59,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         case 'initiation': {
           self.imageDataIndices = {
             ...self.imageDataIndices,
-            current: self.imageDataIndices[self.transitionDirectionVerified]
+            current: self.imageDataIndices[self.transitionDirection]
           }
 
           self.transitionPhase = 'finalization'

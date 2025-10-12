@@ -211,7 +211,7 @@ export const ImageCarouselModel =
           if (self.isAutoTransitionStarted && !self.transitionPhase) {
             self.shouldUsePreTransitionDelay = true
 
-            self.move(self.transitionDirectionVerified)
+            self.move(self.transitionDirection)
           }
         },
         startAutoTransition(

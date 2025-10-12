@@ -16,11 +16,8 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
   override move(): void {
     this.resetTranslate()
 
-    const {
-      finalizeTransition,
-      transitionDirectionVerified,
-      transitionPhaseVerified
-    } = this.carouselModel
+    const { finalizeTransition, transitionDirection, transitionPhaseVerified } =
+      this.carouselModel
 
     if (transitionPhaseVerified === 'finalization') {
       finalizeTransition()
@@ -28,7 +25,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
       return
     }
 
-    this.getTranslate(transitionDirectionVerified).value = withDelay(
+    this.getTranslate(transitionDirection).value = withDelay(
       this.preTransitionDelayToUse,
       withTiming(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
