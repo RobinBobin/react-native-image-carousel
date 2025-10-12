@@ -22,7 +22,7 @@ interface IImageCarouselModelVolatile {
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideSize: TSlideSize
-  slideTransitionAnimation?: BaseAnimation
+  slideTransitionAnimation: BaseAnimation
   style?: StyleProp<ViewStyle>
 }
 

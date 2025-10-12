@@ -21,20 +21,22 @@ import { verify } from 'simple-common-utils'
 
 import { handleError } from '../helpers/handleError'
 import { isNumericHeightAndWidth } from '../helpers/mst/isNumericHeightAndWidth'
+import { SlideOverAnimation } from '../slideTransitionAnimations'
 import { SlideTransitionAnimationAccessibleImageCarouselModel } from './SlideTransitionAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =
   SlideTransitionAnimationAccessibleImageCarouselModel.named(
     'ImageCarouselModel'
   )
-    .volatile<IImageCarouselModelVolatile>(() => ({
+    .volatile<IImageCarouselModelVolatile>(self => ({
       aspectRatio: 0,
       imageGap: 0,
       isAutoTransitionStarted: false,
       isHorizontal: true,
       isSlideCentered: true,
       isSnapEnabled: false,
-      slideSize: 'wholeCarousel'
+      slideSize: 'wholeCarousel',
+      slideTransitionAnimation: new SlideOverAnimation(self)
     }))
     .views(self => ({
       get canTransition(): boolean {

@@ -6,23 +6,23 @@ import { pick } from 'radashi'
 import React from 'react'
 import { View } from 'react-native'
 
-import { useSlideTransitionAnimation } from './hooks/useSlideTransitionAnimation'
 import { Slides, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
 import { getContainerStyle } from './styles'
 
 const ImageCarousel: React.FC<TWithCarouselModel> = observer(
   ({ carouselModel }) => {
-    useSlideTransitionAnimation(carouselModel)
-
     const {
       aspectRatio,
       carouselDimensions,
       isLoading,
       isSnapEnabled,
       setCarouselDimensions,
+      slideTransitionAnimation,
       style
     } = carouselModel
+
+    slideTransitionAnimation.useStyles()
 
     if (isLoading) {
       return <Placeholder carouselModel={carouselModel} />

@@ -5,15 +5,12 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { verify } from 'simple-common-utils'
 
 import { SlideImage } from '../../../../common/SlideImage'
 
 const Slide: React.FC<ISlideProps> = observer(({ carouselModel, position }) => {
   const { imageDataIndices, slideTransitionAnimation, transitionPhase } =
     carouselModel
-
-  verify(slideTransitionAnimation, "No 'slideTransitionAnimation' set")
 
   const onLoadEnd = (): void => {
     if (transitionPhase === 'finalization' && position === 'current') {
