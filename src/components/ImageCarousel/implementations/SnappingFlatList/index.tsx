@@ -1,5 +1,5 @@
 import type { FlatListProps, ListRenderItem } from 'react-native'
-import type { IComponentWithCarouselModelProps } from '../../../common/types'
+import type { TWithCarouselModel } from '../../../../types'
 
 import { observer } from 'mobx-react-lite'
 import { range } from 'radashi'
@@ -11,7 +11,7 @@ import { SlideImage } from '../../../common/SlideImage'
 
 type TFlatListProps = FlatListProps<number>
 
-const SnappingFlatList: React.FC<IComponentWithCarouselModelProps> = observer(
+const SnappingFlatList: React.FC<TWithCarouselModel> = observer(
   ({ carouselModel }) => {
     const flatList = useRef<FlatList>(null)
     const shouldSnapNext = useRef(true)

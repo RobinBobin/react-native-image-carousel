@@ -1,14 +1,22 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
-import type { IComponentWithCarouselModelProps } from '../../../common/types'
+import type { TWithCarouselModel } from '../../../../types'
+import type { TUseCarouselModelParams } from './useCarouselModel/types'
+import type { TUseSetImageDataParamsBase } from './useSetImageData/types'
 
 type TImageCarouselSetupCallback = (
   carouselModel: IImageCarouselModelInstance
 ) => void
 
-type TUseImageCarouselReturnType = Readonly<
-  IComponentWithCarouselModelProps & {
-    carousel: React.ReactElement
-  }
->
+type TUseImageCarouselModelParams = TUseCarouselModelParams &
+  TUseSetImageDataParamsBase
 
-export type { TImageCarouselSetupCallback, TUseImageCarouselReturnType }
+type TUseImageCarouselReturnType = TWithCarouselModel &
+  Readonly<{
+    carousel: React.ReactElement
+  }>
+
+export type {
+  TImageCarouselSetupCallback,
+  TUseImageCarouselModelParams,
+  TUseImageCarouselReturnType
+}

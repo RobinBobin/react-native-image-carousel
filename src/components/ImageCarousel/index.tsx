@@ -1,5 +1,5 @@
 import type { ViewProps } from 'react-native'
-import type { IComponentWithCarouselModelProps } from '../common/types'
+import type { TWithCarouselModel } from '../../types'
 
 import { observer } from 'mobx-react-lite'
 import { pick } from 'radashi'
@@ -11,7 +11,7 @@ import { Slides, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
 import { getContainerStyle } from './styles'
 
-const ImageCarousel: React.FC<IComponentWithCarouselModelProps> = observer(
+const ImageCarousel: React.FC<TWithCarouselModel> = observer(
   ({ carouselModel }) => {
     useSlideTransitionAnimation(carouselModel)
 

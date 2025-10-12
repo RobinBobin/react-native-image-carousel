@@ -1,4 +1,3 @@
-export * from './components/common/types'
 export * from './components/ImageCarousel'
 export * from './components/ImageCarousel/hooks/useImageCarouselModel'
 export * from './components/ImageCarousel/hooks/useImageCarouselModel/types'

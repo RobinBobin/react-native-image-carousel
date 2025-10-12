@@ -1,11 +1,11 @@
-import type { IComponentWithCarouselModelProps } from '../../common/types'
+import type { TWithCarouselModel } from '../../../types'
 
 import { observer } from 'mobx-react-lite'
 import { View } from 'react-native'
 
 import styles from './styles'
 
-const Placeholder: React.FC<IComponentWithCarouselModelProps> = observer(
+const Placeholder: React.FC<TWithCarouselModel> = observer(
   ({ carouselModel }) => {
     const {
       aspectRatio,

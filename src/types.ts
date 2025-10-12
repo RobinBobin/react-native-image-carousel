@@ -1,5 +1,6 @@
 import type { ViewProps } from 'react-native'
 import type { AnimatedProps } from 'react-native-reanimated'
+import type { IImageCarouselModelInstance } from './mst'
 
 type TAnimatedViewStyle = AnimatedProps<ViewProps>['style']
 
@@ -10,10 +11,15 @@ type TSlidePosition = 'current' | TTransitionDirection
 
 type TTransitionPhase = 'initiation' | 'finalization'
 
+type TWithCarouselModel = Readonly<{
+  carouselModel: IImageCarouselModelInstance
+}>
+
 export type {
   TAnimatedViewStyle,
   TAxis,
   TSlidePosition,
   TTransitionDirection,
-  TTransitionPhase
+  TTransitionPhase,
+  TWithCarouselModel
 }

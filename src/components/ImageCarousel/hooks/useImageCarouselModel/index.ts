@@ -1,18 +1,22 @@
 import type { IImageCarouselModelInstance } from '../../../../mst'
-import type { TImageRawData } from '../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { TImageCarouselSetupCallback } from './types'
+import type { TUseImageCarouselModelParams } from './types'
+
+import { pick } from 'radashi'
 
 import { useCarouselModel } from './useCarouselModel'
 import { useSetImageData } from './useSetImageData'
 
 export const useImageCarouselModel = (
-  imageData: TImageRawData,
-  postSetImageDataSetupCallback?: TImageCarouselSetupCallback,
-  preSetImageDataSetupCallback?: TImageCarouselSetupCallback
+  params: TUseImageCarouselModelParams
 ): IImageCarouselModelInstance => {
-  const carouselModel = useCarouselModel(preSetImageDataSetupCallback)
+  const carouselModel = useCarouselModel(
+    pick(params, ['onPostCreateModel', 'onPreCreateModel'])
+  )
 
-  useSetImageData(carouselModel, imageData, postSetImageDataSetupCallback)
+  useSetImageData({
+    carouselModel,
+    ...pick(params, ['imageData', 'onPostSetImageData', 'onPreSetImageData'])
+  })
 
   return carouselModel
 }

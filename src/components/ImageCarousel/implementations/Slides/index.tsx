@@ -1,10 +1,8 @@
-import type { IComponentWithCarouselModelProps } from '../../../common/types'
+import type { TWithCarouselModel } from '../../../../types'
 
 import { Slide } from './Slide'
 
-const Slides: React.FC<IComponentWithCarouselModelProps> = ({
-  carouselModel
-}) => {
+const Slides: React.FC<TWithCarouselModel> = ({ carouselModel }) => {
   return (
     <>
       <Slide carouselModel={carouselModel} position='current' />

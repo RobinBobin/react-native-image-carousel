@@ -1,6 +1,5 @@
-import type { TSlidePosition } from '../../../../../types'
-import type { IComponentWithCarouselModelProps } from '../../../../common/types'
+import type { TSlidePosition, TWithCarouselModel } from '../../../../../types'
 
-export interface ISlideProps extends IComponentWithCarouselModelProps {
+export interface ISlideProps extends TWithCarouselModel {
   position: TSlidePosition
 }
