@@ -2,11 +2,12 @@ import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } fr
 import type { TAxis } from '../../types'
 
 import {
-  cancelAnimation,
+  // cancelAnimation,
   runOnJS,
   withDelay,
   withTiming
 } from 'react-native-reanimated'
+import { verify } from 'simple-common-utils'
 
 import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
@@ -18,36 +19,38 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
     super(axis, carouselModel)
   }
 
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   override cancelTransition(): void {
-    const { finishTransitionPhase, transitionDirection } = this.carouselModel
+    throw new Error("Doesn't work yet")
 
-    cancelAnimation(this.getTranslate(transitionDirection))
+    // const { finishTransitionPhase, transitionDirection } = this.carouselModel
 
-    this.getTranslate(transitionDirection).value = withTiming(
-      this.carouselModel.getSlideOffset(
-        this.axes[0] as TAxis,
-        transitionDirection
-      ),
-      { duration: this.duration },
-      finished => {
-        if (finished ?? true) {
-          runOnJS(finishTransitionPhase)(false)
-        }
-      }
-    )
+    // cancelAnimation(this.getTranslate(transitionDirection))
+
+    // this.getTranslate(transitionDirection).value = withTiming(
+    //   this.carouselModel.getSlideOffset(
+    //     this.axes[0] as TAxis,
+    //     transitionDirection
+    //   ),
+    //   { duration: this.duration },
+    //   finished => {
+    //     if (finished ?? true) {
+    //       runOnJS(finishTransitionPhase)()
+    //     }
+    //   }
+    // )
   }
 
   override move(): void {
-    this.resetTranslate()
-
     const { finishTransitionPhase, transitionDirection, transitionPhase } =
       this.carouselModel
 
-    if (transitionPhase === 'finalization') {
-      finishTransitionPhase()
+    verify(
+      transitionPhase === 'requested',
+      `'${this.constructor.name}.move()': 'transitionPhase' can't be '${transitionPhase}'`
+    )
 
-      return
-    }
+    this.resetTranslate()
 
     this.getTranslate(transitionDirection).value = withDelay(
       this.preTransitionDelayToUse,
@@ -57,10 +60,12 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
         { duration: this.duration },
         finished => {
           if (finished ?? true) {
-            runOnJS(finishTransitionPhase)(true)
+            runOnJS(finishTransitionPhase)()
           }
         }
       )
     )
+
+    finishTransitionPhase()
   }
 }

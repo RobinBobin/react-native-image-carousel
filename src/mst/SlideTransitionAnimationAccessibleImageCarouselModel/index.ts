@@ -5,7 +5,7 @@ import type {
   TCarouselDimensionsKeys
 } from './types'
 
-import { getType, types } from 'mobx-state-tree'
+import { types } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
 
 // eslint-disable-next-line id-length
@@ -42,33 +42,34 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     }
   }))
   .actions(self => ({
-    finishTransitionPhase(this: void, options?: unknown): void {
+    finishTransitionPhase(this: void): void {
       switch (self.transitionPhase) {
-        case 'finalization':
+        case 'cancelled':
+          throw new Error(
+            "'finishTransitionPhase()': cancellation not supported yet"
+          )
+
+        case 'finished':
           self.transitionPhase = 'neutral'
           break
 
-        case 'initiation': {
-          const shouldSetImageDataIndices = options as boolean
-
-          if (shouldSetImageDataIndices) {
-            self.imageDataIndices = {
-              ...self.imageDataIndices,
-              current: self.imageDataIndices[self.transitionDirection]
-            }
+        case 'initiated':
+          self.imageDataIndices = {
+            ...self.imageDataIndices,
+            current: self.imageDataIndices[self.transitionDirection]
           }
 
-          self.transitionPhase =
-            shouldSetImageDataIndices ? 'finalization' : 'neutral'
+          self.transitionPhase = 'finished'
 
           break
-        }
 
         case 'neutral':
-        default:
-          throw new Error(
-            `'${getType(self).name}.finishTransitionPhase()': 'self.transitionPhase' can't be '${self.transitionPhase}'`
-          )
+          self.transitionPhase = 'requested'
+          break
+
+        case 'requested':
+          self.transitionPhase = 'initiated'
+          break
       }
     }
   }))

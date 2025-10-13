@@ -1,3 +1,4 @@
+import type { IDisposer } from 'mobx-state-tree'
 import type {
   ImageResolvedAssetSource,
   StyleProp,
@@ -5,7 +6,6 @@ import type {
 } from 'react-native'
 import type { BaseAnimation } from '../slideTransitionAnimations'
 import type { ICommonImageData } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { IDisposer } from 'mobx-state-tree'
 
 type TSlideSize =
   | 'carouselHeightSquare'

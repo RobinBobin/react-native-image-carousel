@@ -8,15 +8,19 @@ import Animated from 'react-native-reanimated'
 import { SlideImage } from '../../../../common/SlideImage'
 
 const Slide: React.FC<ISlideProps> = observer(({ carouselModel, position }) => {
-  const { imageDataIndices, slideTransitionAnimation, transitionPhase } =
-    carouselModel
+  const {
+    finishTransitionPhase,
+    imageDataIndices,
+    slideTransitionAnimation,
+    transitionPhase
+  } = carouselModel
 
   const onLoadEnd =
     position !== 'current' ? undefined : (
       (): void => {
         // `ImageCarouselModel.watchTransitionPhase()` can't be used due to image flickering.
-        if (transitionPhase === 'finalization') {
-          slideTransitionAnimation.move()
+        if (transitionPhase === 'finished') {
+          finishTransitionPhase()
         }
       }
     )

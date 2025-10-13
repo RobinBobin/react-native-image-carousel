@@ -91,7 +91,8 @@ export const ImageCarouselModel =
         }) as [number, number]
 
         self.imageDataIndices = { current, next, previous }
-        self.transitionPhase = 'initiation'
+
+        self.finishTransitionPhase()
 
         return true
       },
@@ -208,10 +209,6 @@ export const ImageCarouselModel =
         self.disposers.push(
           autorun(() => {
             switch (self.transitionPhase) {
-              case 'initiation':
-                self.slideTransitionAnimation.move()
-                break
-
               case 'neutral':
                 if (self.isAutoTransitionStarted) {
                   self.shouldUsePreTransitionDelay = true
@@ -221,8 +218,13 @@ export const ImageCarouselModel =
 
                 break
 
-              case 'finalization':
-              default:
+              case 'requested':
+                self.slideTransitionAnimation.move()
+                break
+
+              case 'cancelled':
+              case 'finished':
+              case 'initiated':
                 // Nothing to do
                 break
             }
