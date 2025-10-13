@@ -44,11 +44,6 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
   .actions(self => ({
     finishTransitionPhase(this: void): void {
       switch (self.transitionPhase) {
-        case 'cancelled':
-          throw new Error(
-            "'finishTransitionPhase()': cancellation not supported yet"
-          )
-
         case 'finished':
           self.transitionPhase = 'neutral'
           break

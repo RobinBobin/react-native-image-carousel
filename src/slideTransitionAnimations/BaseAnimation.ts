@@ -1,5 +1,9 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
-import type { TAnimatedViewStyle, TSlidePosition } from '../types'
+import type {
+  TAnimatedViewStyle,
+  TSlidePosition,
+  TTransitionDirection
+} from '../types'
 
 export abstract class BaseAnimation {
   private _preTransitionDelay = 0
@@ -8,8 +12,8 @@ export abstract class BaseAnimation {
     protected readonly carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {}
 
-  abstract cancelTransition(): void
   abstract getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle
+  abstract handleFling(flingDirection: TTransitionDirection): void
   abstract move(): void
   abstract useStyles(): void
 

@@ -1,8 +1,8 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
-import type { TAxis } from '../../types'
+import type { TAxis, TTransitionDirection } from '../../types'
 
 import {
-  // cancelAnimation,
+  cancelAnimation,
   runOnJS,
   withDelay,
   withTiming
@@ -19,26 +19,41 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
     super(axis, carouselModel)
   }
 
-  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
-  override cancelTransition(): void {
-    throw new Error("Doesn't work yet")
+  override handleFling(flingDirection: TTransitionDirection): void {
+    const { finishTransitionPhase, transitionDirection } = this.carouselModel
 
-    // const { finishTransitionPhase, transitionDirection } = this.carouselModel
+    const slideOffset = this.carouselModel.getSlideOffset(
+      this.axes[0] as TAxis,
+      transitionDirection
+    )
 
-    // cancelAnimation(this.getTranslate(transitionDirection))
+    const translate = this.getTranslate(transitionDirection)
+    const isAnimating = translate.value !== slideOffset
 
-    // this.getTranslate(transitionDirection).value = withTiming(
-    //   this.carouselModel.getSlideOffset(
-    //     this.axes[0] as TAxis,
-    //     transitionDirection
-    //   ),
-    //   { duration: this.duration },
-    //   finished => {
-    //     if (finished ?? true) {
-    //       runOnJS(finishTransitionPhase)()
-    //     }
-    //   }
-    // )
+    console.log('handleFling()', flingDirection, `isAnimating: ${isAnimating}`)
+
+    if (isAnimating) {
+      const isFlingDirectionTheSame = flingDirection === transitionDirection
+
+      if (isFlingDirectionTheSame) {
+        return
+      }
+
+      cancelAnimation(translate)
+    }
+
+    cancelAnimation(translate)
+
+    this.getTranslate(flingDirection).value = withTiming(
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      0,
+      { duration: this.duration },
+      finished => {
+        if (finished ?? true) {
+          runOnJS(finishTransitionPhase)()
+        }
+      }
+    )
   }
 
   override move(): void {
@@ -61,6 +76,8 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
         finished => {
           if (finished ?? true) {
             runOnJS(finishTransitionPhase)()
+          } else {
+            console.log('animation interrupted')
           }
         }
       )

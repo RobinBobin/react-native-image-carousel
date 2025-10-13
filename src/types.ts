@@ -9,12 +9,7 @@ type TAxis = 'x' | 'y'
 type TTransitionDirection = 'next' | 'previous'
 type TSlidePosition = 'current' | TTransitionDirection
 
-type TTransitionPhase =
-  | 'neutral'
-  | 'requested'
-  | 'initiated'
-  | 'finished'
-  | 'cancelled'
+type TTransitionPhase = 'neutral' | 'requested' | 'initiated' | 'finished'
 
 type TWithCarouselModel = Readonly<{
   carouselModel: IImageCarouselModelInstance

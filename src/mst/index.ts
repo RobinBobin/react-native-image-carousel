@@ -222,7 +222,6 @@ export const ImageCarouselModel =
                 self.slideTransitionAnimation.move()
                 break
 
-              case 'cancelled':
               case 'finished':
               case 'initiated':
                 // Nothing to do
