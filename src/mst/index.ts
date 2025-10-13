@@ -14,6 +14,7 @@ import type {
   TSourceData
 } from './types'
 
+import { autorun } from 'mobx'
 import { flow, getType, toGenerator } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
 import { Image } from 'react-native'
@@ -30,6 +31,7 @@ export const ImageCarouselModel =
   )
     .volatile<IImageCarouselModelVolatile>(self => ({
       aspectRatio: 0,
+      disposers: [],
       imageGap: 0,
       isAutoTransitionStarted: false,
       isHorizontal: true,
@@ -202,20 +204,39 @@ export const ImageCarouselModel =
       }
     }))
     .actions(self => {
-      const baseFinishTransitionPhase = self.finishTransitionPhase
+      const watchTransitionPhase = (): void => {
+        self.disposers.push(
+          autorun(() => {
+            switch (self.transitionPhase) {
+              case 'initiation':
+                self.slideTransitionAnimation.move()
+                break
 
+              case 'neutral':
+                if (self.isAutoTransitionStarted) {
+                  self.shouldUsePreTransitionDelay = true
+
+                  self.move(self.transitionDirection)
+                }
+
+                break
+
+              case 'finalization':
+              default:
+                // Nothing to do
+                break
+            }
+          })
+        )
+      }
       return {
-        finishTransitionPhase(this: void, options?: unknown): void {
-          baseFinishTransitionPhase(options)
-
-          if (
-            self.isAutoTransitionStarted &&
-            self.transitionPhase === 'neutral'
-          ) {
-            self.shouldUsePreTransitionDelay = true
-
-            self.move(self.transitionDirection)
-          }
+        afterCreate(): void {
+          watchTransitionPhase()
+        },
+        beforeDestroy(): void {
+          self.disposers.forEach(disposer => {
+            disposer()
+          })
         },
         startAutoTransition(
           this: void,

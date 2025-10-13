@@ -17,6 +17,7 @@
     "@types/react": "^19.0.4",
     "eslint": "^9.18.0",
     "eslint-plugin-react-hooks": "^5.1.0",
+    "mobx": "^6.15.0",
     "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-native": "^0.76.6",
@@ -39,6 +40,7 @@
   "name": "@robinbobin/react-native-image-carousel",
   "packageManager": "pnpm@10.3.0+sha512.ee592eda8815a8a293c206bb0917c4bb0ff274c50def7cbc17be05ec641fc2d1b02490ce660061356bd0d126a4d7eb2ec8830e6959fb8a447571c631d5a2442d",
   "peerDependencies": {
+    "mobx": "^6.15.0",
     "react-native-gesture-handler": "^2.22.0",
     "react-native-reanimated": "^3.16.6"
   },

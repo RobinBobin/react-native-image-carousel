@@ -2,7 +2,6 @@ import type React from 'react'
 import type { ISlideProps } from './types'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 import { StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
 
@@ -12,17 +11,15 @@ const Slide: React.FC<ISlideProps> = observer(({ carouselModel, position }) => {
   const { imageDataIndices, slideTransitionAnimation, transitionPhase } =
     carouselModel
 
-  const onLoadEnd = (): void => {
-    if (transitionPhase === 'finalization' && position === 'current') {
-      slideTransitionAnimation.move()
-    }
-  }
-
-  useEffect(() => {
-    if (transitionPhase === 'initiation' && position === 'current') {
-      slideTransitionAnimation.move()
-    }
-  }, [transitionPhase, position, slideTransitionAnimation])
+  const onLoadEnd =
+    position !== 'current' ? undefined : (
+      (): void => {
+        // `ImageCarouselModel.watchTransitionPhase()` can't be used due to image flickering.
+        if (transitionPhase === 'finalization') {
+          slideTransitionAnimation.move()
+        }
+      }
+    )
 
   return (
     <Animated.View

@@ -5,6 +5,7 @@ import type {
 } from 'react-native'
 import type { BaseAnimation } from '../slideTransitionAnimations'
 import type { ICommonImageData } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { IDisposer } from 'mobx-state-tree'
 
 type TSlideSize =
   | 'carouselHeightSquare'
@@ -14,6 +15,7 @@ type TSlideSize =
 
 interface IImageCarouselModelVolatile {
   aspectRatio: number
+  disposers: IDisposer[]
   imageGap: number
   isAutoTransitionStarted: boolean
   isHorizontal: boolean
