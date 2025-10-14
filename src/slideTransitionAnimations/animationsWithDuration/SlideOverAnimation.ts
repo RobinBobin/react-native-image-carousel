@@ -38,13 +38,15 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
 
     cancelAnimation(translate)
 
-    this.getTranslate(flingDirection).value = withTiming(
+    const slidePosition = isAnimating ? transitionDirection : flingDirection
+
+    this.getTranslate(slidePosition).value = withTiming(
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      0,
+      isAnimating ? slideOffset : 0,
       { duration: this.duration },
       finished => {
         if (finished ?? true) {
-          runOnJS(finishTransitionPhase)(flingDirection)
+          runOnJS(finishTransitionPhase)(isAnimating ? false : flingDirection)
         }
       }
     )

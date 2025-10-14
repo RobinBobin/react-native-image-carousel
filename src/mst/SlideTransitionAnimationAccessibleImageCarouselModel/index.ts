@@ -8,6 +8,8 @@ import type {
 import { types } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
 
+import { getTransitionDirection } from './helpers'
+
 // eslint-disable-next-line id-length
 export const SlideTransitionAnimationAccessibleImageCarouselModel = types
   .model('SlideTransitionAnimationAccessibleImageCarouselModel')
@@ -48,7 +50,17 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
           self.transitionPhase = 'neutral'
           break
 
-        case 'initiated':
+        case 'initiated': {
+          const transitionDirection = getTransitionDirection(
+            options ?? self.transitionDirection
+          )
+
+          if (!transitionDirection) {
+            self.transitionPhase = 'neutral'
+
+            break
+          }
+
           self.imageDataIndices = {
             ...self.imageDataIndices,
             current:
@@ -61,6 +73,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
           self.transitionPhase = 'finished'
 
           break
+        }
 
         case 'neutral':
           self.transitionPhase = 'requested'
