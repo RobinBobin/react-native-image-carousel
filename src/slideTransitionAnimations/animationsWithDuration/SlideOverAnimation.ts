@@ -22,6 +22,8 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
   override handleFling(flingDirection: TTransitionDirection): void {
     const { finishTransitionPhase, transitionDirection } = this.carouselModel
 
+    const isFlingDirectionTheSame = flingDirection === transitionDirection
+
     const slideOffset = this.carouselModel.getSlideOffset(
       this.axes[0] as TAxis,
       transitionDirection
@@ -30,16 +32,8 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
     const translate = this.getTranslate(transitionDirection)
     const isAnimating = translate.value !== slideOffset
 
-    console.log('handleFling()', flingDirection, `isAnimating: ${isAnimating}`)
-
-    if (isAnimating) {
-      const isFlingDirectionTheSame = flingDirection === transitionDirection
-
-      if (isFlingDirectionTheSame) {
-        return
-      }
-
-      cancelAnimation(translate)
+    if (isAnimating && isFlingDirectionTheSame) {
+      return
     }
 
     cancelAnimation(translate)
@@ -50,7 +44,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
       { duration: this.duration },
       finished => {
         if (finished ?? true) {
-          runOnJS(finishTransitionPhase)()
+          runOnJS(finishTransitionPhase)(flingDirection)
         }
       }
     )
@@ -76,8 +70,6 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
         finished => {
           if (finished ?? true) {
             runOnJS(finishTransitionPhase)()
-          } else {
-            console.log('animation interrupted')
           }
         }
       )

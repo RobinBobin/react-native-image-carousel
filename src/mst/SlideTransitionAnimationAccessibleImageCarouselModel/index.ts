@@ -1,5 +1,5 @@
 import type { Instance } from 'mobx-state-tree'
-import type { TAxis, TSlidePosition } from '../../types'
+import type { TAxis, TSlidePosition, TTransitionDirection } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
   TCarouselDimensionsKeys
@@ -42,7 +42,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     }
   }))
   .actions(self => ({
-    finishTransitionPhase(this: void): void {
+    finishTransitionPhase(this: void, options?: unknown): void {
       switch (self.transitionPhase) {
         case 'finished':
           self.transitionPhase = 'neutral'
@@ -51,7 +51,11 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         case 'initiated':
           self.imageDataIndices = {
             ...self.imageDataIndices,
-            current: self.imageDataIndices[self.transitionDirection]
+            current:
+              self.imageDataIndices[
+                (options as TTransitionDirection | undefined) ??
+                  self.transitionDirection
+              ]
           }
 
           self.transitionPhase = 'finished'

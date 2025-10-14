@@ -30,8 +30,6 @@ export const useGesture = ({
             event.x > initialCoords.value.x ? 'previous' : 'next'
 
           runOnJS(handleFling)(direction)
-        } else {
-          console.log("Won't handle fling")
         }
       })
   )
