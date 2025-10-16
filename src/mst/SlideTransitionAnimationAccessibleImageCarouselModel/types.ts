@@ -20,15 +20,17 @@ interface ICommonImageData extends Pick<ViewStyle, 'backgroundColor'> {
   onPress?: TOnPress
 }
 
-type TImageGenericDatum<TIsRaw extends boolean> = ICommonImageData &
-  (TIsRaw extends true ? { source: number | string }
-  : {
-      aspectRatio: number
-      source: { uri: string }
-    })
+interface IRawImageData {
+  source: number | string
+}
 
-type TImageDatum = TImageGenericDatum<false>
-type TImageRawDatum = TImageGenericDatum<true>
+interface IImageData {
+  aspectRatio: number
+  source: { uri: string }
+}
+
+type TImageDatum = ICommonImageData & IImageData
+type TImageRawDatum = ICommonImageData & IRawImageData
 
 type TImageData = TImageDatum[]
 type TImageRawData = TImageRawDatum[]
