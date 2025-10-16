@@ -22,8 +22,8 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         previous: 0
       },
       isAutoTransitionStarted: false,
-      transitionDirection: 'next',
-      transitionPhase: 'neutral'
+      isTransitionInProgress: false,
+      transitionDirection: 'next'
     })
   )
   .views(self => ({
@@ -44,40 +44,18 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     }
   }))
   .actions(self => ({
-    finishTransitionPhase(this: void, options?: unknown): void {
-      switch (self.transitionPhase) {
-        case 'finished':
-          self.transitionPhase = 'neutral'
-          break
+    finishTransition(this: void, options?: unknown): void {
+      self.isTransitionInProgress = false
 
-        case 'initiated': {
-          const transitionDirection = getTransitionDirection(
-            options ?? self.transitionDirection
-          )
+      const transitionDirection = getTransitionDirection(
+        options ?? self.transitionDirection
+      )
 
-          if (!transitionDirection) {
-            self.transitionPhase = 'neutral'
-
-            break
-          }
-
-          self.imageDataIndices = {
-            ...self.imageDataIndices,
-            current: self.imageDataIndices[transitionDirection]
-          }
-
-          self.transitionPhase = 'finished'
-
-          break
+      if (transitionDirection) {
+        self.imageDataIndices = {
+          ...self.imageDataIndices,
+          current: self.imageDataIndices[transitionDirection]
         }
-
-        case 'neutral':
-          self.transitionPhase = 'requested'
-          break
-
-        case 'requested':
-          self.transitionPhase = 'initiated'
-          break
       }
     }
   }))

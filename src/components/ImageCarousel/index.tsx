@@ -26,7 +26,7 @@ const ImageCarousel: React.FC<TWithCarouselModel> = observer(
 
     slideTransitionAnimation.useStyles()
 
-    const gesture = useGesture(carouselModel)
+    const gesture = useGesture(carouselModel.slideTransitionAnimation)
 
     if (isLoading) {
       return <Placeholder carouselModel={carouselModel} />

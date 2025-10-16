@@ -14,7 +14,6 @@ import type {
   TSourceData
 } from './types'
 
-import { autorun } from 'mobx'
 import { flow, getType, toGenerator } from 'mobx-state-tree'
 import { isNumber } from 'radashi'
 import { Image } from 'react-native'
@@ -43,7 +42,7 @@ export const ImageCarouselModel =
       get canTransition(): boolean {
         return (
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          self.imageData.length > 1 && self.transitionPhase === 'neutral'
+          self.imageData.length > 1 && !self.isTransitionInProgress
         )
       },
       get isLoading(): boolean {
@@ -89,7 +88,7 @@ export const ImageCarouselModel =
 
         self.imageDataIndices = { current, next, previous }
 
-        self.finishTransitionPhase()
+        self.slideTransitionAnimation.move()
 
         return true
       },
@@ -201,37 +200,15 @@ export const ImageCarouselModel =
       }
     }))
     .actions(self => {
-      const watchTransitionPhase = (): void => {
-        self.disposers.push(
-          autorun(() => {
-            switch (self.transitionPhase) {
-              case 'neutral':
-                if (self.isAutoTransitionStarted) {
-                  self.move(self.transitionDirection)
-                }
+      const baseFinishTransition = self.finishTransition
 
-                break
-
-              case 'requested':
-                self.slideTransitionAnimation.move()
-                break
-
-              case 'finished':
-              case 'initiated':
-                // Nothing to do
-                break
-            }
-          })
-        )
-      }
       return {
-        afterCreate(): void {
-          watchTransitionPhase()
-        },
-        beforeDestroy(): void {
-          self.disposers.forEach(disposer => {
-            disposer()
-          })
+        finishTransition(this: void, options?: unknown): void {
+          baseFinishTransition(options)
+
+          if (self.isAutoTransitionStarted) {
+            self.move(self.transitionDirection)
+          }
         },
         startAutoTransition(
           this: void,

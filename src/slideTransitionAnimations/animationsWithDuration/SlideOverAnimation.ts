@@ -7,7 +7,6 @@ import {
   withDelay,
   withTiming
 } from 'react-native-reanimated'
-import { verify } from 'simple-common-utils'
 
 import { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
 
@@ -20,7 +19,7 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
   }
 
   override handleFling(flingDirection: TTransitionDirection): void {
-    const { finishTransitionPhase, transitionDirection } = this.carouselModel
+    const { finishTransition, transitionDirection } = this.carouselModel
 
     const isFlingDirectionTheSame = flingDirection === transitionDirection
 
@@ -46,20 +45,14 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
       { duration: this.duration },
       finished => {
         if (finished ?? true) {
-          runOnJS(finishTransitionPhase)(isAnimating ? false : flingDirection)
+          runOnJS(finishTransition)(isAnimating ? false : flingDirection)
         }
       }
     )
   }
 
   override move(): void {
-    const { finishTransitionPhase, transitionDirection, transitionPhase } =
-      this.carouselModel
-
-    verify(
-      transitionPhase === 'requested',
-      `'${this.constructor.name}.move()': 'transitionPhase' can't be '${transitionPhase}'`
-    )
+    const { finishTransition, transitionDirection } = this.carouselModel
 
     this.resetTranslate()
 
@@ -71,12 +64,10 @@ export class SlideOverAnimation extends BaseAnimationWithDuration {
         { duration: this.duration },
         finished => {
           if (finished ?? true) {
-            runOnJS(finishTransitionPhase)()
+            runOnJS(finishTransition)()
           }
         }
       )
     )
-
-    finishTransitionPhase()
   }
 }

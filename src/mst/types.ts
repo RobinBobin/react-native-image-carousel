@@ -1,4 +1,3 @@
-import type { IDisposer } from 'mobx-state-tree'
 import type {
   ImageResolvedAssetSource,
   StyleProp,
@@ -15,7 +14,6 @@ type TSlideSize =
 
 interface IImageCarouselModelVolatile {
   aspectRatio: number
-  disposers: IDisposer[]
   imageGap: number
   isHorizontal: boolean
   isSlideCentered: boolean
