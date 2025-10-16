@@ -44,9 +44,7 @@ export const ImageCarouselModel =
       get canTransition(): boolean {
         return (
           // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          self.imageData.length > 1 &&
-          Boolean(self.slideTransitionAnimation) &&
-          self.transitionPhase === 'neutral'
+          self.imageData.length > 1 && self.transitionPhase === 'neutral'
         )
       },
       get isLoading(): boolean {
