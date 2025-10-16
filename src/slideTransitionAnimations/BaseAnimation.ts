@@ -28,7 +28,7 @@ export abstract class BaseAnimation {
   protected get preTransitionDelayToUse(): number {
     const noDelay = 0
 
-    return this.carouselModel.shouldUsePreTransitionDelay ?
+    return this.carouselModel.isAutoTransitionStarted ?
         this.preTransitionDelay
       : noDelay
   }

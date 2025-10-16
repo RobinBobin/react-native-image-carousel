@@ -21,7 +21,7 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         next: 0,
         previous: 0
       },
-      shouldUsePreTransitionDelay: true,
+      isAutoTransitionStarted: false,
       transitionDirection: 'next',
       transitionPhase: 'neutral'
     })

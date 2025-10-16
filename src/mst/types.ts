@@ -17,7 +17,6 @@ interface IImageCarouselModelVolatile {
   aspectRatio: number
   disposers: IDisposer[]
   imageGap: number
-  isAutoTransitionStarted: boolean
   isHorizontal: boolean
   isSlideCentered: boolean
   isSnapEnabled: boolean

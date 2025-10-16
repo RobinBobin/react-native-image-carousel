@@ -33,7 +33,6 @@ export const ImageCarouselModel =
       aspectRatio: 0,
       disposers: [],
       imageGap: 0,
-      isAutoTransitionStarted: false,
       isHorizontal: true,
       isSlideCentered: true,
       isSnapEnabled: false,
@@ -199,7 +198,6 @@ export const ImageCarouselModel =
       },
       stopAutoTransition(this: void): void {
         self.isAutoTransitionStarted = false
-        self.shouldUsePreTransitionDelay = true
       }
     }))
     .actions(self => {
@@ -209,8 +207,6 @@ export const ImageCarouselModel =
             switch (self.transitionPhase) {
               case 'neutral':
                 if (self.isAutoTransitionStarted) {
-                  self.shouldUsePreTransitionDelay = true
-
                   self.move(self.transitionDirection)
                 }
 
@@ -246,7 +242,6 @@ export const ImageCarouselModel =
           }
 
           self.isAutoTransitionStarted = true
-          self.shouldUsePreTransitionDelay = false
 
           return true
         }
