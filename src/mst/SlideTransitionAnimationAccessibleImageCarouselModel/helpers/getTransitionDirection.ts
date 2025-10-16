@@ -7,7 +7,7 @@ export const getTransitionDirection = (
   options: unknown
 ): TTransitionDirection | undefined => {
   if (isBoolean(options)) {
-    verify(!options, "'canSetImageDataIndices()': 'options' can't be 'true'")
+    verify(!options, "'getTransitionDirection()': 'options' can't be 'true'")
 
     return undefined
   }
@@ -20,6 +20,6 @@ export const getTransitionDirection = (
 
   throw new Error(
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    `'canSetImageDataIndices()': unknown 'options' value (${options})`
+    `'getTransitionDirection()': unknown 'options' value (${options})`
   )
 }
