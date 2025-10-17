@@ -5,6 +5,7 @@ import type { IImageCarouselModelInstance } from './mst'
 type TAnimatedViewStyle = AnimatedProps<ViewProps>['style']
 
 type TAxis = 'x' | 'y'
+type TAxes = readonly TAxis[]
 
 type TTransitionDirection = 'next' | 'previous'
 type TSlidePosition = 'current' | TTransitionDirection
@@ -15,6 +16,7 @@ type TWithCarouselModel = Readonly<{
 
 export type {
   TAnimatedViewStyle,
+  TAxes,
   TAxis,
   TSlidePosition,
   TTransitionDirection,
