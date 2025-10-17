@@ -10,13 +10,14 @@ import { getAxis } from '../getAxis'
 export const getSharedValue = <Value extends TValue = number>({
   axes,
   axis,
+  slideDataSource,
   slidePosition,
   slideSharedValues,
   tag
 }: IGetSharedValueParams<Value>): SharedValue<Value> => {
   const axisKey = getAxis(axes, axis)
 
-  const sharedValue = slideSharedValues[slidePosition][axisKey]
+  const sharedValue = slideSharedValues[slideDataSource][slidePosition][axisKey]
 
   verify(
     sharedValue,

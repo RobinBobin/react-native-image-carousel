@@ -14,30 +14,37 @@ export const withTranslate: TWithSlideSharedValues<IWithTranslateReturnType> = (
 ) => {
   const translates = createSlideSharedValues(axes)
 
-  const getTranslate: TGetSharedValue = (slidePosition, axis) => {
+  const getTranslate: TGetSharedValue = (
+    slideDataSource,
+    slidePosition,
+    axis
+  ) => {
     return getSharedValue({
       axes,
       axis,
+      slideDataSource,
       slidePosition,
       slideSharedValues: translates,
       tag: 'translate'
     })
   }
 
-  const resetTranslate: TResetSlideSharedValues = (): void => {
-    resetSlideSharedValues(axes, (axis, slidePosition) => {
-      getTranslate(slidePosition, axis).value = carouselModel.getSlideOffset(
-        axis,
-        slidePosition
-      )
+  const resetTranslate: TResetSlideSharedValues = () => {
+    resetSlideSharedValues(axes, (axis, slideDataSource, slidePosition) => {
+      getTranslate(slideDataSource, slidePosition, axis).value =
+        carouselModel.getSlideOffset(axis, slidePosition)
     })
   }
 
-  const useTranslate: TUseAxisSharedValues = slidePosition => {
+  const useTranslate: TUseAxisSharedValues = (
+    slideDataSource,
+    slidePosition
+  ) => {
     return useAxisSharedValuesHelper({
       axes,
       getInitialValue: axis =>
         carouselModel.getSlideOffset(axis, slidePosition),
+      slideDataSource,
       slidePosition,
       slideSharedValues: translates
     })

@@ -1,9 +1,13 @@
+import type { TSlideDataSource } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type { TAnimatedViewStyle, TSlidePosition } from '../types'
 
 import { BaseAnimation } from './BaseAnimation'
 
 export class NoAnimation extends BaseAnimation {
-  override getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle {
+  override getStyle(
+    __: TSlideDataSource,
+    slidePosition: TSlidePosition
+  ): TAnimatedViewStyle {
     return {
       transform: [
         {

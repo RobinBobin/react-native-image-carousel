@@ -5,7 +5,7 @@ import type { TSlidePosition, TTransitionDirection } from '../../types'
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
 type TCarouselDimensionsKeys = keyof TCarouselDimensions
 
-type TSlideDatum = Record<TSlidePosition, number>
+type TSlideDatum = Readonly<Record<TSlidePosition, number>>
 type TSlideDataSource = 'primary' | 'secondary'
 
 type TOnPressData = Readonly<{
@@ -39,7 +39,7 @@ interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
   imageData: ReadonlyDeep<TImageData>
   isAutoTransitionStarted: boolean
   isTransitionInProgress: boolean
-  slideData: Record<TSlideDataSource, TSlideDatum>
+  slideData: Readonly<Record<TSlideDataSource, TSlideDatum>>
   slideDataSource: TSlideDataSource
   transitionDirection: TTransitionDirection
 }

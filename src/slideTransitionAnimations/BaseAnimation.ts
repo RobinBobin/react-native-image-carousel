@@ -1,4 +1,5 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
+import type { TSlideDataSource } from '../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type {
   TAnimatedViewStyle,
   TSlidePosition,
@@ -12,7 +13,11 @@ export abstract class BaseAnimation {
     protected readonly carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
   ) {}
 
-  abstract getStyle(slidePosition: TSlidePosition): TAnimatedViewStyle
+  abstract getStyle(
+    slideDataSource: TSlideDataSource,
+    slidePosition: TSlidePosition
+  ): TAnimatedViewStyle
+
   abstract handleFling(flingDirection: TTransitionDirection): void
   abstract move(): void
   abstract useStyles(): void

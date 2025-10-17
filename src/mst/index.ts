@@ -6,7 +6,8 @@ import type { TTransitionDirection } from '../types'
 import type {
   TCarouselDimensions,
   TImageDatum,
-  TImageRawData
+  TImageRawData,
+  TSlideDatum
 } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type {
   IImageCarouselModelVolatile,
@@ -15,10 +16,11 @@ import type {
 } from './types'
 
 import { flow, getType, toGenerator } from 'mobx-state-tree'
-import { isNumber } from 'radashi'
+import { isNumber, objectify } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
+import { SLIDE_DATA_SOURCES } from '../constants'
 import { handleError } from '../helpers/handleError'
 import { isNumericHeightAndWidth } from '../helpers/mst/isNumericHeightAndWidth'
 import { SlideOverAnimation } from '../slideTransitionAnimations'
@@ -69,29 +71,16 @@ export const ImageCarouselModel =
     }))
     // eslint-disable-next-line max-lines-per-function
     .actions(self => ({
+      _toggle(this: void): void {
+        self.slideDataSource = self.nextSlideDataSource
+      },
       move(this: void, transitionDirection: TTransitionDirection): boolean {
         if (!self.canTransition) {
           return false
         }
 
+        self.isTransitionInProgress = true
         self.transitionDirection = transitionDirection
-
-        // self.slideDataSource =
-        //   self.slideDataSource === 'primary' ? 'secondary' : 'primary'
-
-        const { current } = self.slideData.primary
-        const offset = 1
-
-        const [next, previous] = [offset, -offset].map(delta => {
-          const result = (current + delta) % self.imageData.length
-
-          // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          return result < 0 ? self.imageData.length + result : result
-        }) as [number, number]
-
-        self.slideData.primary = { current, next, previous }
-
-        self.slideData = { ...self.slideData }
 
         self.slideTransitionAnimation.move()
 
@@ -111,6 +100,7 @@ export const ImageCarouselModel =
           self.carouselDimensions = carouselDimensions
         }
       },
+      // eslint-disable-next-line max-lines-per-function
       setImageData: flow(function* (
         imageData: TImageRawData
       ): Generator<Promise<TSourceData[]>, void> {
@@ -164,12 +154,18 @@ export const ImageCarouselModel =
             self.aspectRatio = self.getImageDatum(0).aspectRatio
           }
 
-          self.slideData.primary = {
+          const slideDatum: TSlideDatum = {
             current: 0,
             next: 1,
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             previous: self.imageData.length - 1
           }
+
+          self.slideData = objectify(
+            SLIDE_DATA_SOURCES,
+            slideDataSource => slideDataSource,
+            () => ({ ...slideDatum })
+          )
         } catch (error) {
           handleError(error)
         }
@@ -218,9 +214,14 @@ export const ImageCarouselModel =
         finishTransition(this: void, options?: unknown): void {
           baseFinishTransition(options)
 
-          if (self.isAutoTransitionStarted) {
-            self.move(self.transitionDirection)
-          }
+          setTimeout(() => {
+            self._toggle()
+
+            if (self.isAutoTransitionStarted) {
+              self.move(self.transitionDirection)
+            }
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+          }, 50)
         },
         startAutoTransition(
           this: void,

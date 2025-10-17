@@ -18,7 +18,7 @@ const Slide: React.FC<TSlideProps> = observer(
       <Animated.View
         style={[
           StyleSheet.absoluteFill,
-          slideTransitionAnimation.getStyle(position)
+          slideTransitionAnimation.getStyle(slideDataSource, position)
         ]}
       >
         <SlideImage

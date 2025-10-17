@@ -1,5 +1,6 @@
 import type { SharedValue } from 'react-native-reanimated'
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
+import type { TSlideDataSource } from '../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type { TAxes, TAxis, TSlidePosition } from '../../../types'
 
 type TValue = number | `${number}%`
@@ -17,9 +18,13 @@ type TAxisSharedValues<
 type TSlideSharedValues<
   TCanBeUndefined = false,
   Value extends TValue = number
-> = Record<TSlidePosition, TAxisSharedValues<TCanBeUndefined, Value>>
+> = Record<
+  TSlideDataSource,
+  Record<TSlidePosition, TAxisSharedValues<TCanBeUndefined, Value>>
+>
 
 type TUseAxisSharedValues<Value extends TValue = number> = (
+  slideDataSource: TSlideDataSource,
   slidePosition: TSlidePosition
 ) => TAxisSharedValues<false, Value>
 

@@ -7,6 +7,7 @@ import { useSharedValue } from 'react-native-reanimated'
 export const useAxisSharedValues = <Value extends TValue = number>({
   axes,
   getInitialValue,
+  slideDataSource,
   slidePosition,
   slideSharedValues
 }: IUseAxisSharedValuesParams<Value>): TAxisSharedValues<false, Value> => {
@@ -15,10 +16,13 @@ export const useAxisSharedValues = <Value extends TValue = number>({
     const sharedValue = useSharedValue(getInitialValue(axis))
 
     // The check is to avoid the warning: [Reanimated] Tried to modify key `x` of an object which has been already passed to a worklet.
-    if (!slideSharedValues[slidePosition][axis]) {
-      slideSharedValues[slidePosition][axis] = sharedValue
+    if (!slideSharedValues[slideDataSource][slidePosition][axis]) {
+      slideSharedValues[slideDataSource][slidePosition][axis] = sharedValue
     }
   })
 
-  return slideSharedValues[slidePosition] as TAxisSharedValues<false, Value>
+  return slideSharedValues[slideDataSource][slidePosition] as TAxisSharedValues<
+    false,
+    Value
+  >
 }

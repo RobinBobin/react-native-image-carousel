@@ -11,7 +11,7 @@ import {
   withTiming
 } from 'react-native-reanimated'
 
-import { SLIDE_POSITIONS } from '../../constants'
+import { SLIDE_DATA_SOURCES, SLIDE_POSITIONS } from '../../constants'
 import { BaseAnimationWithAxes } from './BaseAnimationWithAxes'
 import { getAnimatedViewStyle, getAxis, withTranslate } from './helpers'
 
@@ -28,7 +28,8 @@ export class SlideOverAnimation extends BaseAnimationWithAxes {
   }
 
   override handleFling(flingDirection: TTransitionDirection): void {
-    const { finishTransition, transitionDirection } = this.carouselModel
+    const { finishTransition, slideDataSource, transitionDirection } =
+      this.carouselModel
 
     const isFlingDirectionTheSame = flingDirection === transitionDirection
 
@@ -37,7 +38,11 @@ export class SlideOverAnimation extends BaseAnimationWithAxes {
       transitionDirection
     )
 
-    const translate = this.withTranslate.getTranslate(transitionDirection)
+    const translate = this.withTranslate.getTranslate(
+      slideDataSource,
+      transitionDirection
+    )
+
     const isAnimating = translate.value !== slideOffset
 
     if (isAnimating && isFlingDirectionTheSame) {
@@ -48,24 +53,29 @@ export class SlideOverAnimation extends BaseAnimationWithAxes {
 
     const slidePosition = isAnimating ? transitionDirection : flingDirection
 
-    this.withTranslate.getTranslate(slidePosition).value = withTiming(
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      isAnimating ? slideOffset : 0,
-      { duration: this.duration },
-      finished => {
-        if (finished ?? true) {
-          runOnJS(finishTransition)(isAnimating ? false : flingDirection)
+    this.withTranslate.getTranslate(slideDataSource, slidePosition).value =
+      withTiming(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        isAnimating ? slideOffset : 0,
+        { duration: this.duration },
+        finished => {
+          if (finished ?? true) {
+            runOnJS(finishTransition)(isAnimating ? false : flingDirection)
+          }
         }
-      }
-    )
+      )
   }
 
   override move(): void {
-    const { finishTransition, transitionDirection } = this.carouselModel
+    const { finishTransition, slideDataSource, transitionDirection } =
+      this.carouselModel
 
     this.withTranslate.resetTranslate()
 
-    this.withTranslate.getTranslate(transitionDirection).value = withDelay(
+    this.withTranslate.getTranslate(
+      slideDataSource,
+      transitionDirection
+    ).value = withDelay(
       this.preTransitionDelayToUse,
       withTiming(
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -82,18 +92,26 @@ export class SlideOverAnimation extends BaseAnimationWithAxes {
 
   override useStyles(): void {
     this.styles = objectify(
-      SLIDE_POSITIONS,
-      slidePosition => slidePosition,
-      slidePosition => {
-        const translate = this.withTranslate.useTranslate(slidePosition)
+      SLIDE_DATA_SOURCES,
+      slideDataSource => slideDataSource,
+      slideDataSource =>
+        objectify(
+          SLIDE_POSITIONS,
+          slidePosition => slidePosition,
+          slidePosition => {
+            const translate = this.withTranslate.useTranslate(
+              slideDataSource,
+              slidePosition
+            )
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return useAnimatedStyle(
-          () =>
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
-            getAnimatedViewStyle(translate, 'translate') as any
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return useAnimatedStyle(
+              () =>
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+                getAnimatedViewStyle(translate, 'translate') as any
+            )
+          }
         )
-      }
     )
   }
 }
