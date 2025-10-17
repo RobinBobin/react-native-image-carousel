@@ -67,6 +67,6 @@ const SnappingFlatList: React.FC<TWithCarouselModel> = observer(
   }
 )
 
-SnappingFlatList.displayName = 'ImageCarousel/SnappingFlatList'
+SnappingFlatList.displayName = 'SnappingFlatList'
 
 export { SnappingFlatList }

@@ -28,6 +28,6 @@ const Placeholder: React.FC<TWithCarouselModel> = observer(
   }
 )
 
-Placeholder.displayName = 'ImageCarousel/Placeholder'
+Placeholder.displayName = 'Placeholder'
 
 export { Placeholder }

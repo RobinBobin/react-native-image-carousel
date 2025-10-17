@@ -8,7 +8,7 @@ import { View } from 'react-native'
 import { GestureDetector } from 'react-native-gesture-handler'
 
 import { useGesture } from './hooks/useGesture'
-import { Slides, SnappingFlatList } from './implementations'
+import { SlideGroups, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
 import { getContainerStyle } from './styles'
 
@@ -35,7 +35,7 @@ const ImageCarousel: React.FC<TWithCarouselModel> = observer(
     const onLayout: ViewProps['onLayout'] = ({ nativeEvent: { layout } }) =>
       setCarouselDimensions(pick(layout, ['width', 'height']))
 
-    const Implementation = isSnapEnabled ? SnappingFlatList : Slides
+    const Implementation = isSnapEnabled ? SnappingFlatList : SlideGroups
 
     return (
       <GestureDetector gesture={gesture}>

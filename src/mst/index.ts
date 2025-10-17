@@ -76,7 +76,10 @@ export const ImageCarouselModel =
 
         self.transitionDirection = transitionDirection
 
-        const { current } = self.imageDataIndices
+        // self.slideDataSource =
+        //   self.slideDataSource === 'primary' ? 'secondary' : 'primary'
+
+        const { current } = self.slideData.primary
         const offset = 1
 
         const [next, previous] = [offset, -offset].map(delta => {
@@ -86,7 +89,9 @@ export const ImageCarouselModel =
           return result < 0 ? self.imageData.length + result : result
         }) as [number, number]
 
-        self.imageDataIndices = { current, next, previous }
+        self.slideData.primary = { current, next, previous }
+
+        self.slideData = { ...self.slideData }
 
         self.slideTransitionAnimation.move()
 
@@ -157,6 +162,13 @@ export const ImageCarouselModel =
           if (!self.aspectRatio) {
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
             self.aspectRatio = self.getImageDatum(0).aspectRatio
+          }
+
+          self.slideData.primary = {
+            current: 0,
+            next: 1,
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            previous: self.imageData.length - 1
           }
         } catch (error) {
           handleError(error)

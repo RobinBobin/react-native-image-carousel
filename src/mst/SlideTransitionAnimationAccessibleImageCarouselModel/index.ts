@@ -2,7 +2,8 @@ import type { Instance } from 'mobx-state-tree'
 import type { TAxis, TSlidePosition } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
-  TCarouselDimensionsKeys
+  TCarouselDimensionsKeys,
+  TSlideDatum
 } from './types'
 
 import { types } from 'mobx-state-tree'
@@ -14,17 +15,25 @@ import { getTransitionDirection } from './helpers'
 export const SlideTransitionAnimationAccessibleImageCarouselModel = types
   .model('SlideTransitionAnimationAccessibleImageCarouselModel')
   .volatile<ISlideTransitionAnimationAccessibleImageCarouselModelVolatile>(
-    () => ({
-      imageData: [],
-      imageDataIndices: {
+    () => {
+      const slideDatum: TSlideDatum = {
         current: 0,
         next: 0,
         previous: 0
-      },
-      isAutoTransitionStarted: false,
-      isTransitionInProgress: false,
-      transitionDirection: 'next'
-    })
+      }
+
+      return {
+        imageData: [],
+        isAutoTransitionStarted: false,
+        isTransitionInProgress: false,
+        slideData: {
+          primary: slideDatum,
+          secondary: slideDatum
+        },
+        slideDataSource: 'primary',
+        transitionDirection: 'next'
+      }
+    }
   )
   .views(self => ({
     getSlideOffset(axis: TAxis, slidePosition: TSlidePosition): number {
@@ -52,10 +61,10 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
       )
 
       if (transitionDirection) {
-        self.imageDataIndices = {
-          ...self.imageDataIndices,
-          current: self.imageDataIndices[transitionDirection]
-        }
+        self.slideData.primary.current =
+          self.slideData.primary[transitionDirection]
+
+        self.slideData = { ...self.slideData }
       }
     }
   }))
