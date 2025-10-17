@@ -1,6 +1,6 @@
 import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
 import type { TAxis, TTransitionDirection } from '../../types'
-import type { TWithTranslateReturnType } from './helpers'
+import type { IWithTranslateReturnType } from './helpers'
 
 import { objectify } from 'radashi'
 import {
@@ -13,10 +13,10 @@ import {
 
 import { SLIDE_POSITIONS } from '../../constants'
 import { BaseAnimationWithAxes } from './BaseAnimationWithAxes'
-import { getAxis, getTranslationAnimatedStyle, withTranslate } from './helpers'
+import { getAnimatedViewStyle, getAxis, withTranslate } from './helpers'
 
 export class SlideOverAnimation extends BaseAnimationWithAxes {
-  private readonly withTranslate: TWithTranslateReturnType
+  private readonly withTranslate: IWithTranslateReturnType
 
   constructor(
     carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance,
@@ -85,14 +85,13 @@ export class SlideOverAnimation extends BaseAnimationWithAxes {
       SLIDE_POSITIONS,
       slidePosition => slidePosition,
       slidePosition => {
-        const axisSharedValues =
-          this.withTranslate.useSharedValues(slidePosition)
+        const translate = this.withTranslate.useTranslate(slidePosition)
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return useAnimatedStyle(
           () =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
-            getTranslationAnimatedStyle(axisSharedValues) as any
+            getAnimatedViewStyle(translate, 'translate') as any
         )
       }
     )

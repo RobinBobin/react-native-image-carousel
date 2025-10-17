@@ -1,3 +1,2 @@
-export { getTranslationAnimatedStyle } from './getTranslationAnimatedStyle'
-export type { TWithTranslateReturnType } from './types'
+export type { IWithTranslateReturnType } from './types'
 export { withTranslate } from './withTranslate'

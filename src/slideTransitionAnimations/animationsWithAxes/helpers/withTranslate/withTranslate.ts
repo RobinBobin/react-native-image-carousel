@@ -1,67 +1,51 @@
-import type { SharedValue } from 'react-native-reanimated'
-import type { ISlideTransitionAnimationAccessibleImageCarouselModelInstance } from '../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel'
-import type { TAxes } from '../../../../types'
-import type { TAxisSharedValues, TSlideSharedValues } from '../types'
-import type { TWithTranslateReturnType } from './types'
+import type { TGetSharedValue } from '../getSharedValue'
+import type { TResetSlideSharedValues } from '../resetSlideSharedValues'
+import type { TUseAxisSharedValues, TWithSlideSharedValues } from '../types'
+import type { IWithTranslateReturnType } from './types'
 
-import { objectify } from 'radashi'
-import { useSharedValue } from 'react-native-reanimated'
-import { verify } from 'simple-common-utils'
+import { createSlideSharedValues } from '../createSlideSharedValues'
+import { getSharedValue } from '../getSharedValue'
+import { resetSlideSharedValues } from '../resetSlideSharedValues'
+import { useAxisSharedValuesHelper } from '../useAxisSharedValues'
 
-import { SLIDE_POSITIONS } from '../../../../constants'
-import { getAxis } from '../getAxis'
+export const withTranslate: TWithSlideSharedValues<IWithTranslateReturnType> = (
+  axes,
+  carouselModel
+) => {
+  const translates = createSlideSharedValues(axes)
 
-export const withTranslate = (
-  axes: TAxes,
-  carouselModel: ISlideTransitionAnimationAccessibleImageCarouselModelInstance
-): TWithTranslateReturnType => {
-  const axisSharedValues = objectify(
-    axes,
-    axis => axis,
-    () => undefined
-  )
+  const getTranslate: TGetSharedValue = (slidePosition, axis) => {
+    return getSharedValue({
+      axes,
+      axis,
+      slidePosition,
+      slideSharedValues: translates,
+      tag: 'translate'
+    })
+  }
 
-  const translates: TSlideSharedValues<true> = {
-    current: { ...axisSharedValues },
-    next: { ...axisSharedValues },
-    previous: { ...axisSharedValues }
+  const resetTranslate: TResetSlideSharedValues = (): void => {
+    resetSlideSharedValues(axes, (axis, slidePosition) => {
+      getTranslate(slidePosition, axis).value = carouselModel.getSlideOffset(
+        axis,
+        slidePosition
+      )
+    })
+  }
+
+  const useTranslate: TUseAxisSharedValues = slidePosition => {
+    return useAxisSharedValuesHelper({
+      axes,
+      getInitialValue: axis =>
+        carouselModel.getSlideOffset(axis, slidePosition),
+      slidePosition,
+      slideSharedValues: translates
+    })
   }
 
   return {
-    getTranslate(slidePosition, axis): SharedValue<number> {
-      const axisKey = getAxis(axes, axis)
-
-      const translate = translates[slidePosition][axisKey]
-
-      verify(
-        translate,
-        `withTranslate().getTranslate(${slidePosition}, ${axis}): 'translate' can't be nullish`
-      )
-
-      return translate
-    },
-    resetTranslate(): void {
-      SLIDE_POSITIONS.forEach(slidePosition => {
-        axes.forEach(axis => {
-          this.getTranslate(slidePosition, axis).value =
-            carouselModel.getSlideOffset(axis, slidePosition)
-        })
-      })
-    },
-    useSharedValues(slidePosition): TAxisSharedValues {
-      axes.forEach(axis => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const translate = useSharedValue(
-          carouselModel.getSlideOffset(axis, slidePosition)
-        )
-
-        // [Reanimated] Tried to modify key `x` of an object which has been already passed to a worklet.
-        if (!translates[slidePosition][axis]) {
-          translates[slidePosition][axis] = translate
-        }
-      })
-
-      return translates[slidePosition] as TAxisSharedValues
-    }
+    getTranslate,
+    resetTranslate,
+    useTranslate
   }
 }

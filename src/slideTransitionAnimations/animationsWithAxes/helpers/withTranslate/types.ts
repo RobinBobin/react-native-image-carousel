@@ -1,11 +1,9 @@
-import type { SharedValue } from 'react-native-reanimated'
-import type { TAxis, TSlidePosition } from '../../../../types'
-import type { TWithReturnType } from '../types'
+import type { TGetSharedValue } from '../getSharedValue'
+import type { TResetSlideSharedValues } from '../resetSlideSharedValues'
+import type { TUseAxisSharedValues } from '../types'
 
-export type TWithTranslateReturnType = TWithReturnType<{
-  getTranslate: (
-    slidePosition: TSlidePosition,
-    axis?: TAxis
-  ) => SharedValue<number>
-  resetTranslate: () => void
-}>
+export interface IWithTranslateReturnType {
+  getTranslate: TGetSharedValue
+  resetTranslate: TResetSlideSharedValues
+  useTranslate: TUseAxisSharedValues
+}
