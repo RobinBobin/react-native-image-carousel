@@ -1,2 +1,2 @@
-export { SlideGroups } from './SlideGroups'
+export { Slides } from './Slides'
 export { SnappingFlatList } from './SnappingFlatList'

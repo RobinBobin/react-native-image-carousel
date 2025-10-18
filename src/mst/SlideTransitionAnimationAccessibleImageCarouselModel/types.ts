@@ -1,12 +1,13 @@
 import type { FlexStyle, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
+import type { TSlidesTransitionAnimation } from '../../slideTransitionAnimations'
 import type { TSlidePosition, TTransitionDirection } from '../../types'
 
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
 type TCarouselDimensionsKeys = keyof TCarouselDimensions
 
-type TSlideDatum = Readonly<Record<TSlidePosition, number>>
-type TSlideDataSource = 'primary' | 'secondary'
+type TSlideDatum = Readonly<[TSlidePosition, number]>
+type TSlideId = 'slide1' | 'slide2' | 'slide3'
 
 type TOnPressData = Readonly<{
   imageDataIndex: number
@@ -17,6 +18,7 @@ type TOnPress = (data: TOnPressData) => void
 
 interface ICommonImageData extends Pick<ViewStyle, 'backgroundColor'> {
   onPress?: TOnPress
+  overlay?: React.ReactNode
 }
 
 interface IRawImageData {
@@ -39,8 +41,8 @@ interface ISlideTransitionAnimationAccessibleImageCarouselModelVolatile {
   imageData: ReadonlyDeep<TImageData>
   isAutoTransitionStarted: boolean
   isTransitionInProgress: boolean
-  slideData: Readonly<Record<TSlideDataSource, TSlideDatum>>
-  slideDataSource: TSlideDataSource
+  slideData: Readonly<Record<TSlideId, TSlideDatum>>
+  slidesTransitionAnimation: TSlidesTransitionAnimation
   transitionDirection: TTransitionDirection
 }
 
@@ -55,6 +57,6 @@ export type {
   TImageRawDatum,
   TOnPress,
   TOnPressData,
-  TSlideDataSource,
-  TSlideDatum
+  TSlideDatum,
+  TSlideId
 }

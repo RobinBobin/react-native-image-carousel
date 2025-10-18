@@ -1,4 +1,4 @@
-export * from './animationsWithAxes'
-export { BaseAnimation } from './BaseAnimation'
-export { BaseAnimationWithDuration } from './BaseAnimationWithDuration'
-export { NoAnimation } from './NoAnimation'
+export * from './constants'
+export { createSlideOverAnimation } from './createSlideOverAnimation'
+export * from './helpers'
+export * from './types'

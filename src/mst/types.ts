@@ -3,7 +3,6 @@ import type {
   StyleProp,
   ViewStyle
 } from 'react-native'
-import type { BaseAnimation } from '../slideTransitionAnimations'
 import type { ICommonImageData } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 
 type TSlideSize =
@@ -16,12 +15,12 @@ interface IImageCarouselModelVolatile {
   aspectRatio: number
   imageGap: number
   isHorizontal: boolean
+  isRedrawForced: boolean
   isSlideCentered: boolean
   isSnapEnabled: boolean
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideSize: TSlideSize
-  slideTransitionAnimation: BaseAnimation
   style?: StyleProp<ViewStyle>
 }
 

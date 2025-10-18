@@ -1,13 +1,12 @@
 import type { Instance } from 'mobx-state-tree'
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
-import type { BaseAnimation } from '../slideTransitionAnimations'
+import type { TSlidesTransitionAnimation } from '../slideTransitionAnimations'
 import type { TTransitionDirection } from '../types'
 import type {
   TCarouselDimensions,
   TImageDatum,
-  TImageRawData,
-  TSlideDatum
+  TImageRawData
 } from './SlideTransitionAnimationAccessibleImageCarouselModel/types'
 import type {
   IImageCarouselModelVolatile,
@@ -16,29 +15,27 @@ import type {
 } from './types'
 
 import { flow, getType, toGenerator } from 'mobx-state-tree'
-import { isNumber, objectify } from 'radashi'
+import { isNumber } from 'radashi'
 import { Image } from 'react-native'
 import { verify } from 'simple-common-utils'
 
-import { SLIDE_DATA_SOURCES } from '../constants'
 import { handleError } from '../helpers/handleError'
 import { isNumericHeightAndWidth } from '../helpers/mst/isNumericHeightAndWidth'
-import { SlideOverAnimation } from '../slideTransitionAnimations'
 import { SlideTransitionAnimationAccessibleImageCarouselModel } from './SlideTransitionAnimationAccessibleImageCarouselModel'
 
 export const ImageCarouselModel =
   SlideTransitionAnimationAccessibleImageCarouselModel.named(
     'ImageCarouselModel'
   )
-    .volatile<IImageCarouselModelVolatile>(self => ({
+    .volatile<IImageCarouselModelVolatile>(() => ({
       aspectRatio: 0,
       disposers: [],
       imageGap: 0,
       isHorizontal: true,
+      isRedrawForced: false,
       isSlideCentered: true,
       isSnapEnabled: false,
-      slideSize: 'wholeCarousel',
-      slideTransitionAnimation: new SlideOverAnimation(self)
+      slideSize: 'wholeCarousel'
     }))
     .views(self => ({
       get canTransition(): boolean {
@@ -71,9 +68,6 @@ export const ImageCarouselModel =
     }))
     // eslint-disable-next-line max-lines-per-function
     .actions(self => ({
-      _toggle(this: void): void {
-        self.slideDataSource = self.nextSlideDataSource
-      },
       move(this: void, transitionDirection: TTransitionDirection): boolean {
         if (!self.canTransition) {
           return false
@@ -82,9 +76,17 @@ export const ImageCarouselModel =
         self.isTransitionInProgress = true
         self.transitionDirection = transitionDirection
 
-        self.slideTransitionAnimation.move()
+        self.slidesTransitionAnimation.animate({
+          isAutoTransitionStarted: self.isAutoTransitionStarted,
+          onFinish: self.finishTransition,
+          slideData: self.slideData,
+          transitionDirection
+        })
 
         return true
+      },
+      redraw(): void {
+        self.isRedrawForced = !self.isRedrawForced
       },
       resetCarouselDimensions(this: void): void {
         self.carouselDimensions = undefined
@@ -100,7 +102,6 @@ export const ImageCarouselModel =
           self.carouselDimensions = carouselDimensions
         }
       },
-      // eslint-disable-next-line max-lines-per-function
       setImageData: flow(function* (
         imageData: TImageRawData
       ): Generator<Promise<TSourceData[]>, void> {
@@ -154,18 +155,14 @@ export const ImageCarouselModel =
             self.aspectRatio = self.getImageDatum(0).aspectRatio
           }
 
-          const slideDatum: TSlideDatum = {
-            current: 0,
-            next: 1,
+          self.slideData = {
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            previous: self.imageData.length - 1
+            slide1: ['previous', self.imageData.length - 1],
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            slide2: ['current', 0],
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            slide3: ['next', 1]
           }
-
-          self.slideData = objectify(
-            SLIDE_DATA_SOURCES,
-            slideDataSource => slideDataSource,
-            () => ({ ...slideDatum })
-          )
         } catch (error) {
           handleError(error)
         }
@@ -194,11 +191,11 @@ export const ImageCarouselModel =
       setSlideSize(this: void, slideSize: TSlideSize): void {
         self.slideSize = slideSize
       },
-      setSlideTransitionAnimation(
+      setSlidesTransitionAnimation(
         this: void,
-        slideTransitionAnimation: BaseAnimation
+        slidesTransitionAnimation: ReadonlyDeep<TSlidesTransitionAnimation>
       ): void {
-        self.slideTransitionAnimation = slideTransitionAnimation
+        self.slidesTransitionAnimation = slidesTransitionAnimation
       },
       setStyle(style: StyleProp<ViewStyle>): void {
         self.style = style
@@ -214,14 +211,9 @@ export const ImageCarouselModel =
         finishTransition(this: void, options?: unknown): void {
           baseFinishTransition(options)
 
-          setTimeout(() => {
-            self._toggle()
-
-            if (self.isAutoTransitionStarted) {
-              self.move(self.transitionDirection)
-            }
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-          }, 50)
+          if (self.isAutoTransitionStarted) {
+            self.move(self.transitionDirection)
+          }
         },
         startAutoTransition(
           this: void,

@@ -11,13 +11,14 @@ interface ISlideImageProps extends ISlideImagePropsBase {
 }
 
 const SlideImage: React.FC<ISlideImageProps> = observer(
-  ({ carouselModel, imageDataIndex, position }) => {
-    const { aspectRatio, backgroundColor, onPress, source } =
+  ({ carouselModel, imageDataIndex, position, slideId }) => {
+    const { aspectRatio, backgroundColor, overlay, source } =
       carouselModel.getImageDatum(imageDataIndex)
 
     const onImagePress = (): void => {
-      onPress?.({
+      console.log({
         imageDataIndex,
+        slideId,
         slidePosition: position
       })
     }
@@ -28,6 +29,7 @@ const SlideImage: React.FC<ISlideImageProps> = observer(
         style={getContainerStyle(backgroundColor, carouselModel)}
       >
         <Image source={source} style={getImageStyle(aspectRatio)} />
+        {overlay}
       </Pressable>
     )
   }

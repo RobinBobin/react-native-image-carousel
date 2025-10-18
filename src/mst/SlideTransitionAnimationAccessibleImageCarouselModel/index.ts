@@ -3,13 +3,14 @@ import type { TAxis, TSlidePosition } from '../../types'
 import type {
   ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
   TCarouselDimensionsKeys,
-  TSlideDataSource
+  TSlideId
 } from './types'
 
 import { types } from 'mobx-state-tree'
 import { isNumber, objectify } from 'radashi'
 
-import { SLIDE_DATA_SOURCES, SLIDE_POSITIONS } from '../../constants'
+import { SLIDE_IDS } from '../../constants'
+import { createSlideOverAnimation } from '../../slideTransitionAnimations'
 import { getTransitionDirection } from './helpers'
 
 // eslint-disable-next-line id-length
@@ -21,25 +22,16 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
       isAutoTransitionStarted: false,
       isTransitionInProgress: false,
       slideData: objectify(
-        SLIDE_DATA_SOURCES,
-        slideDataSource => slideDataSource,
-        () =>
-          objectify(
-            SLIDE_POSITIONS,
-            slidePosition => slidePosition,
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            () => 0
-          )
+        SLIDE_IDS,
+        slideId => slideId,
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        () => ['current', 0]
       ),
-      slideDataSource: 'primary',
+      slidesTransitionAnimation: createSlideOverAnimation(),
       transitionDirection: 'next'
     })
   )
   .views(self => ({
-    get nextSlideDataSource(): TSlideDataSource {
-      return self.slideDataSource === 'primary' ? 'secondary' : 'primary'
-    },
-
     getSlideOffset(axis: TAxis, slidePosition: TSlidePosition): number {
       if (slidePosition === 'current') {
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
@@ -57,6 +49,39 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
     }
   }))
   .actions(self => ({
+    setNextSlideData(this: void): void {
+      const nextSlideData = { ...self.slideData }
+
+      const slidePositions = Object.values(nextSlideData).map(
+        ([slidePosition]) => slidePosition
+      )
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      slidePositions.unshift(slidePositions.pop()!)
+
+      Object.entries(nextSlideData).forEach(
+        ([slideId, [, imageDataIndex]], index) => {
+          nextSlideData[slideId as TSlideId] = [
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            slidePositions[index]!,
+            imageDataIndex
+          ]
+        }
+      )
+
+      self.slideData = nextSlideData
+    }
+  }))
+  .actions(self => ({
+    reset(): void {
+      self.slidesTransitionAnimation.reset({
+        slide1: self.getSlideOffset('x', self.slideData.slide1[0]),
+        slide2: self.getSlideOffset('x', self.slideData.slide2[0]),
+        slide3: self.getSlideOffset('x', self.slideData.slide3[0])
+      })
+    }
+  }))
+  .actions(self => ({
     finishTransition(this: void, options?: unknown): void {
       self.isTransitionInProgress = false
 
@@ -68,20 +93,9 @@ export const SlideTransitionAnimationAccessibleImageCarouselModel = types
         return
       }
 
-      const current = self.slideData[self.slideDataSource][transitionDirection]
-      const offset = 1
+      self.setNextSlideData()
 
-      const [next, previous] = [offset, -offset].map(delta => {
-        const result = (current + delta) % self.imageData.length
-
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        return result < 0 ? self.imageData.length + result : result
-      }) as [number, number]
-
-      self.slideData = {
-        ...self.slideData,
-        [self.nextSlideDataSource]: { current, next, previous }
-      }
+      self.reset()
     }
   }))
 
