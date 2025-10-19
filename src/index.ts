@@ -1,21 +1,22 @@
-export * from './components/ImageCarousel'
-export * from './components/ImageCarousel/hooks/useImageCarouselModel'
+export { ImageCarousel } from './components/ImageCarousel'
+export { useImageCarouselModel } from './components/ImageCarousel/hooks/useImageCarouselModel'
 export * from './components/ImageCarousel/hooks/useImageCarouselModel/types'
-export * from './constants'
 export { setHandleError } from './helpers/handleError'
-export { isNumericHeightAndWidth } from './helpers/mst/isNumericHeightAndWidth'
-export * from './mst'
-export * from './mst/SlideTransitionAnimationAccessibleImageCarouselModel'
+export type { ICarouselModelInstance } from './mst/CarouselModel/CarouselModel'
+export {
+  isNumericHeightAndWidth,
+  verifyNumericCarouselDimensions
+} from './mst/CarouselModel/helpers'
+export * from './mst/CarouselModel/types/imageData'
+export * from './mst/CarouselModel/types/onPress'
 export type {
+  TCarouselDimensionKey,
   TCarouselDimensions,
-  TCarouselDimensionsKeys,
-  TImageData,
-  TImageDatum,
-  TImageRawData,
-  TImageRawDatum,
-  TOnPress,
-  TOnPressData
-} from './mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
-export type { TSlideSize } from './mst/types'
+  TNumericCarouselDimensions,
+  TRCarouselDimensions,
+  TSlideSize
+} from './mst/CarouselModel/types/types'
+export type { TWithCarouselModel } from './mst/CarouselModel/types/withCarouselModel'
+export * from './mst/constants'
+export * from './mst/types'
 export * from './slideTransitionAnimations'
-export * from './types'

@@ -1,12 +1,12 @@
 import type { ViewProps } from 'react-native'
-import type { TWithCarouselModel } from '../../types'
+import type { TWithCarouselModel } from '../../mst'
 
 import { observer } from 'mobx-react-lite'
 import { pick } from 'radashi'
 import React from 'react'
 import { View } from 'react-native'
 
-import { Slides, SnappingFlatList } from './implementations'
+import { SlideGroup, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
 import { getContainerStyle } from './styles'
 
@@ -30,7 +30,7 @@ const ImageCarousel: React.FC<TWithCarouselModel> = observer(
     const onLayout: ViewProps['onLayout'] = ({ nativeEvent: { layout } }) =>
       setCarouselDimensions(pick(layout, ['width', 'height']))
 
-    const Implementation = isSnapEnabled ? SnappingFlatList : Slides
+    const Implementation = isSnapEnabled ? SnappingFlatList : SlideGroup
 
     return (
       <>

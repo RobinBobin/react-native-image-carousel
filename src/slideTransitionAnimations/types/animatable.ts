@@ -1,13 +1,15 @@
-import type { ISlideTransitionAnimationAccessibleImageCarouselModelVolatile } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { ICarouselModelVolatile } from '../../mst'
 
 type TAnimationCancelled = () => void
 type TAnimationFinished = (params?: unknown) => void
 
+type TFromCarouselModelVolatile = Pick<
+  ICarouselModelVolatile,
+  'isAutoTransitionStarted' | 'slideData' | 'transitionDirection'
+>
+
 type TAnimateParams = Readonly<
-  Pick<
-    ISlideTransitionAnimationAccessibleImageCarouselModelVolatile,
-    'isAutoTransitionStarted' | 'slideData' | 'transitionDirection'
-  > & {
+  TFromCarouselModelVolatile & {
     onCancel?: TAnimationCancelled | undefined
     onFinish: TAnimationFinished
   }

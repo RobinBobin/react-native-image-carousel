@@ -2,5 +2,6 @@
 export * from './animatable'
 export * from './durationAndPreTransitionDelay'
 export * from './resettable'
-export * from './slidesTransitionAnimation'
+export * from './slideGroupTransitionAnimation'
 export * from './slideTransitionAnimation'
+export * from './types'

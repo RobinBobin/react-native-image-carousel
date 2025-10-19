@@ -1,13 +1,13 @@
 import type { FlatListProps, ListRenderItem } from 'react-native'
-import type { TWithCarouselModel } from '../../../../types'
+import type { TWithCarouselModel } from '../../../../mst'
 
 import { observer } from 'mobx-react-lite'
 import { range } from 'radashi'
 import { useRef } from 'react'
 import { FlatList, View } from 'react-native'
 
-import { getNumericSlideSize } from '../../../../helpers/mst/getNumericSlideSize'
 import { SlideImage } from '../../../common/SlideImage'
+import { getNumericSlideSize } from '../../../helpers/getNumericSlideSize'
 
 type TFlatListProps = FlatListProps<number>
 
@@ -18,9 +18,8 @@ const SnappingFlatList: React.FC<TWithCarouselModel> = observer(
 
     const slideSize = getNumericSlideSize(carouselModel)
 
-    const { imageData, imageGap, isHorizontal } = carouselModel
+    const { imageData, imageGap } = carouselModel
 
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const data = Array.from(range(imageData.length - 1))
 
     const ItemSeparatorComponent: React.FC = () => {
@@ -50,15 +49,22 @@ const SnappingFlatList: React.FC<TWithCarouselModel> = observer(
     }
 
     const renderItem: ListRenderItem<number> = ({ index }) => {
-      return <SlideImage carouselModel={carouselModel} imageDataIndex={index} />
+      return (
+        <SlideImage
+          carouselModel={carouselModel}
+          imageDataIndex={index}
+          slideId='slide1'
+          slidePosition='current'
+        />
+      )
     }
 
     return (
       <FlatList
+        horizontal
         ItemSeparatorComponent={ItemSeparatorComponent}
         data={data}
         getItemLayout={getItemLayout}
-        horizontal={isHorizontal}
         onMomentumScrollEnd={onMomentumScrollEnd}
         ref={flatList}
         renderItem={renderItem}

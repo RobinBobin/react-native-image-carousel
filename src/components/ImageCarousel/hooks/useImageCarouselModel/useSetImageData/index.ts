@@ -2,6 +2,7 @@ import type { TUseSetImageDataParams } from './types'
 
 import useAsync from 'react-use/lib/useAsync'
 
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 export const useSetImageData = ({
   carouselModel,
   imageData,

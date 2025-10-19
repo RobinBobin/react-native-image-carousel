@@ -1,18 +1,18 @@
-import type { IImageCarouselModelInstance } from '../../../../../mst'
+import type { ICarouselModelInstance } from '../../../../../mst'
 import type { TUseCarouselModelParams } from './types'
 
 import { useMemo } from 'react'
 
-import { ImageCarouselModel } from '../../../../../mst'
+import { CarouselModelImpl } from '../../../../../mst'
 
 export const useCarouselModel = ({
   onPostCreateModel,
   onPreCreateModel
-}: TUseCarouselModelParams): IImageCarouselModelInstance => {
+}: TUseCarouselModelParams): ICarouselModelInstance => {
   return useMemo(() => {
     onPreCreateModel?.()
 
-    const carouselModel = ImageCarouselModel.create()
+    const carouselModel = CarouselModelImpl.create()
 
     onPostCreateModel?.(carouselModel)
 

@@ -1,4 +1,6 @@
-export { addAnimatable } from './addAnimatable'
-export { addDurationAndPreTransitionDelay } from './addDurationAndPreTransitionDelay'
+export { addCommon } from './addCommon'
 export { createSlideTransitionAnimation } from './createSlideTransitionAnimation'
 export { getPreTransitionDelay } from './getPreTransitionDelay'
+export { getSlideDatum } from './getSlideDatum'
+export * from './getSlideOffset'
+export { verifySharedValue } from './verifySharedValue'

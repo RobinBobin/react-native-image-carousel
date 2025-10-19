@@ -12,6 +12,7 @@ const array = [
         'error',
         { allowAsThisParameter: true }
       ],
+      '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
       '@typescript-eslint/no-shadow': [
         'error',
         {
@@ -25,14 +26,7 @@ const array = [
           allow: [
             {
               from: 'file',
-              name: [
-                'BaseAnimation',
-                'IImageCarouselModelInstance',
-                'ISlideTransitionAnimationAccessibleImageCarouselModelInstance',
-                'ReactNode',
-                'StyleProp',
-                'TImageRawData'
-              ]
+              name: ['ICarouselModelInstance', 'ReactNode', 'StyleProp']
             }
           ],
           ignoreInferredTypes: true

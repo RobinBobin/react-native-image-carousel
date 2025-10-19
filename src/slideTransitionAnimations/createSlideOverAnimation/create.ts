@@ -1,5 +1,5 @@
 import type { SharedValue } from 'react-native-reanimated'
-import type { TSlideId } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { TSlideId } from '../../mst'
 import type {
   TAnimate,
   TReset,
@@ -7,6 +7,7 @@ import type {
   TUseStyle
 } from '../types'
 
+import { partial } from 'radashi'
 import {
   runOnJS,
   useAnimatedStyle,
@@ -18,7 +19,9 @@ import {
 import { VERY_BIG_NUMBER } from '../constants'
 import {
   createSlideTransitionAnimation,
-  getPreTransitionDelay
+  getPreTransitionDelay,
+  getSlideOffset,
+  verifySharedValue
 } from '../helpers'
 
 export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
@@ -26,44 +29,41 @@ export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
 
   let translateX: SharedValue<number> | undefined
 
+  const verifyTranslateX = partial(verifySharedValue<number>, 'translateX')
+
   const animate: TAnimate = ({
     isAutoTransitionStarted,
     onCancel,
     onFinish
   }) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    translateX!.value = withDelay(
+    verifyTranslateX(translateX).value = withDelay(
       getPreTransitionDelay(animation, isAutoTransitionStarted),
-      withTiming(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        0,
-        { duration: animation.duration },
-        finished => {
-          if (finished ?? true) {
-            runOnJS(onFinish)()
-          } else if (onCancel) {
-            runOnJS(onCancel)()
-          }
+      withTiming(0, { duration: animation.duration }, finished => {
+        if (finished ?? true) {
+          runOnJS(onFinish)()
+        } else if (onCancel) {
+          runOnJS(onCancel)()
         }
-      )
+      })
     )
   }
 
-  const reset: TReset = values => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    translateX!.value = values[slideId]
+  const reset: TReset = params => {
+    verifyTranslateX(translateX).value = getSlideOffset({
+      ...params,
+      axis: 'x',
+      slideId
+    })
   }
 
   const useStyle: TUseStyle = () => {
-    translateX = useSharedValue(VERY_BIG_NUMBER)
+    translateX = useSharedValue(slideId === 'slide2' ? 0 : VERY_BIG_NUMBER)
 
     return useAnimatedStyle(() => {
       const style = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         transform: [{ translateX: translateX!.value }]
       }
-
-      console.log(slideId, 'style', style)
 
       return style
     })
@@ -72,9 +72,6 @@ export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
   return {
     ...animation,
     animate,
-    outputTranslate(): void {
-      console.log('outputTranslate()', slideId, translateX?.value)
-    },
     reset,
     useStyle
   }

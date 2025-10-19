@@ -1,12 +1,11 @@
 import type { StyleProp, ViewStyle } from 'react-native'
-import type { ReadonlyDeep } from 'type-fest'
-import type { TCarouselDimensions } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { TRCarouselDimensions } from '../../mst'
 
 import { shake } from 'radashi'
 
 export const getContainerStyle = (
   aspectRatio: number,
-  carouselDimensions: ReadonlyDeep<TCarouselDimensions> | undefined,
+  carouselDimensions: TRCarouselDimensions,
   style: StyleProp<ViewStyle>
 ): StyleProp<ViewStyle> => {
   const shakenCarouselDimensions = shake(carouselDimensions ?? {})

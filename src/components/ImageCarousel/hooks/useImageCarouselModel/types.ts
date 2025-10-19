@@ -1,10 +1,12 @@
-import type { IImageCarouselModelInstance } from '../../../../mst'
-import type { TWithCarouselModel } from '../../../../types'
+import type {
+  ICarouselModelInstance,
+  TWithCarouselModel
+} from '../../../../mst'
 import type { TUseCarouselModelParams } from './useCarouselModel/types'
 import type { TUseSetImageDataParamsBase } from './useSetImageData/types'
 
 type TImageCarouselSetupCallback = (
-  carouselModel: IImageCarouselModelInstance
+  carouselModel: ICarouselModelInstance
 ) => void
 
 type TUseImageCarouselModelParams = TUseCarouselModelParams &

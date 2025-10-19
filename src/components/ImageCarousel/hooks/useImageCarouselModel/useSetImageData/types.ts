@@ -1,9 +1,8 @@
-import type { TImageRawData } from '../../../../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
-import type { TWithCarouselModel } from '../../../../../types'
+import type { TRawImageData, TWithCarouselModel } from '../../../../../mst'
 import type { TImageCarouselSetupCallback } from '../types'
 
 type TUseSetImageDataParamsBase = Readonly<{
-  imageData: TImageRawData
+  imageData: TRawImageData
   onPostSetImageData?: TImageCarouselSetupCallback
   onPreSetImageData?: TImageCarouselSetupCallback
 }>

@@ -1,15 +1,15 @@
 import type { ImageStyle } from 'expo-image'
 import type { StyleProp, ViewStyle } from 'react-native'
-import type { IImageCarouselModelInstance } from '../../../mst'
+import type { ICarouselModelInstance } from '../../../mst'
 
 import { verify } from 'simple-common-utils'
 
-import { getNumericSlideSize } from '../../../helpers/mst/getNumericSlideSize'
+import { getNumericSlideSize } from '../../helpers/getNumericSlideSize'
 
 const getContainerStyle = (
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   backgroundColor: ViewStyle['backgroundColor'],
-  carouselModel: IImageCarouselModelInstance
+  carouselModel: ICarouselModelInstance
 ): StyleProp<ViewStyle> => {
   const { isSlideCentered, slideSize } = carouselModel
 

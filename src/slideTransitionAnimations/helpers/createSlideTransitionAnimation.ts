@@ -7,11 +7,11 @@ import type {
 
 export const createSlideTransitionAnimation = (): TSlideTransitionAnimation => {
   const animate: TAnimate = () => {
-    // Nothing to do.
+    // Stub
   }
 
   const reset: TReset = () => {
-    // Nothing to do
+    // Stub
   }
 
   const useStyle: TUseStyle = () => undefined
@@ -19,9 +19,6 @@ export const createSlideTransitionAnimation = (): TSlideTransitionAnimation => {
   return {
     animate,
     duration: 1000,
-    outputTranslate(): void {
-      console.log('outputTranslate() nothing')
-    },
     preTransitionDelay: 1000,
     reset,
     useStyle

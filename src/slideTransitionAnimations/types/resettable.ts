@@ -1,9 +1,13 @@
-import type { TSlideId } from '../../mst/SlideTransitionAnimationAccessibleImageCarouselModel/types'
+import type { TRCarouselDimensions, TSlideData } from '../../mst'
 
-type TReset = (values: Readonly<Record<TSlideId, number>>) => void
+type TResetParams = Readonly<{
+  carouselDimensions: TRCarouselDimensions
+  slideData: TSlideData
+}>
+type TReset = (params: TResetParams) => void
 
 interface IResettable {
   reset: TReset
 }
 
-export type { IResettable, TReset }
+export type { IResettable, TReset, TResetParams }
