@@ -2,7 +2,7 @@ import type { TSlideId, TSlidePosition, TWithCarouselModel } from '../../../mst'
 
 import { Image } from 'expo-image'
 import { observer } from 'mobx-react-lite'
-import { Pressable } from 'react-native-gesture-handler'
+import { Pressable } from 'react-native'
 
 import { getContainerStyle, getImageStyle } from './styles'
 
