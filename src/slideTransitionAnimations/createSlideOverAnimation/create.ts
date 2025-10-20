@@ -67,10 +67,5 @@ export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
     })
   }
 
-  return {
-    ...animation,
-    animate,
-    reset,
-    useStyle
-  }
+  return Object.assign(animation, { animate, reset, useStyle })
 }

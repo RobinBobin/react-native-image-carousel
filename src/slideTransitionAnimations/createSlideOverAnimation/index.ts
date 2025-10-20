@@ -17,8 +17,5 @@ export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
     animation[slideId].animate(params)
   }
 
-  return {
-    ...animation,
-    animate
-  }
+  return Object.assign(animation, { animate })
 }
