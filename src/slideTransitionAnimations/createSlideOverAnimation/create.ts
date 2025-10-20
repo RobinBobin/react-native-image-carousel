@@ -7,7 +7,6 @@ import type {
   TUseStyle
 } from '../types'
 
-import { partial } from 'radashi'
 import {
   runOnJS,
   useAnimatedStyle,
@@ -29,31 +28,31 @@ export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
 
   let translateX: SharedValue<number> | undefined
 
-  const verifyTranslateX = partial(verifySharedValue<number>, 'translateX')
-
   const animate: TAnimate = ({
     isAutoTransitionStarted,
-    onCancel,
-    onFinish
+    onFinish,
+    transitionDirection
   }) => {
-    verifyTranslateX(translateX).value = withDelay(
-      getPreTransitionDelay(animation, isAutoTransitionStarted),
-      withTiming(0, { duration: animation.duration }, finished => {
-        if (finished ?? true) {
-          runOnJS(onFinish)()
-        } else if (onCancel) {
-          runOnJS(onCancel)()
-        }
-      })
+    translateX?.set(
+      withDelay(
+        getPreTransitionDelay(animation, isAutoTransitionStarted),
+        withTiming(0, { duration: animation.duration }, finished => {
+          if (finished ?? true) {
+            runOnJS(onFinish)(transitionDirection)
+          }
+        })
+      )
     )
   }
 
   const reset: TReset = params => {
-    verifyTranslateX(translateX).value = getSlideOffset({
-      ...params,
-      axis: 'x',
-      slideId
-    })
+    translateX?.set(
+      getSlideOffset({
+        ...params,
+        axis: 'x',
+        slideId
+      })
+    )
   }
 
   const useStyle: TUseStyle = () => {
@@ -61,8 +60,7 @@ export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
 
     return useAnimatedStyle(() => {
       const style = {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        transform: [{ translateX: translateX!.value }]
+        transform: [{ translateX: verifySharedValue(translateX).get() }]
       }
 
       return style

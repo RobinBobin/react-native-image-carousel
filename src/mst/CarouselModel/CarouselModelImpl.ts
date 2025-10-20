@@ -49,7 +49,7 @@ export const CarouselModelImpl = CarouselModel.named(
     })
 
     if (self.isAutoTransitionStarted) {
-      self.move(self.transitionDirection)
+      requestAnimationFrame(() => self.move(self.transitionDirection))
     }
   }
 }))

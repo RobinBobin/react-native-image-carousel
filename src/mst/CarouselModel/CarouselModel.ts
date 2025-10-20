@@ -100,9 +100,11 @@ export const CarouselModel = types
       this: void,
       carouselDimensions: TRCarouselDimensions<false>
     ): void {
-      if (!isNumericHeightAndWidth(self.carouselDimensions)) {
-        self.carouselDimensions = carouselDimensions
+      if (isNumericHeightAndWidth(self.carouselDimensions)) {
+        return
       }
+
+      self.carouselDimensions = carouselDimensions
 
       self.slideGroupTransitionAnimation.reset({
         carouselDimensions: self.carouselDimensions,

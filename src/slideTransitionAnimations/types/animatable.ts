@@ -1,7 +1,11 @@
-import type { ICarouselModelVolatile } from '../../mst'
+import type { ICarouselModelVolatile, TTransitionDirection } from '../../mst'
 
 type TAnimationCancelled = () => void
-type TAnimationFinished = (params?: unknown) => void
+type TAnimationInterrupted = TAnimationCancelled
+
+type TAnimationFinished = (
+  actualTransitionDirection: TTransitionDirection
+) => void
 
 type TFromCarouselModelVolatile = Pick<
   ICarouselModelVolatile,
@@ -10,8 +14,9 @@ type TFromCarouselModelVolatile = Pick<
 
 type TAnimateParams = Readonly<
   TFromCarouselModelVolatile & {
-    onCancel?: TAnimationCancelled | undefined
+    // onCancelled: TAnimationCancelled
     onFinish: TAnimationFinished
+    // onInterrupted: TAnimationInterrupted
   }
 >
 
@@ -26,5 +31,6 @@ export type {
   TAnimate,
   TAnimateParams,
   TAnimationCancelled,
-  TAnimationFinished
+  TAnimationFinished,
+  TAnimationInterrupted
 }
