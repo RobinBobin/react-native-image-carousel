@@ -1,21 +1,27 @@
-import type { IAnimatable } from './animatable'
-import type { IDurationAndPreTransitionDelay } from './durationAndPreTransitionDelay'
-import type { IResettable } from './resettable'
 import type { TAnimatedViewStyle } from './types'
+import type { IWithAnimate } from './withAnimate'
+import type { IWithDurationAndPreTransitionDelay } from './withDurationAndPreTransitionDelay'
+import type { IWithHandleFling } from './withHandleFling'
+import type { IWithPrepare } from './withPrepare'
 
 type TUseStyle = () => TAnimatedViewStyle
 
-// **NB** `IBaseSlideTransitionAnimation` can't have getters / setters, as `addResettable()` and `addDurationAndPreTransitionDelay()` can't handle them.
-interface IBaseSlideTransitionAnimation extends IDurationAndPreTransitionDelay {
+// **NB** `IBaseSlideTransitionAnimation` can't have getters / setters, as `addWithPrepare()` and `addWithDurationAndPreTransitionDelay()` can't handle them.
+interface IBaseSlideTransitionAnimation
+  extends IWithDurationAndPreTransitionDelay {
   useStyle: TUseStyle
 }
 
 type TSlideTransitionAnimation = IBaseSlideTransitionAnimation &
-  IAnimatable &
-  IResettable
+  IWithAnimate &
+  IWithHandleFling &
+  IWithPrepare
+
+type TRSlideTransitionAnimation = Readonly<TSlideTransitionAnimation>
 
 export type {
   IBaseSlideTransitionAnimation,
+  TRSlideTransitionAnimation,
   TSlideTransitionAnimation,
   TUseStyle
 }

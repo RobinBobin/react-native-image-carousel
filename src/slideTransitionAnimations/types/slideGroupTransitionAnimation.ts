@@ -1,12 +1,13 @@
 import type { ReadonlyDeep } from 'type-fest'
 import type { TSlideId } from '../../mst'
-import type { IAnimatable } from './animatable'
-import type { IDurationAndPreTransitionDelay } from './durationAndPreTransitionDelay'
-import type { IResettable } from './resettable'
 import type {
   IBaseSlideTransitionAnimation,
   TSlideTransitionAnimation
 } from './slideTransitionAnimation'
+import type { IWithAnimate } from './withAnimate'
+import type { IWithDurationAndPreTransitionDelay } from './withDurationAndPreTransitionDelay'
+import type { IWithHandleFling } from './withHandleFling'
+import type { IWithPrepare } from './withPrepare'
 
 type TSlideAnimations<TIsBase extends boolean = true> = Record<
   TSlideId,
@@ -19,12 +20,17 @@ type TRSlideAnimations<TIsBase extends boolean = true> = ReadonlyDeep<
 >
 
 type TSlideGroupTransitionAnimation = TSlideAnimations &
-  IAnimatable &
-  IDurationAndPreTransitionDelay &
-  IResettable
+  IWithAnimate &
+  IWithDurationAndPreTransitionDelay &
+  IWithHandleFling &
+  IWithPrepare
+
+type TRSlideGroupTransitionAnimation =
+  ReadonlyDeep<TSlideGroupTransitionAnimation>
 
 export type {
   TRSlideAnimations,
+  TRSlideGroupTransitionAnimation,
   TSlideAnimations,
   TSlideGroupTransitionAnimation
 }

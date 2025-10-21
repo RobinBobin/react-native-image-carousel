@@ -1,6 +1,7 @@
 export { addCommon } from './addCommon'
 export { createSlideTransitionAnimation } from './createSlideTransitionAnimation'
 export { getPreTransitionDelay } from './getPreTransitionDelay'
+export { getSlide } from './getSlide'
 export { getSlideDatum } from './getSlideDatum'
 export * from './getSlideOffset'
-export { verifySharedValue } from './verifySharedValue'
+export * from './types'

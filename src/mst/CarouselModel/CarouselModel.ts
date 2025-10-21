@@ -1,7 +1,7 @@
 import type { Instance } from 'mobx-state-tree'
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
-import type { TSlideGroupTransitionAnimation } from '../../slideTransitionAnimations'
+import type { TRSlideGroupTransitionAnimation } from '../../slideTransitionAnimations'
 import type { TTransitionDirection } from '../types'
 import type {
   ICarouselModelVolatile,
@@ -67,7 +67,14 @@ export const CarouselModel = types
     }
   }))
   .actions(() => ({
-    _finishTransition(this: void): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _handleFling(this: void, _flingDirection: TTransitionDirection): void {
+      throw new Error('Must be subclassed')
+    },
+    _onFinished(this: void): void {
+      throw new Error('Must be subclassed')
+    },
+    _onFlinged(this: void): void {
       throw new Error('Must be subclassed')
     }
   }))
@@ -83,7 +90,7 @@ export const CarouselModel = types
 
       self.slideGroupTransitionAnimation.animate({
         isAutoTransitionStarted: self.isAutoTransitionStarted,
-        onFinish: self._finishTransition,
+        onFinished: self._onFinished,
         slideData: self.slideData,
         transitionDirection
       })
@@ -106,7 +113,7 @@ export const CarouselModel = types
 
       self.carouselDimensions = carouselDimensions
 
-      self.slideGroupTransitionAnimation.reset({
+      self.slideGroupTransitionAnimation.prepare({
         carouselDimensions: self.carouselDimensions,
         slideData: self.slideData
       })
@@ -194,7 +201,7 @@ export const CarouselModel = types
     // eslint-disable-next-line id-length
     setSlideGroupTransitionAnimation(
       this: void,
-      slideGroupTransitionAnimation: ReadonlyDeep<TSlideGroupTransitionAnimation>
+      slideGroupTransitionAnimation: TRSlideGroupTransitionAnimation
     ): void {
       self.slideGroupTransitionAnimation = slideGroupTransitionAnimation
     },

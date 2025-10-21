@@ -1,9 +1,13 @@
-import type { TAnimate, TSlideGroupTransitionAnimation } from '../types'
+import type {
+  TAnimate,
+  THandleFling,
+  TSlideGroupTransitionAnimation
+} from '../types'
 
 import { objectify } from 'radashi'
 
 import { SLIDE_IDS } from '../../mst/constants'
-import { addCommon, getSlideDatum } from '../helpers'
+import { addCommon, getSlide } from '../helpers'
 import { create } from './create'
 
 export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
@@ -12,10 +16,18 @@ export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
   const animate: TAnimate = params => {
     const { slideData, transitionDirection } = params
 
-    const [slideId] = getSlideDatum(slideData, transitionDirection)
-
-    animation[slideId].animate(params)
+    getSlide({ animation, slideData, transitionDirection }).animate(params)
   }
 
-  return Object.assign(animation, { animate })
+  const handleFling: THandleFling = params => {
+    const { slideData, transitionDirection } = params
+
+    getSlide({
+      animation,
+      slideData,
+      transitionDirection
+    }).handleFling(params)
+  }
+
+  return Object.assign(animation, { animate, handleFling })
 }

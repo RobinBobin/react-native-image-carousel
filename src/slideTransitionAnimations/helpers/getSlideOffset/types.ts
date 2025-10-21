@@ -1,7 +1,7 @@
 import type { TSlideId } from '../../../mst'
-import type { TAxis, TResetParams } from '../../types'
+import type { TAxis, TPrepareParams } from '../../types'
 
-export type TGetSlideOffsetParams = TResetParams &
+export type TGetSlideOffsetParams = TPrepareParams &
   Readonly<{
     axis: TAxis
     slideId: TSlideId

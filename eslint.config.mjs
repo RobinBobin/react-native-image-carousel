@@ -26,7 +26,12 @@ const array = [
           allow: [
             {
               from: 'file',
-              name: ['ICarouselModelInstance', 'ReactNode', 'StyleProp']
+              name: [
+                'ICarouselModelInstance',
+                'ISharedValue',
+                'ReactNode',
+                'StyleProp'
+              ]
             }
           ],
           ignoreInferredTypes: true

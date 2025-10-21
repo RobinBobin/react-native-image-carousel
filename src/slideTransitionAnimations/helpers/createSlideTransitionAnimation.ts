@@ -1,26 +1,14 @@
-import type {
-  TAnimate,
-  TReset,
-  TSlideTransitionAnimation,
-  TUseStyle
-} from '../types'
+import type { TSlideTransitionAnimation } from '../types'
+
+import { noop } from 'radashi'
 
 export const createSlideTransitionAnimation = (): TSlideTransitionAnimation => {
-  const animate: TAnimate = () => {
-    // Stub
-  }
-
-  const reset: TReset = () => {
-    // Stub
-  }
-
-  const useStyle: TUseStyle = () => undefined
-
   return {
-    animate,
+    animate: noop,
     duration: 1000,
+    handleFling: noop,
     preTransitionDelay: 1000,
-    reset,
-    useStyle
+    prepare: noop,
+    useStyle: noop
   }
 }

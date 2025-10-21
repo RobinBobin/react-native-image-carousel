@@ -1,16 +1,16 @@
 import type {
-  IDurationAndPreTransitionDelay,
+  IWithDurationAndPreTransitionDelay,
   TRSlideAnimations
 } from '../../../types'
 
 import { ensureEquality, setValue } from './helpers'
 
 // eslint-disable-next-line id-length
-export const addDurationAndPreTransitionDelay = <
+export const addWithDurationAndPreTransitionDelay = <
   T extends TRSlideAnimations<false>
 >(
   slideAnimations: T
-): T & IDurationAndPreTransitionDelay => {
+): T & IWithDurationAndPreTransitionDelay => {
   return {
     ...slideAnimations,
     get duration(): number {

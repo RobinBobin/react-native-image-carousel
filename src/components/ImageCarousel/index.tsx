@@ -5,7 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { pick } from 'radashi'
 import React from 'react'
 import { View } from 'react-native'
+import { GestureDetector } from 'react-native-gesture-handler'
 
+import { useFlingGesture } from './hooks/useFlingGesture'
 import { SlideGroup, SnappingFlatList } from './implementations'
 import { Placeholder } from './Placeholder'
 import { getContainerStyle } from './styles'
@@ -21,7 +23,7 @@ const ImageCarousel: React.FC<TWithCarouselModel> = observer(
       style
     } = carouselModel
 
-    // const gesture = useGesture(carouselModel.slideTransitionAnimation)
+    const flingGesture = useFlingGesture(carouselModel)
 
     if (isLoading) {
       return <Placeholder carouselModel={carouselModel} />
@@ -33,14 +35,14 @@ const ImageCarousel: React.FC<TWithCarouselModel> = observer(
     const Implementation = isSnapEnabled ? SnappingFlatList : SlideGroup
 
     return (
-      <>
+      <GestureDetector gesture={flingGesture}>
         <View
           onLayout={onLayout}
           style={getContainerStyle(aspectRatio, carouselDimensions, style)}
         >
           <Implementation carouselModel={carouselModel} />
         </View>
-      </>
+      </GestureDetector>
     )
   }
 )

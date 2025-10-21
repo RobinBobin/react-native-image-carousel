@@ -1,15 +1,11 @@
-import type {
-  IDurationAndPreTransitionDelay,
-  IResettable,
-  TRSlideAnimations,
-  TSlideAnimations
-} from '../../types'
+import type { TRSlideAnimations } from '../../types'
+import type { TAddCommonReturnType } from '../types'
 
-import { addDurationAndPreTransitionDelay } from './addDurationAndPreTransitionDelay'
-import { addResettable } from './addResettable'
+import { addWithDurationAndPreTransitionDelay } from './addWithDurationAndPreTransitionDelay'
+import { addWithPrepare } from './addWithPrepare'
 
 export const addCommon = (
   slideAnimations: TRSlideAnimations<false>
-): TSlideAnimations<false> & IDurationAndPreTransitionDelay & IResettable => {
-  return addDurationAndPreTransitionDelay(addResettable(slideAnimations))
+): TAddCommonReturnType => {
+  return addWithDurationAndPreTransitionDelay(addWithPrepare(slideAnimations))
 }
