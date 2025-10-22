@@ -1,6 +1,9 @@
 import type { ImageStyle } from 'expo-image'
 import type { StyleProp, ViewStyle } from 'react-native'
-import type { ICarouselModelInstance } from '../../../mst'
+import type {
+  ICarouselModelInstance,
+  TCarouselDimensionKey
+} from '../../../mst'
 
 import { verify } from 'simple-common-utils'
 
@@ -54,7 +57,7 @@ const getContainerStyle = (
 const getImageStyle = (aspectRatio: number): StyleProp<ImageStyle> => {
   const threshold = 1
 
-  const dimensionName: keyof ImageStyle =
+  const dimensionName: TCarouselDimensionKey =
     aspectRatio > threshold ? 'width' : 'height'
 
   return {

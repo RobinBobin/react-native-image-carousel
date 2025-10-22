@@ -3,16 +3,15 @@ import type { ReadonlyDeep } from 'type-fest'
 import type { ICommonImageData } from './imageData'
 
 type TCarouselDimensions = Pick<FlexStyle, 'height' | 'width'>
+type TCarouselDimensionKey = keyof TCarouselDimensions
 
-type TNumericCarouselDimensions = Required<{
-  [K in keyof TCarouselDimensions]: number
-}>
+type TNumericCarouselDimensions = Required<
+  Record<TCarouselDimensionKey, number>
+>
 
 type TRCarouselDimensions<TCanBeUndefined extends boolean = true> =
   | ReadonlyDeep<TCarouselDimensions>
   | (TCanBeUndefined extends true ? undefined : never)
-
-type TCarouselDimensionKey = keyof TCarouselDimensions
 
 type TSlideSize =
   | 'carouselHeightSquare'
