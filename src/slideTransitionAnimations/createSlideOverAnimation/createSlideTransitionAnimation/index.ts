@@ -1,22 +1,26 @@
-import type { TSlideId } from '../../../mst'
+import type { TRCarouselModelVolatileBase, TSlideId } from '../../../mst'
 import type { ISharedValue, TSlideTransitionAnimation } from '../../types'
 
-import { createRawSlideTransitionAnimation } from '../../helpers'
-import { animate, handleFling, prepare, useStyle } from './helpers'
+import { combine, createRawSlideTransitionAnimation } from '../../helpers'
+import {
+  _useStyle,
+  animate,
+  handleFling,
+  isAnimationInProgress,
+  prepare
+} from './helpers'
 
 export const createSlideTransitionAnimation = (
+  base: TRCarouselModelVolatileBase,
   slideId: TSlideId
 ): TSlideTransitionAnimation => {
   const rawAnimation = createRawSlideTransitionAnimation()
-
   const translateX: ISharedValue<number> = {}
 
-  return {
-    ...rawAnimation,
+  return combine(combine(rawAnimation, isAnimationInProgress(base)), {
     animate: animate(rawAnimation, translateX),
     handleFling: handleFling(rawAnimation, slideId, translateX),
     prepare: prepare(slideId, translateX),
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useStyle: useStyle(slideId, translateX)
-  }
+    useStyle: _useStyle(slideId, translateX)
+  })
 }

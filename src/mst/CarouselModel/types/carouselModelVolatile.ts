@@ -5,7 +5,13 @@ import type { TSlideData, TTransitionDirection } from '../../types'
 import type { TImageData } from './imageData'
 import type { TRCarouselDimensions, TSlideSize } from './types'
 
-export interface ICarouselModelVolatile {
+interface ICarouselModelVolatileBase {
+  isTransitionInProgress: boolean
+}
+
+type TRCarouselModelVolatileBase = Readonly<ICarouselModelVolatileBase>
+
+interface ICarouselModelVolatile {
   aspectRatio: number
   carouselDimensions?: TRCarouselDimensions
   imageData: ReadonlyDeep<TImageData>
@@ -13,7 +19,6 @@ export interface ICarouselModelVolatile {
   isAutoTransitionStarted: boolean
   isSlideCentered: boolean
   isSnapEnabled: boolean
-  isTransitionInProgress: boolean
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideData: TSlideData
@@ -21,4 +26,10 @@ export interface ICarouselModelVolatile {
   slideSize: TSlideSize
   style?: StyleProp<ViewStyle>
   transitionDirection: TTransitionDirection
+}
+
+export type {
+  ICarouselModelVolatile,
+  ICarouselModelVolatileBase,
+  TRCarouselModelVolatileBase
 }

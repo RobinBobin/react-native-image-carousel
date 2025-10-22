@@ -9,10 +9,10 @@ import { verify } from 'simple-common-utils'
 import { SLIDE_IDS } from '../../../../../mst/constants'
 
 export const ensureEquality = (
-  slideBaseAnimations: TRSlideAnimations,
+  rawSlideGroupAnimation: TRSlideAnimations,
   key: TRawSlideTransitionAnimationKey
 ): number => {
-  const values = SLIDE_IDS.map(slideId => slideBaseAnimations[slideId][key])
+  const values = SLIDE_IDS.map(slideId => rawSlideGroupAnimation[slideId][key])
   const errorMessage = `'ensureEquality(${key})' failed: [${values.join(', ')}]`
 
   verify(Math.max(...values) === Math.min(...values), errorMessage)

@@ -5,7 +5,7 @@ import type {
   IBaseSlideTransitionAnimation,
   TSlideTransitionAnimation
 } from './slideTransitionAnimation'
-import type { IWithAnimate } from './withAnimate'
+import type { IWithAnimation } from './withAnimation'
 import type { IWithHandleFling } from './withHandleFling'
 import type { IWithPrepare } from './withPrepare'
 
@@ -21,7 +21,7 @@ type TRSlideAnimations<TIsBase extends boolean = true> = ReadonlyDeep<
 
 type TSlideGroupTransitionAnimation = TSlideAnimations &
   IRawSlideTransitionAnimation &
-  IWithAnimate &
+  IWithAnimation &
   IWithHandleFling &
   IWithPrepare
 

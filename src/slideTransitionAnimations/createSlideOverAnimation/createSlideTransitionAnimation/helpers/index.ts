@@ -1,4 +1,5 @@
 export { animate } from './animate'
 export { handleFling } from './handleFling'
+export { isAnimationInProgress } from './isAnimationInProgress'
 export { prepare } from './prepare'
-export { useStyle } from './useStyle'
+export { _useStyle } from './useStyle'

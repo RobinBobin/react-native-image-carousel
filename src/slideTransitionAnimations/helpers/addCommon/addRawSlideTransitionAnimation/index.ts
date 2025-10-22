@@ -3,26 +3,26 @@ import type {
   TRSlideAnimations
 } from '../../../types'
 
+import { combine } from '../../combine'
 import { ensureEquality, setValue } from './helpers'
 
 export const addRawSlideTransitionAnimation = <
   T extends TRSlideAnimations<false>
 >(
-  slideAnimations: T
+  rawSlideGroupAnimation: T
 ): T & IRawSlideTransitionAnimation => {
-  return {
-    ...slideAnimations,
+  return combine(rawSlideGroupAnimation, {
     get duration(): number {
-      return ensureEquality(this, 'duration')
+      return ensureEquality(rawSlideGroupAnimation, 'duration')
     },
     set duration(duration: number) {
-      setValue(this, 'duration', duration)
+      setValue(rawSlideGroupAnimation, 'duration', duration)
     },
     get preTransitionDelay(): number {
-      return ensureEquality(this, 'preTransitionDelay')
+      return ensureEquality(rawSlideGroupAnimation, 'preTransitionDelay')
     },
     set preTransitionDelay(preTransitionDelay: number) {
-      setValue(this, 'preTransitionDelay', preTransitionDelay)
+      setValue(rawSlideGroupAnimation, 'preTransitionDelay', preTransitionDelay)
     }
-  }
+  })
 }

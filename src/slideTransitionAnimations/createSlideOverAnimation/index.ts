@@ -1,19 +1,22 @@
+import type { TRCarouselModelVolatileBase } from '../../mst'
 import type {
   TAnimate,
   THandleFling,
   TSlideGroupTransitionAnimation
 } from '../types'
 
-import { objectify } from 'radashi'
+import { objectify, partial } from 'radashi'
 
 import { SLIDE_IDS } from '../../mst/constants'
-import { addCommon, getSlide } from '../helpers'
+import { addCommon, combine, getSlide } from '../helpers'
 import { createSlideTransitionAnimation } from './createSlideTransitionAnimation'
 
-export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
-  const animation = addCommon(
-    objectify(SLIDE_IDS, slideId => slideId, createSlideTransitionAnimation)
-  )
+export const createSlideOverAnimation = (
+  base: TRCarouselModelVolatileBase
+): TSlideGroupTransitionAnimation => {
+  const create = partial(createSlideTransitionAnimation, base)
+
+  const animation = addCommon(objectify(SLIDE_IDS, slideId => slideId, create))
 
   const animate: TAnimate = params => {
     const { slideData, transitionDirection } = params
@@ -31,5 +34,5 @@ export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
     }).handleFling(params)
   }
 
-  return Object.assign(animation, { animate, handleFling })
+  return combine(animation, { animate, handleFling })
 }

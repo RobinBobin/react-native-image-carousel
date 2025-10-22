@@ -5,6 +5,7 @@ import type { TRSlideGroupTransitionAnimation } from '../../slideTransitionAnima
 import type { TTransitionDirection } from '../types'
 import type {
   ICarouselModelVolatile,
+  ICarouselModelVolatileBase,
   TImageDatum,
   TRawImageData,
   TRCarouselDimensions,
@@ -24,20 +25,22 @@ import { isNumericHeightAndWidth } from './helpers'
 
 export const CarouselModel = types
   .model('CarouselModel')
-  .volatile<ICarouselModelVolatile>(() => ({
+  .volatile<ICarouselModelVolatileBase>(() => ({
+    isTransitionInProgress: false
+  }))
+  .volatile<ICarouselModelVolatile>(self => ({
     aspectRatio: 0,
     imageData: [],
     imageGap: 0,
     isAutoTransitionStarted: false,
     isSlideCentered: true,
     isSnapEnabled: false,
-    isTransitionInProgress: false,
     slideData: objectify(
       SLIDE_IDS,
       slideId => slideId,
       () => ['current', 0]
     ),
-    slideGroupTransitionAnimation: createSlideOverAnimation(),
+    slideGroupTransitionAnimation: createSlideOverAnimation(self),
     slideSize: 'wholeCarousel',
     transitionDirection: 'next'
   }))
@@ -45,6 +48,10 @@ export const CarouselModel = types
     get canTransition(): boolean {
       return self.imageData.length > 1 && !self.isTransitionInProgress
     },
+    get isAnimationInProgress(): boolean {
+      return self.slideGroupTransitionAnimation.isAnimationInProgress
+    },
+
     getImageDatum(this: void, index: number): ReadonlyDeep<TImageDatum> {
       const imageDatum = self.imageData.at(index)
 

@@ -12,8 +12,18 @@ type TAnimateParams = TSlideDataAndTransitionDirection &
 
 type TAnimate = (params: TAnimateParams) => void
 
-interface IWithAnimate {
+interface IIsAnimationInProgress {
+  get isAnimationInProgress(): boolean
+}
+
+interface IWithAnimation extends IIsAnimationInProgress {
   animate: TAnimate
 }
 
-export type { IWithAnimate, TAnimate, TAnimateParams, TOnFinished }
+export type {
+  IIsAnimationInProgress,
+  IWithAnimation,
+  TAnimate,
+  TAnimateParams,
+  TOnFinished
+}

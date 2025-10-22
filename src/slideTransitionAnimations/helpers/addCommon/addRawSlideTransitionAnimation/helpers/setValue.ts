@@ -7,11 +7,11 @@ import { SLIDE_IDS } from '../../../../../mst/constants'
 
 export const setValue = (
   // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  slideBaseAnimations: TSlideAnimations,
+  rawSlideGroupAnimation: TSlideAnimations,
   key: TRawSlideTransitionAnimationKey,
   value: number
 ): void => {
   SLIDE_IDS.forEach(slideId => {
-    slideBaseAnimations[slideId][key] = value
+    rawSlideGroupAnimation[slideId][key] = value
   })
 }
