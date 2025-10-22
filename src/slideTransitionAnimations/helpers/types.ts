@@ -1,11 +1,11 @@
 import type {
-  IWithDurationAndPreTransitionDelay,
+  IRawSlideTransitionAnimation,
   IWithPrepare,
   TSlideAnimations
 } from '../types'
 
 type TAddCommonReturnType = TSlideAnimations<false> &
-  IWithDurationAndPreTransitionDelay &
+  IRawSlideTransitionAnimation &
   IWithPrepare
 
 export type { TAddCommonReturnType }

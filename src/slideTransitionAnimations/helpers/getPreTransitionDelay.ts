@@ -1,7 +1,7 @@
-import type { TRWithDurationAndPreTransitionDelay } from '../types'
+import type { TRRawSlideTransitionAnimation } from '../types'
 
 export const getPreTransitionDelay = (
-  { preTransitionDelay }: TRWithDurationAndPreTransitionDelay,
+  { preTransitionDelay }: TRRawSlideTransitionAnimation,
   isAutoTransitionStarted: boolean
 ): number => {
   return isAutoTransitionStarted ? preTransitionDelay : 0

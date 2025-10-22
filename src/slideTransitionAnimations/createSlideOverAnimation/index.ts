@@ -8,10 +8,12 @@ import { objectify } from 'radashi'
 
 import { SLIDE_IDS } from '../../mst/constants'
 import { addCommon, getSlide } from '../helpers'
-import { create } from './create'
+import { createSlideTransitionAnimation } from './createSlideTransitionAnimation'
 
 export const createSlideOverAnimation = (): TSlideGroupTransitionAnimation => {
-  const animation = addCommon(objectify(SLIDE_IDS, slideId => slideId, create))
+  const animation = addCommon(
+    objectify(SLIDE_IDS, slideId => slideId, createSlideTransitionAnimation)
+  )
 
   const animate: TAnimate = params => {
     const { slideData, transitionDirection } = params

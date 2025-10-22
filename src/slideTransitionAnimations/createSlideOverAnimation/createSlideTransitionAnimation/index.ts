@@ -1,19 +1,22 @@
 import type { TSlideId } from '../../../mst'
 import type { ISharedValue, TSlideTransitionAnimation } from '../../types'
 
-import { createSlideTransitionAnimation } from '../../helpers'
+import { createRawSlideTransitionAnimation } from '../../helpers'
 import { animate, handleFling, prepare, useStyle } from './helpers'
 
-export const create = (slideId: TSlideId): TSlideTransitionAnimation => {
-  const animation = createSlideTransitionAnimation()
+export const createSlideTransitionAnimation = (
+  slideId: TSlideId
+): TSlideTransitionAnimation => {
+  const rawAnimation = createRawSlideTransitionAnimation()
 
   const translateX: ISharedValue<number> = {}
 
-  return Object.assign(animation, {
-    animate: animate(animation, translateX),
-    handleFling: handleFling(animation, slideId, translateX),
+  return {
+    ...rawAnimation,
+    animate: animate(rawAnimation, translateX),
+    handleFling: handleFling(rawAnimation, slideId, translateX),
     prepare: prepare(slideId, translateX),
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useStyle: useStyle(slideId, translateX)
-  })
+  }
 }

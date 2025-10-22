@@ -1,7 +1,7 @@
 import type {
   ISharedValue,
   TAnimate,
-  TRSlideTransitionAnimation
+  TRRawSlideTransitionAnimation
 } from '../../../types'
 
 import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
@@ -9,7 +9,7 @@ import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
 import { getPreTransitionDelay } from '../../../helpers'
 
 export const animate = (
-  animation: TRSlideTransitionAnimation,
+  animation: TRRawSlideTransitionAnimation,
   translateX: ISharedValue<number>
 ): TAnimate => {
   return ({ isAutoTransitionStarted, onFinished }) => {

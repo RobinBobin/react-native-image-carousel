@@ -1,5 +1,5 @@
 import type {
-  IWithDurationAndPreTransitionDelay,
+  TRawSlideTransitionAnimationKey,
   TRSlideAnimations
 } from '../../../../types'
 
@@ -10,7 +10,7 @@ import { SLIDE_IDS } from '../../../../../mst/constants'
 
 export const ensureEquality = (
   slideBaseAnimations: TRSlideAnimations,
-  key: keyof IWithDurationAndPreTransitionDelay
+  key: TRawSlideTransitionAnimationKey
 ): number => {
   const values = SLIDE_IDS.map(slideId => slideBaseAnimations[slideId][key])
   const errorMessage = `'ensureEquality(${key})' failed: [${values.join(', ')}]`

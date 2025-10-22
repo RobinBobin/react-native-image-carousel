@@ -2,7 +2,7 @@ import type { TSlideId } from '../../../../mst'
 import type {
   ISharedValue,
   THandleFling,
-  TRSlideTransitionAnimation
+  TRRawSlideTransitionAnimation
 } from '../../../types'
 
 import { runOnJS, withTiming } from 'react-native-reanimated'
@@ -10,7 +10,7 @@ import { runOnJS, withTiming } from 'react-native-reanimated'
 import { getSlideOffset } from '../../../helpers'
 
 export const handleFling = (
-  animation: TRSlideTransitionAnimation,
+  animation: TRRawSlideTransitionAnimation,
   slideId: TSlideId,
   translateX: ISharedValue<number>
 ): THandleFling => {
