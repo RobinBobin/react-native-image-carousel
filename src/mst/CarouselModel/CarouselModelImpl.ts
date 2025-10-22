@@ -9,12 +9,6 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
         requestAnimationFrame(() => self.move(self.transitionDirection))
       }
     },
-    _prepare(this: void): void {
-      self.slideGroupTransitionAnimation.prepare({
-        carouselDimensions: self.carouselDimensions,
-        slideData: self.slideData
-      })
-    },
     _setSlideData(this: void, transitionDirection: TTransitionDirection): void {
       const nextSlideData = { ...self.slideData }
 
@@ -59,7 +53,7 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
       self.isTransitionInProgress = false
 
       self._setSlideData(self.transitionDirection)
-      self._prepare()
+      self.slideGroupTransitionAnimation.prepare()
       self._moveIfAutoTransitionStarted()
     },
     _onFlinged(this: void, flingDirection: TTransitionDirection): void {

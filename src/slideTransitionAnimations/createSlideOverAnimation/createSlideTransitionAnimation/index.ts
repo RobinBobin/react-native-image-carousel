@@ -1,4 +1,4 @@
-import type { TRCarouselModelVolatileBase, TSlideId } from '../../../mst'
+import type { TRCarouselModel, TSlideId } from '../../../mst'
 import type { ISharedValue, TSlideTransitionAnimation } from '../../types'
 
 import { combine, createRawSlideTransitionAnimation } from '../../helpers'
@@ -11,16 +11,27 @@ import {
 } from './helpers'
 
 export const createSlideTransitionAnimation = (
-  base: TRCarouselModelVolatileBase,
+  carouselModel: TRCarouselModel,
   slideId: TSlideId
 ): TSlideTransitionAnimation => {
   const rawAnimation = createRawSlideTransitionAnimation()
   const translateX: ISharedValue<number> = {}
 
-  return combine(combine(rawAnimation, isAnimationInProgress(base)), {
-    animate: animate(rawAnimation, translateX),
-    handleFling: handleFling(rawAnimation, slideId, translateX),
-    prepare: prepare(slideId, translateX),
-    useStyle: _useStyle(slideId, translateX)
-  })
+  return combine(
+    combine(
+      rawAnimation,
+      isAnimationInProgress(carouselModel, slideId, translateX)
+    ),
+    {
+      animate: animate(carouselModel, rawAnimation, translateX),
+      handleFling: handleFling(
+        carouselModel,
+        rawAnimation,
+        slideId,
+        translateX
+      ),
+      prepare: prepare(carouselModel, slideId, translateX),
+      useStyle: _useStyle(slideId, translateX)
+    }
+  )
 }

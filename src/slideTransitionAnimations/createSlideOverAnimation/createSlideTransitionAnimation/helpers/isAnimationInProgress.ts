@@ -1,7 +1,23 @@
-import type { IIsAnimationInProgress } from '../../../types'
+import type { TRCarouselModel, TSlideId } from '../../../../mst'
+import type { IIsAnimationInProgress, ISharedValue } from '../../../types'
 
-export const isAnimationInProgress = (): IIsAnimationInProgress => ({
+import { getSlideOffset } from '../../../helpers'
+
+export const isAnimationInProgress = (
+  carouselModel: TRCarouselModel,
+  slideId: TSlideId,
+  translateX: ISharedValue<number>
+): IIsAnimationInProgress => ({
   get isAnimationInProgress(): boolean {
-    throw new Error('isAnimationInProgress not implemented')
+    const { carouselDimensions, slideData } = carouselModel
+
+    const slideOffset = getSlideOffset({
+      axis: 'x',
+      carouselDimensions,
+      slideData,
+      slideId
+    })
+
+    return translateX.sharedValue?.get() !== slideOffset
   }
 })

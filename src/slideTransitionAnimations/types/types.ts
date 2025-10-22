@@ -1,6 +1,6 @@
 import type { ViewProps } from 'react-native'
 import type { AnimatedProps, SharedValue } from 'react-native-reanimated'
-import type { ICarouselModelVolatile } from '../../mst'
+import type { TRCarouselModel } from '../../mst'
 
 interface ISharedValue<T> {
   sharedValue?: SharedValue<T>
@@ -9,8 +9,9 @@ interface ISharedValue<T> {
 type TAnimatedViewStyle = AnimatedProps<ViewProps>['style']
 type TAxis = 'x' | 'y'
 
-type TSlideDataAndTransitionDirection = Readonly<
-  Pick<ICarouselModelVolatile, 'slideData' | 'transitionDirection'>
+type TSlideDataAndTransitionDirection = Pick<
+  TRCarouselModel,
+  'slideData' | 'transitionDirection'
 >
 
 export type {

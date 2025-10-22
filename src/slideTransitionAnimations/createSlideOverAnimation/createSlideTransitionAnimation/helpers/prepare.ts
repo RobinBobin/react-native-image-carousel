@@ -1,17 +1,21 @@
-import type { TSlideId } from '../../../../mst'
+import type { TRCarouselModel, TSlideId } from '../../../../mst'
 import type { ISharedValue, TPrepare } from '../../../types'
 
 import { getSlideOffset } from '../../../helpers'
 
 export const prepare = (
+  carouselModel: TRCarouselModel,
   slideId: TSlideId,
   translateX: ISharedValue<number>
 ): TPrepare => {
-  return params => {
+  return () => {
+    const { carouselDimensions, slideData } = carouselModel
+
     translateX.sharedValue?.set(
       getSlideOffset({
-        ...params,
         axis: 'x',
+        carouselDimensions,
+        slideData,
         slideId
       })
     )

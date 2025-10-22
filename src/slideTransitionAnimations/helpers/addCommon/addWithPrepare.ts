@@ -6,9 +6,9 @@ import { combine } from '../combine'
 export const addWithPrepare = <T extends TRSlideAnimations<false>>(
   rawSlideGroupAnimation: T
 ): T & IWithPrepare => {
-  const prepare: TPrepare = params => {
+  const prepare: TPrepare = () => {
     SLIDE_IDS.forEach(slideId => {
-      rawSlideGroupAnimation[slideId].prepare(params)
+      rawSlideGroupAnimation[slideId].prepare()
     })
   }
 

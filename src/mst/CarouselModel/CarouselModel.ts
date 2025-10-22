@@ -4,8 +4,9 @@ import type { ReadonlyDeep } from 'type-fest'
 import type { TRSlideGroupTransitionAnimation } from '../../slideTransitionAnimations'
 import type { TTransitionDirection } from '../types'
 import type {
+  ICarouselModelCommonVolatile,
   ICarouselModelVolatile,
-  ICarouselModelVolatileBase,
+  TCarouselModelCommonActions,
   TImageDatum,
   TRawImageData,
   TRCarouselDimensions,
@@ -25,24 +26,32 @@ import { isNumericHeightAndWidth } from './helpers'
 
 export const CarouselModel = types
   .model('CarouselModel')
-  .volatile<ICarouselModelVolatileBase>(() => ({
-    isTransitionInProgress: false
-  }))
-  .volatile<ICarouselModelVolatile>(self => ({
-    aspectRatio: 0,
-    imageData: [],
-    imageGap: 0,
+  .volatile<ICarouselModelCommonVolatile>(() => ({
     isAutoTransitionStarted: false,
-    isSlideCentered: true,
-    isSnapEnabled: false,
     slideData: objectify(
       SLIDE_IDS,
       slideId => slideId,
       () => ['current', 0]
     ),
-    slideGroupTransitionAnimation: createSlideOverAnimation(self),
-    slideSize: 'wholeCarousel',
     transitionDirection: 'next'
+  }))
+  .actions<TCarouselModelCommonActions>(() => ({
+    _onFinished(this: void): void {
+      throw new Error('Must be subclassed')
+    },
+    _onFlinged(this: void): void {
+      throw new Error('Must be subclassed')
+    }
+  }))
+  .volatile<ICarouselModelVolatile>(self => ({
+    aspectRatio: 0,
+    imageData: [],
+    imageGap: 0,
+    isSlideCentered: true,
+    isSnapEnabled: false,
+    isTransitionInProgress: false,
+    slideGroupTransitionAnimation: createSlideOverAnimation(self),
+    slideSize: 'wholeCarousel'
   }))
   .views(self => ({
     get canTransition(): boolean {
@@ -77,12 +86,6 @@ export const CarouselModel = types
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _handleFling(this: void, _flingDirection: TTransitionDirection): void {
       throw new Error('Must be subclassed')
-    },
-    _onFinished(this: void): void {
-      throw new Error('Must be subclassed')
-    },
-    _onFlinged(this: void): void {
-      throw new Error('Must be subclassed')
     }
   }))
   // eslint-disable-next-line max-lines-per-function
@@ -95,12 +98,7 @@ export const CarouselModel = types
       self.isTransitionInProgress = true
       self.transitionDirection = transitionDirection
 
-      self.slideGroupTransitionAnimation.animate({
-        isAutoTransitionStarted: self.isAutoTransitionStarted,
-        onFinished: self._onFinished,
-        slideData: self.slideData,
-        transitionDirection
-      })
+      self.slideGroupTransitionAnimation.animate()
 
       return true
     },
@@ -120,10 +118,7 @@ export const CarouselModel = types
 
       self.carouselDimensions = carouselDimensions
 
-      self.slideGroupTransitionAnimation.prepare({
-        carouselDimensions: self.carouselDimensions,
-        slideData: self.slideData
-      })
+      self.slideGroupTransitionAnimation.prepare()
     },
     setImageData: flow(function* (
       // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types

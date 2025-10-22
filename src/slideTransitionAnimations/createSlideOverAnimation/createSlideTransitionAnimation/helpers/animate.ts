@@ -1,3 +1,4 @@
+import type { TRCarouselModel } from '../../../../mst'
 import type {
   ISharedValue,
   TAnimate,
@@ -9,16 +10,19 @@ import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
 import { getPreTransitionDelay } from '../../../helpers'
 
 export const animate = (
-  animation: TRRawSlideTransitionAnimation,
+  carouselModel: TRCarouselModel,
+  rawAnimation: TRRawSlideTransitionAnimation,
   translateX: ISharedValue<number>
 ): TAnimate => {
-  return ({ isAutoTransitionStarted, onFinished }) => {
+  return () => {
+    const { isAutoTransitionStarted, _onFinished } = carouselModel
+
     translateX.sharedValue?.set(
       withDelay(
-        getPreTransitionDelay(animation, isAutoTransitionStarted),
-        withTiming(0, { duration: animation.duration }, finished => {
+        getPreTransitionDelay(rawAnimation, isAutoTransitionStarted),
+        withTiming(0, { duration: rawAnimation.duration }, finished => {
           if (finished ?? true) {
-            runOnJS(onFinished)()
+            runOnJS(_onFinished)()
           }
         })
       )

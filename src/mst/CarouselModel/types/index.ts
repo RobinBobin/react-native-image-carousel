@@ -1,3 +1,4 @@
+export * from './carouselModelCommon'
 export * from './carouselModelVolatile'
 export * from './imageData'
 export * from './onPress'

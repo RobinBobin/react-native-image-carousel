@@ -1,4 +1,4 @@
-import type { TSlideId } from '../../../../mst'
+import type { TRCarouselModel, TSlideId } from '../../../../mst'
 import type {
   ISharedValue,
   THandleFling,
@@ -10,17 +10,15 @@ import { runOnJS, withTiming } from 'react-native-reanimated'
 import { getSlideOffset } from '../../../helpers'
 
 export const handleFling = (
-  animation: TRRawSlideTransitionAnimation,
+  carouselModel: TRCarouselModel,
+  rawAnimation: TRRawSlideTransitionAnimation,
   slideId: TSlideId,
   translateX: ISharedValue<number>
 ): THandleFling => {
-  return ({
-    carouselDimensions,
-    flingDirection,
-    onFlinged,
-    slideData,
-    transitionDirection
-  }) => {
+  return ({ flingDirection }) => {
+    const { _onFlinged, carouselDimensions, slideData, transitionDirection } =
+      carouselModel
+
     const slideOffset = getSlideOffset({
       axis: 'x',
       carouselDimensions,
@@ -32,7 +30,7 @@ export const handleFling = (
     const isDirectionTheSame = flingDirection === transitionDirection
 
     if (isAnimating && isDirectionTheSame) {
-      onFlinged(flingDirection)
+      _onFlinged(flingDirection)
 
       return
     }
@@ -40,10 +38,10 @@ export const handleFling = (
     translateX.sharedValue?.set(
       withTiming(
         isAnimating ? slideOffset : 0,
-        { duration: animation.duration },
+        { duration: rawAnimation.duration },
         finished => {
           if (finished ?? true) {
-            runOnJS(onFlinged)(flingDirection)
+            runOnJS(_onFlinged)(flingDirection)
           }
         }
       )
