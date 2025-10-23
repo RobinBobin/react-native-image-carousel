@@ -9,7 +9,7 @@ import {
 import {
   _useStyle,
   animate,
-  cancelCurrentAnimation,
+  cancelInProgressAnimation,
   isAnimationInProgress,
   prepare
 } from './helpers'
@@ -29,7 +29,7 @@ export const createSlideTransitionAnimation = (
     ),
     {
       animate: animate(carouselModel, rawAnimation, translateX),
-      cancelCurrentAnimation: cancelCurrentAnimation(
+      cancelInProgressAnimation: cancelInProgressAnimation(
         carouselModel,
         rawAnimation,
         slideId,

@@ -14,10 +14,10 @@ export const createSlideOverAnimation = (
 
   const animation = addCommon(objectify(SLIDE_IDS, slideId => slideId, create))
 
-  const { animate, cancelCurrentAnimation } = addAnimationMethods(
+  const { animate, cancelInProgressAnimation } = addAnimationMethods(
     animation,
     carouselModel
   )
 
-  return combine(animation, { animate, cancelCurrentAnimation })
+  return combine(animation, { animate, cancelInProgressAnimation })
 }

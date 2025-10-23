@@ -14,7 +14,7 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
       }
 
       if (flingDirection !== self.transitionDirection) {
-        self.slideGroupTransitionAnimation.cancelCurrentAnimation()
+        self.slideGroupTransitionAnimation.cancelInProgressAnimation()
       }
     },
     _moveIfAutoTransitionStarted(this: void): void {
@@ -51,17 +51,18 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
     }
   }))
   .actions<TCarouselModelCommonActions>(self => ({
-    _onCurrentAnimationCancelled(this: void): void {
-      self.isTransitionInProgress = false
-
-      self._moveIfAutoTransitionStarted()
-    },
     _onFinished(this: void): void {
-      self.isTransitionInProgress = false
+      self.isTransitionRequested = false
 
       self._setSlideData(self.transitionDirection)
 
       self.slideGroupTransitionAnimation.prepare()
+
+      self._moveIfAutoTransitionStarted()
+    },
+    // eslint-disable-next-line id-length
+    _onInProgressAnimationCancelled(this: void): void {
+      self.isTransitionRequested = false
 
       self._moveIfAutoTransitionStarted()
     }

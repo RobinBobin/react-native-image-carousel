@@ -12,13 +12,13 @@ interface ICarouselModelCommonVolatile {
   transitionDirection: TTransitionDirection
 }
 
-type TOnCurrentAnimationCancelled = () => void
+type TOnInProgressAnimationCancelled = () => void
 type TOnFinished = () => void
 
 // A type is used to avoid `Type 'ICarouselModelCommonActions' does not satisfy the constraint 'ModelActions'`.
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type TCarouselModelCommonActions = {
-  _onCurrentAnimationCancelled: TOnCurrentAnimationCancelled
+  _onInProgressAnimationCancelled: TOnInProgressAnimationCancelled
   _onFinished: TOnFinished
 }
 

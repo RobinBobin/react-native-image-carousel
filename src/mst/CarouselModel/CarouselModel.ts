@@ -37,10 +37,11 @@ export const CarouselModel = types
     transitionDirection: 'next'
   }))
   .actions<TCarouselModelCommonActions>(() => ({
-    _onCurrentAnimationCancelled(this: void): void {
+    _onFinished(this: void): void {
       throw new Error('Must be subclassed')
     },
-    _onFinished(this: void): void {
+    // eslint-disable-next-line id-length
+    _onInProgressAnimationCancelled(this: void): void {
       throw new Error('Must be subclassed')
     }
   }))
@@ -55,13 +56,13 @@ export const CarouselModel = types
     imageGap: 0,
     isSlideCentered: true,
     isSnapEnabled: false,
-    isTransitionInProgress: false,
+    isTransitionRequested: false,
     slideGroupTransitionAnimation: createSlideOverAnimation(self),
     slideSize: 'wholeCarousel'
   }))
   .views(self => ({
     get canTransition(): boolean {
-      return self.imageData.length > 1 && !self.isTransitionInProgress
+      return self.imageData.length > 1 && !self.isTransitionRequested
     },
 
     getImageDatum(this: void, index: number): ReadonlyDeep<TImageDatum> {
@@ -92,7 +93,7 @@ export const CarouselModel = types
         return false
       }
 
-      self.isTransitionInProgress = true
+      self.isTransitionRequested = true
       self.transitionDirection = transitionDirection
 
       self.slideGroupTransitionAnimation.animate()

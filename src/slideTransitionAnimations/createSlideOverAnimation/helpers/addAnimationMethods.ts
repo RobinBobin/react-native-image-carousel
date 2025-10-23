@@ -3,7 +3,7 @@ import type { TRAddCommonReturnType } from '../../helpers'
 import type {
   IAnimationMethods,
   TAnimate,
-  TCancelCurrentAnimation,
+  TCancelInProgressAnimation,
   TSlideTransitionAnimation
 } from '../../types'
 
@@ -23,9 +23,9 @@ export const addAnimationMethods = (
     _getSlide().animate()
   }
 
-  const cancelCurrentAnimation: TCancelCurrentAnimation = () => {
-    _getSlide().cancelCurrentAnimation()
+  const cancelInProgressAnimation: TCancelInProgressAnimation = () => {
+    _getSlide().cancelInProgressAnimation()
   }
 
-  return { animate, cancelCurrentAnimation }
+  return { animate, cancelInProgressAnimation }
 }

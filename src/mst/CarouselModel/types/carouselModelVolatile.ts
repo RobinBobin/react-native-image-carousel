@@ -10,7 +10,7 @@ interface ICarouselModelVolatile {
   imageGap: number
   isSlideCentered: boolean
   isSnapEnabled: boolean
-  isTransitionInProgress: boolean
+  isTransitionRequested: boolean
   placeholder?: React.ReactNode
   placeholderContainerStyle?: StyleProp<ViewStyle>
   slideGroupTransitionAnimation: TSlideGroupTransitionAnimation

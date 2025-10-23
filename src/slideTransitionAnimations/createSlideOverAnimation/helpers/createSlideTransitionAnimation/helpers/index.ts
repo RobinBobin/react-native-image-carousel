@@ -1,5 +1,5 @@
 export { animate } from './animate'
-export { cancelCurrentAnimation } from './cancelCurrentAnimation'
+export { cancelInProgressAnimation } from './cancelInProgressAnimation'
 export { isAnimationInProgress } from './isAnimationInProgress'
 export { prepare } from './prepare'
 export { _useStyle } from './useStyle'

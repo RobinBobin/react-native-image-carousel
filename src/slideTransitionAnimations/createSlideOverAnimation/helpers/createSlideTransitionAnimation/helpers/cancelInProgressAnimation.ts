@@ -1,7 +1,7 @@
 import type { TRCarouselModel, TSlideId } from '../../../../../mst'
 import type {
   ISharedValue,
-  TCancelCurrentAnimation,
+  TCancelInProgressAnimation,
   TRRawSlideTransitionAnimation
 } from '../../../../types'
 
@@ -9,14 +9,15 @@ import { runOnJS, withTiming } from 'react-native-reanimated'
 
 import { getSlideOffset } from '../../../../helpers'
 
-export const cancelCurrentAnimation = (
+export const cancelInProgressAnimation = (
   carouselModel: TRCarouselModel,
   rawAnimation: TRRawSlideTransitionAnimation,
   slideId: TSlideId,
   translateX: ISharedValue<number>
-): TCancelCurrentAnimation => {
+): TCancelInProgressAnimation => {
   return () => {
-    const { _onCurrentAnimationCancelled, carouselDimensions, slideData } =
+    // eslint-disable-next-line id-length
+    const { _onInProgressAnimationCancelled, carouselDimensions, slideData } =
       carouselModel
 
     const slideOffset = getSlideOffset({
@@ -29,7 +30,7 @@ export const cancelCurrentAnimation = (
     translateX.sharedValue?.set(
       withTiming(slideOffset, { duration: rawAnimation.duration }, finished => {
         if (finished ?? true) {
-          runOnJS(_onCurrentAnimationCancelled)()
+          runOnJS(_onInProgressAnimationCancelled)()
         }
       })
     )

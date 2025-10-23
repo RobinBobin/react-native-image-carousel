@@ -1,9 +1,9 @@
 type TAnimate = () => void
-type TCancelCurrentAnimation = () => void
+type TCancelInProgressAnimation = () => void
 
 interface IAnimationMethods {
   animate: TAnimate
-  cancelCurrentAnimation: TCancelCurrentAnimation
+  cancelInProgressAnimation: TCancelInProgressAnimation
 }
 
 interface IIsAnimationInProgress {
@@ -16,6 +16,6 @@ export type {
   IAnimationMethods,
   IIsAnimationInProgress,
   TAnimate,
-  TCancelCurrentAnimation,
+  TCancelInProgressAnimation,
   TWithAnimation
 }
