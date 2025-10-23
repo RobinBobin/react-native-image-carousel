@@ -61,7 +61,7 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
         slidePosition: 'current'
       })[1][1]
 
-      self.getImageDatum(imageDataIndex).onHidden?.()
+      self.imageVolatileData.get(imageDataIndex)?.callbacks?.onHidden?.()
 
       self._setSlideData(self.transitionDirection)
 
@@ -71,7 +71,7 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
         slidePosition: 'current'
       })[1][1]
 
-      self.getImageDatum(imageDataIndex).onShown?.()
+      self.imageVolatileData.get(imageDataIndex)?.callbacks?.onShown?.()
 
       self.slideGroupTransitionAnimation.prepare()
 

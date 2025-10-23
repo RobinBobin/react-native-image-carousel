@@ -1,14 +1,8 @@
 import type { ViewStyle } from 'react-native'
 import type { TOnPress } from './onPress'
 
-type TOnHidden = () => void
-type TOnShown = () => void
-
 interface ICommonImageData extends Pick<ViewStyle, 'backgroundColor'> {
-  onHidden?: TOnHidden
   onPress?: TOnPress
-  onShown?: TOnShown
-  overlay?: React.ReactNode
 }
 
 interface IImageData {
@@ -32,8 +26,6 @@ export type {
   IRawImageData,
   TImageData,
   TImageDatum,
-  TOnHidden,
-  TOnShown,
   TRawImageData,
   TRawImageDatum
 }

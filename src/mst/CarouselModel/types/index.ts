@@ -1,6 +1,7 @@
 export * from './carouselModelCommon'
 export * from './carouselModelVolatile'
 export * from './imageData'
+export * from './imageVolatileData'
 export * from './onPress'
 export * from './types'
 export type { TWithCarouselModel } from './withCarouselModel'

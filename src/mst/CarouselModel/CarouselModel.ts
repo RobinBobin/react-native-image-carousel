@@ -11,6 +11,7 @@ import type {
   TImageDatum,
   TRawImageData,
   TRCarouselDimensions,
+  TRImageVolatileData,
   TSlideSize,
   TSourceData
 } from './types'
@@ -54,6 +55,7 @@ export const CarouselModel = types
     aspectRatio: 0,
     imageData: [],
     imageGap: 0,
+    imageVolatileData: new Map(),
     isSlideCentered: true,
     isSnapEnabled: false,
     isTransitionRequested: false,
@@ -182,6 +184,13 @@ export const CarouselModel = types
     }),
     setImageGap(this: void, imageGap: number): void {
       self.imageGap = imageGap
+    },
+    setImageVolatileData(
+      this: void,
+      imageIndex: number,
+      imageVolatileData: TRImageVolatileData
+    ): void {
+      self.imageVolatileData.set(imageIndex, imageVolatileData)
     },
     setIsSlideCentered(this: void, isSlideCentered: boolean): void {
       self.isSlideCentered = isSlideCentered

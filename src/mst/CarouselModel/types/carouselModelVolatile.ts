@@ -2,12 +2,14 @@ import type { StyleProp, ViewStyle } from 'react-native'
 import type { ReadonlyDeep } from 'type-fest'
 import type { TSlideGroupTransitionAnimation } from '../../../slideTransitionAnimations'
 import type { TImageData } from './imageData'
+import type { TImageVolatileData } from './imageVolatileData'
 import type { TSlideSize } from './types'
 
 interface ICarouselModelVolatile {
   aspectRatio: number
   imageData: ReadonlyDeep<TImageData>
   imageGap: number
+  imageVolatileData: TImageVolatileData
   isSlideCentered: boolean
   isSnapEnabled: boolean
   isTransitionRequested: boolean

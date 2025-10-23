@@ -14,8 +14,10 @@ interface ISlideImageProps extends TWithCarouselModel {
 
 const SlideImage: React.FC<ISlideImageProps> = observer(
   ({ carouselModel, imageDataIndex, slideId, slidePosition }) => {
-    const { aspectRatio, backgroundColor, onPress, overlay, source } =
+    const { aspectRatio, backgroundColor, onPress, source } =
       carouselModel.getImageDatum(imageDataIndex)
+
+    const overlay = carouselModel.imageVolatileData.get(imageDataIndex)?.overlay
 
     const onImagePress = (): void => {
       onPress?.({
