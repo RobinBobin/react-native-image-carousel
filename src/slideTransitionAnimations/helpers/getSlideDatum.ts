@@ -1,20 +1,20 @@
 import type { Entry } from 'type-fest'
 import type { TSlideData } from '../../mst'
-import type { TSlideDataAndTransitionDirection } from '../types'
+import type { TSlideDataAndPosition } from '../types'
 
 import { verify } from 'simple-common-utils'
 
 export const getSlideDatum = ({
   slideData,
-  transitionDirection
-}: TSlideDataAndTransitionDirection): Entry<TSlideData> => {
-  const slideDatum = Object.entries(slideData).find(([, [slidePosition]]) => {
-    return slidePosition === transitionDirection
+  slidePosition
+}: TSlideDataAndPosition): Entry<TSlideData> => {
+  const slideDatum = Object.entries(slideData).find(([, datum]) => {
+    return datum[0] === slidePosition
   })
 
   verify(
     slideDatum,
-    `'getSlideDatumByTransitionDirection(${JSON.stringify(slideData)}, ${transitionDirection})': slideDatum can't be nullish`
+    `'getSlideDatumByTransitionDirection(${JSON.stringify(slideData)}, ${slidePosition})': slideDatum can't be nullish`
   )
 
   return slideDatum as Entry<TSlideData>

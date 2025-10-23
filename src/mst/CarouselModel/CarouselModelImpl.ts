@@ -2,6 +2,7 @@ import type { Instance } from 'mobx-state-tree'
 import type { TSlideId, TTransitionDirection } from '../types'
 import type { TCarouselModelCommonActions } from './types'
 
+import { getSlideDatum } from '../../slideTransitionAnimations'
 import { CarouselModel } from './CarouselModel'
 
 export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
@@ -54,7 +55,23 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
     _onFinished(this: void): void {
       self.isTransitionRequested = false
 
+      // hidden
+      let imageDataIndex = getSlideDatum({
+        slideData: self.slideData,
+        slidePosition: 'current'
+      })[1][1]
+
+      self.getImageDatum(imageDataIndex).onHidden?.()
+
       self._setSlideData(self.transitionDirection)
+
+      // shown
+      imageDataIndex = getSlideDatum({
+        slideData: self.slideData,
+        slidePosition: 'current'
+      })[1][1]
+
+      self.getImageDatum(imageDataIndex).onShown?.()
 
       self.slideGroupTransitionAnimation.prepare()
 

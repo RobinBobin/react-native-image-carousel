@@ -16,7 +16,11 @@ export const addAnimationMethods = (
   const _getSlide = (): TSlideTransitionAnimation => {
     const { slideData, transitionDirection } = carouselModel
 
-    return getSlide({ animation, slideData, transitionDirection })
+    return getSlide({
+      animation,
+      slideData,
+      slidePosition: transitionDirection
+    })
   }
 
   const animate: TAnimate = () => {
