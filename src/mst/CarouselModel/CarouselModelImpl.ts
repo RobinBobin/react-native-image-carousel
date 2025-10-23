@@ -8,15 +8,13 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
   .actions(self => ({
     _handleFling(this: void, flingDirection: TTransitionDirection): void {
       if (!self.slideGroupTransitionAnimation.isAnimationInProgress) {
-        self._move(flingDirection)
+        self.move(flingDirection)
 
         return
       }
 
       if (flingDirection !== self.transitionDirection) {
         self.slideGroupTransitionAnimation.cancelCurrentAnimation()
-      } else {
-        console.log("won't fling")
       }
     },
     _moveIfAutoTransitionStarted(this: void): void {

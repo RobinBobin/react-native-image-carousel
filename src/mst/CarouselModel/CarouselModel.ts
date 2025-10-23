@@ -85,14 +85,6 @@ export const CarouselModel = types
       return !self.isAutoTransitionStarted && self.canTransition
     }
   }))
-  .actions(self => ({
-    _move(this: void, transitionDirection: TTransitionDirection): void {
-      self.isTransitionInProgress = true
-      self.transitionDirection = transitionDirection
-
-      self.slideGroupTransitionAnimation.animate()
-    }
-  }))
   // eslint-disable-next-line max-lines-per-function
   .actions(self => ({
     move(this: void, transitionDirection: TTransitionDirection): boolean {
@@ -100,7 +92,10 @@ export const CarouselModel = types
         return false
       }
 
-      self._move(transitionDirection)
+      self.isTransitionInProgress = true
+      self.transitionDirection = transitionDirection
+
+      self.slideGroupTransitionAnimation.animate()
 
       return true
     },

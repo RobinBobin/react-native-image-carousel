@@ -3,6 +3,7 @@ import type { AnimatedProps, SharedValue } from 'react-native-reanimated'
 import type { TRCarouselModel } from '../../mst'
 
 interface ISharedValue<T> {
+  get: () => SharedValue<T>
   sharedValue?: SharedValue<T>
 }
 

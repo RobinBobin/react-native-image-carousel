@@ -1,7 +1,11 @@
 import type { TRCarouselModel, TSlideId } from '../../../../mst'
-import type { ISharedValue, TSlideTransitionAnimation } from '../../../types'
+import type { TSlideTransitionAnimation } from '../../../types'
 
-import { combine, createRawSlideTransitionAnimation } from '../../../helpers'
+import {
+  combine,
+  createISharedValue,
+  createRawSlideTransitionAnimation
+} from '../../../helpers'
 import {
   _useStyle,
   animate,
@@ -15,7 +19,8 @@ export const createSlideTransitionAnimation = (
   slideId: TSlideId
 ): TSlideTransitionAnimation => {
   const rawAnimation = createRawSlideTransitionAnimation()
-  const translateX: ISharedValue<number> = {}
+
+  const translateX = createISharedValue<number>()
 
   return combine(
     combine(

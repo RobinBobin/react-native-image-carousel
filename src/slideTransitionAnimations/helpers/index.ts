@@ -1,5 +1,6 @@
 export { addCommon } from './addCommon'
 export { combine } from './combine'
+export { createISharedValue } from './createISharedValue'
 export { createRawSlideTransitionAnimation } from './createRawSlideTransitionAnimation'
 export { getPreTransitionDelay } from './getPreTransitionDelay'
 export { getSlide } from './getSlide'
