@@ -4,6 +4,7 @@ import type { ReadonlyDeep } from 'type-fest'
 import type { TRSlideGroupTransitionAnimation } from '../../slideTransitionAnimations'
 import type { TTransitionDirection } from '../types'
 import type {
+  ICarouselModelCommonViews,
   ICarouselModelCommonVolatile,
   ICarouselModelVolatile,
   TCarouselModelCommonActions,
@@ -41,6 +42,11 @@ export const CarouselModel = types
     },
     _onFinished(this: void): void {
       throw new Error('Must be subclassed')
+    }
+  }))
+  .views<ICarouselModelCommonViews>(self => ({
+    get reversedTransitionDirection(): TTransitionDirection {
+      return self.transitionDirection === 'next' ? 'previous' : 'next'
     }
   }))
   .volatile<ICarouselModelVolatile>(self => ({

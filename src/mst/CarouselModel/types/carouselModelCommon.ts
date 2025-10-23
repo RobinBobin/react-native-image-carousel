@@ -1,6 +1,10 @@
 import type { TSlideData, TTransitionDirection } from '../../types'
 import type { TRCarouselDimensions } from './types'
 
+interface ICarouselModelCommonViews {
+  reversedTransitionDirection: TTransitionDirection
+}
+
 interface ICarouselModelCommonVolatile {
   carouselDimensions?: TRCarouselDimensions
   isAutoTransitionStarted: boolean
@@ -19,10 +23,13 @@ type TCarouselModelCommonActions = {
 }
 
 type TRCarouselModel = Readonly<
-  ICarouselModelCommonVolatile & TCarouselModelCommonActions
+  ICarouselModelCommonViews &
+    ICarouselModelCommonVolatile &
+    TCarouselModelCommonActions
 >
 
 export type {
+  ICarouselModelCommonViews,
   ICarouselModelCommonVolatile,
   TCarouselModelCommonActions,
   TRCarouselModel
