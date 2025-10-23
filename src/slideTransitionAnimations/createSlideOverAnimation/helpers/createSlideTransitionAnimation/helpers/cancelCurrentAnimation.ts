@@ -16,12 +16,8 @@ export const cancelCurrentAnimation = (
   translateX: ISharedValue<number>
 ): TCancelCurrentAnimation => {
   return () => {
-    const {
-      _onCurrentAnimationCancelled,
-      carouselDimensions,
-      slideData,
-      transitionDirection
-    } = carouselModel
+    const { _onCurrentAnimationCancelled, carouselDimensions, slideData } =
+      carouselModel
 
     const slideOffset = getSlideOffset({
       axis: 'x',
@@ -31,15 +27,11 @@ export const cancelCurrentAnimation = (
     })
 
     translateX.sharedValue?.set(
-      withTiming(
-        transitionDirection === 'next' ? slideOffset : 0,
-        { duration: rawAnimation.duration },
-        finished => {
-          if (finished ?? true) {
-            runOnJS(_onCurrentAnimationCancelled)()
-          }
+      withTiming(slideOffset, { duration: rawAnimation.duration }, finished => {
+        if (finished ?? true) {
+          runOnJS(_onCurrentAnimationCancelled)()
         }
-      )
+      })
     )
   }
 }

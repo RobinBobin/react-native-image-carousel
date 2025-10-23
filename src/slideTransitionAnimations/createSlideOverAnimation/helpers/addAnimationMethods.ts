@@ -19,8 +19,6 @@ export const addAnimationMethods = (
     return getSlide({ animation, slideData, transitionDirection })
   }
 
-  _getSlide.toString()
-
   const animate: TAnimate = () => {
     _getSlide().animate()
   }
