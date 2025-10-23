@@ -1,6 +1,6 @@
 import type { FlingGesture } from 'react-native-gesture-handler'
 import type {
-  ICarouselModelInstance,
+  ICarouselModelImplInstance,
   TTransitionDirection
 } from '../../../../mst'
 import type { IPoint } from './types'
@@ -8,9 +8,9 @@ import type { IPoint } from './types'
 import { Directions, Gesture } from 'react-native-gesture-handler'
 import { runOnJS, useSharedValue } from 'react-native-reanimated'
 
-export const useFlingGesture = (
-  carouselModel: ICarouselModelInstance
-): FlingGesture => {
+export const useFlingGesture = ({
+  _handleFling
+}: ICarouselModelImplInstance): FlingGesture => {
   const initialCoords = useSharedValue<IPoint | undefined>(undefined)
 
   return (
@@ -27,7 +27,7 @@ export const useFlingGesture = (
           const direction: TTransitionDirection =
             event.x > initialCoords.value.x ? 'previous' : 'next'
 
-          runOnJS(carouselModel._handleFling)(direction)
+          runOnJS(_handleFling)(direction)
         }
       })
   )

@@ -1,7 +1,7 @@
-import type { TRCarouselModel, TSlideId } from '../../../../mst'
-import type { IIsAnimationInProgress, ISharedValue } from '../../../types'
+import type { TRCarouselModel, TSlideId } from '../../../../../mst'
+import type { IIsAnimationInProgress, ISharedValue } from '../../../../types'
 
-import { getSlideOffset } from '../../../helpers'
+import { getSlideOffset } from '../../../../helpers'
 
 export const isAnimationInProgress = (
   carouselModel: TRCarouselModel,

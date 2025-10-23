@@ -1,13 +1,13 @@
-import type { TRCarouselModel } from '../../../../mst'
+import type { TRCarouselModel } from '../../../../../mst'
 import type {
   ISharedValue,
   TAnimate,
   TRRawSlideTransitionAnimation
-} from '../../../types'
+} from '../../../../types'
 
 import { runOnJS, withDelay, withTiming } from 'react-native-reanimated'
 
-import { getPreTransitionDelay } from '../../../helpers'
+import { getPreTransitionDelay } from '../../../../helpers'
 
 export const animate = (
   carouselModel: TRCarouselModel,

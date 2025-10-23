@@ -1,3 +1,4 @@
+import type { ReadonlyDeep } from 'type-fest'
 import type {
   IIsAnimationInProgress,
   IRawSlideTransitionAnimation,
@@ -10,4 +11,6 @@ type TAddCommonReturnType = TSlideAnimations<false> &
   IRawSlideTransitionAnimation &
   IWithPrepare
 
-export type { TAddCommonReturnType }
+type TRAddCommonReturnType = ReadonlyDeep<TAddCommonReturnType>
+
+export type { TAddCommonReturnType, TRAddCommonReturnType }

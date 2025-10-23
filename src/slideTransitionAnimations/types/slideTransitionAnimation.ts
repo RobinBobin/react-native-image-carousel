@@ -1,7 +1,6 @@
 import type { IRawSlideTransitionAnimation } from './rawSlideTransitionAnimation'
 import type { TAnimatedViewStyle } from './types'
-import type { IWithAnimation } from './withAnimation'
-import type { IWithHandleFling } from './withHandleFling'
+import type { TWithAnimation } from './withAnimation'
 import type { IWithPrepare } from './withPrepare'
 
 type TUseStyle = () => TAnimatedViewStyle
@@ -11,8 +10,7 @@ interface IBaseSlideTransitionAnimation extends IRawSlideTransitionAnimation {
 }
 
 type TSlideTransitionAnimation = IBaseSlideTransitionAnimation &
-  IWithAnimation &
-  IWithHandleFling &
+  TWithAnimation &
   IWithPrepare
 
 type TRSlideTransitionAnimation = Readonly<TSlideTransitionAnimation>

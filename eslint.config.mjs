@@ -28,6 +28,7 @@ const array = [
               from: 'file',
               name: [
                 'ICarouselModelInstance',
+                'ICarouselModelImplInstance',
                 'ISharedValue',
                 'ReactNode',
                 'StyleProp'

@@ -1,5 +1,5 @@
 export * from './CarouselModel'
-export { CarouselModelImpl } from './CarouselModelImpl'
+export * from './CarouselModelImpl'
 export {
   isNumericHeightAndWidth,
   verifyNumericCarouselDimensions

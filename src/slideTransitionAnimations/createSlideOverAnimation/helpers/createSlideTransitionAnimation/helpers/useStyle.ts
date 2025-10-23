@@ -1,9 +1,9 @@
-import type { TSlideId } from '../../../../mst'
-import type { ISharedValue, TUseStyle } from '../../../types'
+import type { TSlideId } from '../../../../../mst'
+import type { ISharedValue, TUseStyle } from '../../../../types'
 
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
-import { VERY_BIG_NUMBER } from '../../../constants'
+import { VERY_BIG_NUMBER } from '../../../../constants'
 
 export const _useStyle = (
   slideId: TSlideId,

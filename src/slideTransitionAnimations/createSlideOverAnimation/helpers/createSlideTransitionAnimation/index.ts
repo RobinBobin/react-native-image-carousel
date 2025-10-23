@@ -1,11 +1,11 @@
-import type { TRCarouselModel, TSlideId } from '../../../mst'
-import type { ISharedValue, TSlideTransitionAnimation } from '../../types'
+import type { TRCarouselModel, TSlideId } from '../../../../mst'
+import type { ISharedValue, TSlideTransitionAnimation } from '../../../types'
 
-import { combine, createRawSlideTransitionAnimation } from '../../helpers'
+import { combine, createRawSlideTransitionAnimation } from '../../../helpers'
 import {
   _useStyle,
   animate,
-  handleFling,
+  cancelCurrentAnimation,
   isAnimationInProgress,
   prepare
 } from './helpers'
@@ -24,7 +24,7 @@ export const createSlideTransitionAnimation = (
     ),
     {
       animate: animate(carouselModel, rawAnimation, translateX),
-      handleFling: handleFling(
+      cancelCurrentAnimation: cancelCurrentAnimation(
         carouselModel,
         rawAnimation,
         slideId,

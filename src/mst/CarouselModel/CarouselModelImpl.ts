@@ -1,9 +1,24 @@
+import type { Instance } from 'mobx-state-tree'
 import type { TSlideId, TTransitionDirection } from '../types'
+import type { TCarouselModelCommonActions } from './types'
 
 import { CarouselModel } from './CarouselModel'
 
 export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
   .actions(self => ({
+    _handleFling(this: void, flingDirection: TTransitionDirection): void {
+      if (!self.slideGroupTransitionAnimation.isAnimationInProgress) {
+        self._move(flingDirection)
+
+        return
+      }
+
+      if (flingDirection !== self.transitionDirection) {
+        self.slideGroupTransitionAnimation.cancelCurrentAnimation()
+      } else {
+        console.log("won't fling")
+      }
+    },
     _moveIfAutoTransitionStarted(this: void): void {
       if (self.isAutoTransitionStarted) {
         requestAnimationFrame(() => self.move(self.transitionDirection))
@@ -37,38 +52,22 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
       self.slideData = nextSlideData
     }
   }))
-  .actions(self => ({
-    _handleFling(this: void, flingDirection: TTransitionDirection): void {
-      if (self.canTransition) {
-        self.move(flingDirection)
+  .actions<TCarouselModelCommonActions>(self => ({
+    _onCurrentAnimationCancelled(this: void): void {
+      self.isTransitionInProgress = false
 
-        return
-      }
-
-      if (flingDirection !== self.transitionDirection) {
-        // self.slideGroupTransitionAnimation.handleFling()
-      }
+      self._moveIfAutoTransitionStarted()
     },
     _onFinished(this: void): void {
       self.isTransitionInProgress = false
 
       self._setSlideData(self.transitionDirection)
+
       self.slideGroupTransitionAnimation.prepare()
-      self._moveIfAutoTransitionStarted()
-    },
-    _onFlinged(this: void, flingDirection: TTransitionDirection): void {
-      if (self.canTransition) {
-        self.move(flingDirection)
-
-        return
-      }
-
-      if (flingDirection === self.transitionDirection) {
-        return
-      }
-
-      self.isTransitionInProgress = false
 
       self._moveIfAutoTransitionStarted()
     }
   }))
+
+export interface ICarouselModelImplInstance
+  extends Instance<typeof CarouselModelImpl> {}

@@ -36,10 +36,10 @@ export const CarouselModel = types
     transitionDirection: 'next'
   }))
   .actions<TCarouselModelCommonActions>(() => ({
-    _onFinished(this: void): void {
+    _onCurrentAnimationCancelled(this: void): void {
       throw new Error('Must be subclassed')
     },
-    _onFlinged(this: void): void {
+    _onFinished(this: void): void {
       throw new Error('Must be subclassed')
     }
   }))
@@ -56,9 +56,6 @@ export const CarouselModel = types
   .views(self => ({
     get canTransition(): boolean {
       return self.imageData.length > 1 && !self.isTransitionInProgress
-    },
-    get isAnimationInProgress(): boolean {
-      return self.slideGroupTransitionAnimation.isAnimationInProgress
     },
 
     getImageDatum(this: void, index: number): ReadonlyDeep<TImageDatum> {
@@ -82,10 +79,12 @@ export const CarouselModel = types
       return !self.isAutoTransitionStarted && self.canTransition
     }
   }))
-  .actions(() => ({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _handleFling(this: void, _flingDirection: TTransitionDirection): void {
-      throw new Error('Must be subclassed')
+  .actions(self => ({
+    _move(this: void, transitionDirection: TTransitionDirection): void {
+      self.isTransitionInProgress = true
+      self.transitionDirection = transitionDirection
+
+      self.slideGroupTransitionAnimation.animate()
     }
   }))
   // eslint-disable-next-line max-lines-per-function
@@ -95,10 +94,7 @@ export const CarouselModel = types
         return false
       }
 
-      self.isTransitionInProgress = true
-      self.transitionDirection = transitionDirection
-
-      self.slideGroupTransitionAnimation.animate()
+      self._move(transitionDirection)
 
       return true
     },

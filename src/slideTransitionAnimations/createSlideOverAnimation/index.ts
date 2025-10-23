@@ -1,15 +1,11 @@
 import type { TRCarouselModel } from '../../mst'
-import type {
-  TAnimate,
-  THandleFling,
-  TSlideGroupTransitionAnimation
-} from '../types'
+import type { TSlideGroupTransitionAnimation } from '../types'
 
 import { objectify, partial } from 'radashi'
 
 import { SLIDE_IDS } from '../../mst/constants'
-import { addCommon, combine, getSlide } from '../helpers'
-import { createSlideTransitionAnimation } from './createSlideTransitionAnimation'
+import { addCommon, combine } from '../helpers'
+import { addAnimationMethods, createSlideTransitionAnimation } from './helpers'
 
 export const createSlideOverAnimation = (
   carouselModel: TRCarouselModel
@@ -18,21 +14,10 @@ export const createSlideOverAnimation = (
 
   const animation = addCommon(objectify(SLIDE_IDS, slideId => slideId, create))
 
-  const animate: TAnimate = () => {
-    const { slideData, transitionDirection } = carouselModel
+  const { animate, cancelCurrentAnimation } = addAnimationMethods(
+    animation,
+    carouselModel
+  )
 
-    getSlide({ animation, slideData, transitionDirection }).animate()
-  }
-
-  const handleFling: THandleFling = params => {
-    const { slideData, transitionDirection } = carouselModel
-
-    getSlide({
-      animation,
-      slideData,
-      transitionDirection
-    }).handleFling(params)
-  }
-
-  return combine(animation, { animate, handleFling })
+  return combine(animation, { animate, cancelCurrentAnimation })
 }

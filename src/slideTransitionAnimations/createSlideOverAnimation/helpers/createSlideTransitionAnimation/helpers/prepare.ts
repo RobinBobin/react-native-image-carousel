@@ -1,7 +1,7 @@
-import type { TRCarouselModel, TSlideId } from '../../../../mst'
-import type { ISharedValue, TPrepare } from '../../../types'
+import type { TRCarouselModel, TSlideId } from '../../../../../mst'
+import type { ISharedValue, TPrepare } from '../../../../types'
 
-import { getSlideOffset } from '../../../helpers'
+import { getSlideOffset } from '../../../../helpers'
 
 export const prepare = (
   carouselModel: TRCarouselModel,
