@@ -7,7 +7,7 @@ import type {
   TSlideTransitionAnimation
 } from '../../types'
 
-import { getSlide } from '../../helpers'
+import { getSlideTransitionAnimation } from '../../helpers'
 
 export const addAnimationMethods = (
   animation: TRAddCommonReturnType,
@@ -16,7 +16,7 @@ export const addAnimationMethods = (
   const _getSlide = (): TSlideTransitionAnimation => {
     const { slideData, transitionDirection } = carouselModel
 
-    return getSlide({
+    return getSlideTransitionAnimation({
       animation,
       slideData,
       slidePosition: transitionDirection
