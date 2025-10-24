@@ -36,7 +36,7 @@ export const createSlideTransitionAnimation = (
         translateX
       ),
       prepare: prepare(carouselModel, slideId, translateX),
-      useStyle: _useStyle(slideId, translateX)
+      useStyle: _useStyle(carouselModel, slideId, translateX)
     }
   )
 }

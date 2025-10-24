@@ -2,10 +2,10 @@ import type React from 'react'
 import type { TSlideId, TWithCarouselModel } from '../../../../../mst'
 
 import { observer } from 'mobx-react-lite'
+import { StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { SlideImage } from '../../../../common/SlideImage'
-import { getContainerStyle } from './styles'
 
 interface ISlideProps extends TWithCarouselModel {
   slideId: TSlideId
@@ -18,8 +18,8 @@ const Slide: React.FC<ISlideProps> = observer(({ carouselModel, slideId }) => {
   return (
     <Animated.View
       style={[
-        slideGroupTransitionAnimation[slideId].useStyle(),
-        getContainerStyle(slidePosition)
+        StyleSheet.absoluteFill,
+        slideGroupTransitionAnimation[slideId].useStyle()
       ]}
     >
       <SlideImage
