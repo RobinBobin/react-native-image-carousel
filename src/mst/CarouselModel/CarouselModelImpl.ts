@@ -1,6 +1,8 @@
 import type { Instance } from 'mobx-state-tree'
-import type { TSlideId, TTransitionDirection } from '../types'
+import type { TSlideDatum, TSlideId, TTransitionDirection } from '../types'
 import type { TCarouselModelCommonActions } from './types'
+
+import { zipToObject } from 'radashi'
 
 import { getSlideDatum } from '../../slideTransitionAnimations'
 import { CarouselModel } from './CarouselModel'
@@ -24,31 +26,37 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
       }
     },
     _setSlideData(this: void, transitionDirection: TTransitionDirection): void {
-      const nextSlideData = { ...self.slideData }
+      const isNext = transitionDirection === 'next'
 
-      const slidePositions = Object.values(nextSlideData).map(
-        ([slidePosition]) => slidePosition
-      )
+      const slideDatumArray = Object.values(self.slideData).map<TSlideDatum>(
+        slideDatum => {
+          const minusOne = -1
+          const step = isNext ? 1 : minusOne
 
-      if (transitionDirection === 'next') {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        slidePositions.unshift(slidePositions.pop()!)
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        slidePositions.push(slidePositions.shift()!)
-      }
+          let imageDataIndex = slideDatum[1] + step
 
-      Object.entries(nextSlideData).forEach(
-        ([slideId, [, imageDataIndex]], index) => {
-          nextSlideData[slideId as TSlideId] = [
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            slidePositions[index]!,
-            imageDataIndex
-          ]
+          if (imageDataIndex === minusOne) {
+            imageDataIndex = self.imageData.length - 1
+          } else if (imageDataIndex === self.imageData.length) {
+            imageDataIndex = 0
+          }
+
+          return [slideDatum[0], imageDataIndex]
         }
       )
 
-      self.slideData = nextSlideData
+      if (isNext) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        slideDatumArray.unshift(slideDatumArray.pop()!)
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        slideDatumArray.push(slideDatumArray.shift()!)
+      }
+
+      self.slideData = zipToObject<TSlideId, TSlideDatum>(
+        Object.keys(self.slideData) as TSlideId[],
+        slideDatumArray
+      )
     }
   }))
   .actions<TCarouselModelCommonActions>(self => ({
