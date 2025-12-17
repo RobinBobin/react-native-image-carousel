@@ -56,6 +56,7 @@ export const CarouselModel = types
     imageData: [],
     imageGap: 0,
     imageVolatileData: new Map(),
+    isAutoTransitionStartRequested: false,
     isSlideCentered: true,
     isSnapEnabled: false,
     isTransitionRequested: false,

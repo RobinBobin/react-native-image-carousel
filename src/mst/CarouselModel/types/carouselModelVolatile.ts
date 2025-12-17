@@ -10,6 +10,7 @@ interface ICarouselModelVolatile {
   imageData: ReadonlyDeep<TImageData>
   imageGap: number
   imageVolatileData: TImageVolatileData
+  isAutoTransitionStartRequested: boolean
   isSlideCentered: boolean
   isSnapEnabled: boolean
   isTransitionRequested: boolean

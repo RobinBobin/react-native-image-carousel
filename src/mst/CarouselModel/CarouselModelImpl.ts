@@ -10,7 +10,18 @@ import { CarouselModel } from './CarouselModel'
 export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
   .actions(self => ({
     _handleFling(this: void, flingDirection: TTransitionDirection): void {
+      if (!self.isAutoTransitionStarted) {
+        self.move(flingDirection)
+
+        return
+      }
+
       if (!self.slideGroupTransitionAnimation.isAnimationInProgress) {
+        self.stopAutoTransition()
+
+        self.isAutoTransitionStartRequested = true
+        self.isTransitionRequested = false
+
         self.move(flingDirection)
 
         return
@@ -82,6 +93,11 @@ export const CarouselModelImpl = CarouselModel.named('CarouselModelImpl')
       self.imageVolatileData.get(imageDataIndex)?.callbacks?.onShown?.()
 
       self.slideGroupTransitionAnimation.prepare()
+
+      if (self.isAutoTransitionStartRequested) {
+        self.isAutoTransitionStartRequested = false
+        self.isAutoTransitionStarted = true
+      }
 
       self._moveIfAutoTransitionStarted()
     },
