@@ -47,5 +47,5 @@
     "prepack": "rm -rf js && tsc && eslint && prettier . --check",
     "prettify": "tsc && eslint --fix && prettier . --write"
   },
-  "version": "2.0.1"
+  "version": "2.0.2"
 }
